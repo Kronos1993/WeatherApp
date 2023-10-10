@@ -15,7 +15,7 @@ class CurrentWeatherDto(
     val pressure_mb: Int,
     val pressure_in: Double,
     val precip_mm: Double,
-    val precip_in: Int,
+    val precip_in: Double,
     val humidity: Double,
     val cloud: Int,
     val feelslike_c: Double,

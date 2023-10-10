@@ -12,9 +12,10 @@
     </data>
 
     <com.google.android.material.card.MaterialCardView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_margin="2dp">
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/Widget.CardView"
+        app:cardElevation="0dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -24,6 +25,7 @@
                 android:id="@+id/text_view_time"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                style="@style/Widget.TextView.TextViewNormal"
                 app:show_only_hour="@{hour.time}"
                 android:gravity="center"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -34,6 +36,7 @@
                 android:id="@+id/image_view_current_weather"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
+                android:adjustViewBounds="true"
                 android:gravity="center"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -44,6 +47,7 @@
                 android:id="@+id/text_view_temp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                style="@style/Widget.TextView.TextViewNormal"
                 android:gravity="center"
                 app:handle_temp="@{hour.tempC}"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -54,6 +58,7 @@
                 android:id="@+id/text_view_rain_possibility"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                style="@style/Widget.TextView.TextViewNormal"
                 android:gravity="center"
                 app:handle_rain_possibility="@{hour.chanceOfRain}"
                 app:layout_constraintEnd_toEndOf="parent"

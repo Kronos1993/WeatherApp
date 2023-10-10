@@ -11,11 +11,9 @@
     <color name="secondary_text">#757575</color>
     <color name="icon">#FFFFFF</color>
     <color name="divider">#BDBDBD</color>
+    <color name="blackText">#FFF</color>
 
-    <color name="blackText">#000000</color>
+    <color name="buttonBorderColor">#FFFFFF</color>
 
-    <color name="buttonBorderColor">#607D8B</color>
-    <color name="backgroundCardColor">#FFFFFF</color>
-
-    <color name="black_shade_1">#292D36</color>
+    <color name="backgroundCardColor">#002338</color>
 </resources>

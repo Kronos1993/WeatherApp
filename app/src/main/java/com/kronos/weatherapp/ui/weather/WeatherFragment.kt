@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.kronos.core.extensions.binding.fragmentBinding
@@ -17,6 +18,7 @@ import com.kronos.domian.model.Hour
 import com.kronos.domian.model.forecast.Forecast
 import com.kronos.weatherapp.R
 import com.kronos.weatherapp.databinding.FragmentWeatherBinding
+import com.kronos.weatherapp.ui.weather.model.Indicator
 import dagger.hilt.android.AndroidEntryPoint
 import java.lang.ref.WeakReference
 import java.util.*
@@ -34,7 +36,6 @@ class WeatherFragment : Fragment() {
     ) = binding.run {
         viewModel = this@WeatherFragment.viewModel
         lifecycleOwner = this@WeatherFragment.viewLifecycleOwner
-        setHasOptionsMenu(true)
         root
     }
 
@@ -63,14 +64,14 @@ class WeatherFragment : Fragment() {
                     binding.recyclerViewWeatherByDay,
                     hashtable["error"].orEmpty(),
                     R.color.white,
-                    R.color.teal_700
+                    R.color.primary_dark
                 )
             } else {
                 show(
                     binding.recyclerViewWeatherByDay,
                     hashtable["error"].orEmpty(),
                     R.color.white,
-                    R.color.teal_700
+                    R.color.primary_dark
                 )
             }
         }
@@ -82,13 +83,13 @@ class WeatherFragment : Fragment() {
                 LoadingDialog.getProgressDialog(
                     requireContext(),
                     R.string.loading_dialog_text,
-                    R.color.teal_200
+                    R.color.primary_dark
                 )!!.show()
             } else {
                 LoadingDialog.getProgressDialog(
                     requireContext(),
                     R.string.loading_dialog_text,
-                    R.color.teal_200
+                    R.color.primary_dark
                 )!!.dismiss()
             }
         }catch (e:IllegalArgumentException){
@@ -121,6 +122,15 @@ class WeatherFragment : Fragment() {
             }
         }
 
+        var indicator = listOf<Indicator>(
+            Indicator("Wind Speed",requireContext().getString(R.string.speed_km, weather?.current.windSpeedKph.toString()),requireContext().resources.getDrawable(R.drawable.ic_blowing_climate_forecast)),
+            Indicator("Humidity",String.format("%.1f%%",weather?.current.windSpeedKph),requireContext().resources.getDrawable(R.drawable.ic_humidity)),
+            Indicator("UV",weather?.current.uv.toString(),requireContext().resources.getDrawable(R.drawable.ic_day_forecast_hot))//,
+            //Indicator("Wind Speed",requireContext().getString(R.string.speed_km, weather?.current.windSpeedKph.toString()),R.drawable.ic_blowing_climate_forecast),
+        )
+        viewModel.indicatorAdapter.get()?.submitList(indicator)
+        viewModel.indicatorAdapter.get()?.notifyDataSetChanged()
+
         (weather.forecast.forecastDay as ArrayList).removeAll {
             Date().of(it.date)!!.isToday()
         }
@@ -149,10 +159,17 @@ class WeatherFragment : Fragment() {
         viewModel.dailyWeatherAdapter.get()?.setUrlProvider(viewModel.urlProvider)
         binding.recyclerViewWeatherByDay.adapter = viewModel.dailyWeatherAdapter.get()
 
+        binding.recyclerViewIndicator.layoutManager = GridLayoutManager(context,2)
+        binding.recyclerViewIndicator.setHasFixedSize(false)
+        if (viewModel.indicatorAdapter.get() == null)
+            viewModel.indicatorAdapter = WeakReference(IndicatorAdapter())
+        viewModel.indicatorAdapter.get()?.setUrlProvider(viewModel.urlProvider)
+        binding.recyclerViewIndicator.adapter = viewModel.indicatorAdapter.get()
+
+
     }
 
     private fun initViewModel() {
-        viewModel.postCurrentDate()
         viewModel.getWeather("Panama")
     }
 

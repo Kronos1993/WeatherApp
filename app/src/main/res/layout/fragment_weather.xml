@@ -22,13 +22,6 @@
             android:layout_height="match_parent"
             app:handle_background='@{java.util.Calendar.getInstance().time}'>
 
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guidelineVertical5"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                app:layout_constraintGuide_percent=".5"/>
-
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintLayout"
                 android:layout_width="match_parent"
@@ -49,9 +42,9 @@
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/text_view_temp"
+                    style="@style/Widget.TextView.TextViewHeader"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:textSize="15sp"
                     android:gravity="center"
                     app:handle_temp="@{viewModel.weather.current}"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -61,9 +54,9 @@
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/text_view_temp_feels_like"
+                    style="@style/Widget.TextView.TextViewSubHeader"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:textSize="12sp"
                     android:gravity="center"
                     app:handle_temp_feels_like="@{viewModel.weather.current}"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -73,11 +66,11 @@
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/text_view_weather_description"
+                    style="@style/Widget.TextView.TextViewNormal"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="@{viewModel.weather.current.condition.description}"
-                    android:textSize="15sp"
                     android:gravity="center"
+                    android:text="@{viewModel.weather.current.condition.description}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/image_current_weather"
@@ -85,11 +78,11 @@
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/text_view_location"
+                    style="@style/Widget.TextView.TextViewSubHeader"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{viewModel.weather.location.name}"
-                    android:textSize="15sp"
                     android:gravity="center"
+                    android:text="@{viewModel.weather.location.name}"
                     app:drawableRightCompat="@drawable/ic_locations"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -98,175 +91,68 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_view_weather_hourly"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
-                tools:itemCount="3"
-                tools:listitem="@layout/item_weather_hour" />
-
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/materialCardViewWindSpeed"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/car_view_weather_hourly"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                app:layout_constraintEnd_toStartOf="@+id/guidelineVertical5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/recycler_view_weather_hourly">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <androidx.constraintlayout.widget.Guideline
-                        android:id="@+id/guidelineVerticalWind5"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        app:layout_constraintGuide_percent=".5"/>
-
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:id="@+id/appCompatImageView"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:layout_gravity="center"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/ic_blowing_climate_forecast" />
-
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:id="@+id/appCompatImageView2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_speed"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/text_view_wind_speed"
-                        app:layout_constraintTop_toBottomOf="@+id/appCompatImageView" />
-
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/text_view_wind_speed"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="1dp"
-                        android:gravity="end"
-                        app:handle_speed="@{viewModel.weather.current}"
-                        app:layout_constraintBottom_toBottomOf="@+id/appCompatImageView2"
-                        app:layout_constraintEnd_toStartOf="@+id/guidelineVerticalWind5"
-                        app:layout_constraintTop_toTopOf="@+id/appCompatImageView2"
-                        app:textAllCaps="true" />
-
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/text_view_wind_direction"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="1dp"
-                        android:gravity="start"
-                        android:text="@{viewModel.weather.current.windDir}"
-                        app:layout_constraintBottom_toBottomOf="@+id/appCompatImageView3"
-                        app:layout_constraintStart_toStartOf="@+id/guidelineVerticalWind5"
-                        app:layout_constraintTop_toTopOf="@+id/appCompatImageView3"
-                        app:textAllCaps="true" />
-
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:id="@+id/appCompatImageView3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_direction"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/text_view_wind_direction"
-                        app:layout_constraintTop_toBottomOf="@+id/appCompatImageView" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-            </com.google.android.material.card.MaterialCardView>
-
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/materialCardViewUV"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/guidelineVertical5"
-                app:layout_constraintTop_toBottomOf="@+id/recycler_view_weather_hourly">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:id="@+id/appCompatImageViewUV"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:layout_gravity="center"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/ic_day_forecast_hot" />
-
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/text_view_uv"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        app:handle_uv="@{viewModel.weather.current.uv}"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/appCompatImageViewUV"
-                        app:textAllCaps="true" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-            </com.google.android.material.card.MaterialCardView>
-
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/materialCardViewHumidity"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                app:layout_constraintEnd_toStartOf="@+id/guidelineVertical5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/materialCardViewWindSpeed">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:id="@+id/appCompatImageViewHumidity"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:layout_gravity="center"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/ic_humidity" />
-
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/text_view_humidity"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        app:handle_humidity="@{viewModel.weather.current}"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/appCompatImageViewHumidity"
-                        app:textAllCaps="true" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-            </com.google.android.material.card.MaterialCardView>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_view_weather_by_day"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
+                android:layout_marginTop="@dimen/margin_5"
+                android:background="@color/backgroundCardColor"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/materialCardViewHumidity"
-                tools:itemCount="3"
-                tools:listitem="@layout/item_weather_daily" />
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_view_weather_hourly"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:itemCount="1"
+                    tools:listitem="@layout/item_weather_hour" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/car_view_indicator"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@color/backgroundCardColor"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/car_view_weather_hourly">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_view_indicator"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:itemCount="1"
+                    tools:listitem="@layout/item_weather_hour" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@color/backgroundCardColor"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/car_view_indicator">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_view_weather_by_day"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:itemCount="3"
+                    tools:listitem="@layout/item_weather_daily" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>

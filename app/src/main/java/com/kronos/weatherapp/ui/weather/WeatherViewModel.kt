@@ -33,20 +33,15 @@ class WeatherViewModel @Inject constructor(
     private val _weather = MutableLiveData<Forecast>()
     val weather = _weather.asLiveData()
 
-    private val _currentDate = MutableLiveData<Date>()
-    val currentDate = _currentDate.asLiveData()
-
     var hourWeatherAdapter: WeakReference<WeatherHourAdapter?> = WeakReference(WeatherHourAdapter())
 
     var dailyWeatherAdapter: WeakReference<WeatherDayAdapter?> = WeakReference(WeatherDayAdapter())
 
+    var indicatorAdapter: WeakReference<IndicatorAdapter?> = WeakReference(IndicatorAdapter())
+
     private fun postWeather(weather: Response<Forecast>) {
         _weather.postValue(weather.data!!)
         loading.postValue(false)
-    }
-
-    fun postCurrentDate() {
-        _currentDate.postValue(Date())
     }
 
     fun getWeather(city: String) {
