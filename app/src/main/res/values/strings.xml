@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">Weather App</string>
+
+    <string name="required_field">This field is required</string>
+    <string name="permission_dialog_message">This permission are required</string>
+    <string name="permission_dialog_title">Permissions required</string>
+    <string name="ok">Ok</string>
+    <string name="cancel">Cancel</string>
+
+    <string name="title_activity_main">Weather</string>
+    <string name="title_weather">Weather</string>
+    <string name="title_location">Location</string>
+    <string name="title_about">About</string>
+    <string name="temp_celsius">%s°C</string>
+    <string name="temp_fahrenheit">%s°F</string>
+    <string name="feels_like_temp_celsius">Feels like %s°C</string>
+    <string name="feels_like_temp_fahrenheit">Feels like %s°F</string>
+    <string name="speed_km">%s KM/H</string>
+    <string name="speed_miles">%s M/H</string>
+    <string name="loading_dialog_text">Loading</string>
+
+</resources>

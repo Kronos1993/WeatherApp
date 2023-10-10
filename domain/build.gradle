@@ -1,0 +1,5 @@
+apply from: "../kronos_base.gradle"
+
+dependencies {
+
+}
