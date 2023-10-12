@@ -10,5 +10,5 @@ class ExternalPersistenceOptionsImpl @Inject constructor(
 ) : PersistenceOptions {
 
     override val basePath: String
-        get() = "my-box"
+        get() = "weather-app"
 }

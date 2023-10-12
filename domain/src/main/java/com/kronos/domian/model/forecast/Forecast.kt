@@ -6,7 +6,7 @@ import com.kronos.domian.model.Location
 import java.io.Serializable
 
 data class Forecast(
-    val location: Location,
-    val current: CurrentWeather,
-    val forecast: ForecastDay,
+    val location: Location = Location(),
+    val current: CurrentWeather = CurrentWeather(),
+    val forecast: ForecastDay = ForecastDay(),
 ) : Serializable

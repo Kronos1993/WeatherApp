@@ -20,7 +20,8 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:handle_background='@{java.util.Calendar.getInstance().time}'>
+            app:handle_visibility="@{!viewModel.loading}"
+            app:handle_background='@{viewModel.date}'>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintLayout"
@@ -34,8 +35,9 @@
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/image_current_weather"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
+                    android:layout_width="96dp"
+                    android:layout_height="96dp"
+                    android:adjustViewBounds="true"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -82,8 +84,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="@{viewModel.weather.location.name}"
+                    app:handle_location_name="@{viewModel.weather.location}"
                     app:drawableRightCompat="@drawable/ic_locations"
+                    app:drawableTint="@color/selected_location_color"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/text_view_temp_feels_like"

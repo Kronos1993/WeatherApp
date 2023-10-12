@@ -7,12 +7,14 @@ import java.util.*
 
 open class ParentViewModel(
     var loading: MutableLiveData<Boolean> = MutableLiveData(),
-    var error: MutableLiveData<Hashtable<String, String>> = MutableLiveData()
+    var error: MutableLiveData<Hashtable<String, String>> = MutableLiveData(),
+    var date:MutableLiveData<Date> = MutableLiveData()
 ) : ViewModel() {
 
     init {
         loading.value = false
         error.value = Hashtable()
+        date.value = Date()
     }
 
     private val _recyclerLastPos = MutableLiveData<Int>()

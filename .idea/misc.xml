@@ -5,15 +5,17 @@
       <map>
         <entry key="..\:/AndroidWorkspace/WeatherApp/app/src/main/res/drawable/ic_blowing_climate_forecast.xml" value="0.159" />
         <entry key="..\:/AndroidWorkspace/WeatherApp/app/src/main/res/drawable/ic_launcher_background.xml" value="0.159" />
+        <entry key="..\:/AndroidWorkspace/WeatherApp/app/src/main/res/drawable/ic_locations.xml" value="0.159" />
         <entry key="..\:/AndroidWorkspace/WeatherApp/app/src/main/res/drawable/screen_background.xml" value="0.159" />
         <entry key="..\:/AndroidWorkspace/WeatherApp/app/src/main/res/drawable/screen_background_nigth.xml" value="0.159" />
         <entry key="..\:/AndroidWorkspace/WeatherApp/app/src/main/res/drawable/screen_background_noon.xml" value="0.159" />
         <entry key="..\:/AndroidWorkspace/WeatherApp/app/src/main/res/layout/activity_main.xml" value="0.25416666666666665" />
         <entry key="..\:/AndroidWorkspace/WeatherApp/app/src/main/res/layout/activity_splash.xml" value="0.25416666666666665" />
         <entry key="..\:/AndroidWorkspace/WeatherApp/app/src/main/res/layout/fragment_about.xml" value="0.25416666666666665" />
-        <entry key="..\:/AndroidWorkspace/WeatherApp/app/src/main/res/layout/fragment_location.xml" value="0.25416666666666665" />
-        <entry key="..\:/AndroidWorkspace/WeatherApp/app/src/main/res/layout/fragment_weather.xml" value="0.1062992125984252" />
+        <entry key="..\:/AndroidWorkspace/WeatherApp/app/src/main/res/layout/fragment_location.xml" value="0.11065573770491803" />
+        <entry key="..\:/AndroidWorkspace/WeatherApp/app/src/main/res/layout/fragment_weather.xml" value="0.264" />
         <entry key="..\:/AndroidWorkspace/WeatherApp/app/src/main/res/layout/item_indicator.xml" value="0.136" />
+        <entry key="..\:/AndroidWorkspace/WeatherApp/app/src/main/res/layout/item_user_location.xml" value="0.25416666666666665" />
         <entry key="..\:/AndroidWorkspace/WeatherApp/app/src/main/res/layout/item_weather_daily.xml" value="0.25416666666666665" />
         <entry key="..\:/AndroidWorkspace/WeatherApp/app/src/main/res/layout/item_weather_hour.xml" value="0.2" />
         <entry key="..\:/AndroidWorkspace/WeatherApp/app/src/main/res/menu/bottom_nav_menu.xml" value="0.25416666666666665" />

@@ -10,6 +10,6 @@ class InternalPersistenceOptionsImpl @Inject constructor(
 ) : PersistenceOptions {
 
     override val basePath: String
-        get() = "pokedex"
+        get() = "weather-app"
 
 }

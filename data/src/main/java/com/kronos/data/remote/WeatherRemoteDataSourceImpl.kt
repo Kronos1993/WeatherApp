@@ -1,7 +1,7 @@
 package com.kronos.data.remote
 
 import android.util.Log
-import com.kronos.data.data_source.weather.WeatherRemoteDataSource
+import com.kronos.data.data_source.user_custom_location.WeatherRemoteDataSource
 import com.kronos.data.remote.api.WeatherApi
 import com.kronos.data.remote.mapper.toCurrentForecast
 import com.kronos.data.remote.mapper.toForecast

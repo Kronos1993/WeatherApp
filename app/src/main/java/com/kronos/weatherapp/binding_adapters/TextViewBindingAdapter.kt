@@ -7,9 +7,16 @@ import com.kronos.core.extensions.isToday
 import com.kronos.core.extensions.of
 import com.kronos.domian.model.CurrentWeather
 import com.kronos.domian.model.DailyForecast
+import com.kronos.domian.model.Location
 import com.kronos.weatherapp.R
 import java.text.SimpleDateFormat
 import java.util.*
+
+@BindingAdapter("handle_location_name")
+fun handleLocationName(view: TextView, current: Location?) = view.run {
+    text = "${current?.country}/${current?.name}"
+}
+
 
 @BindingAdapter("handle_temp")
 fun handleTemp(view: TextView, current: CurrentWeather?) = view.run {

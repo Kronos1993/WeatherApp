@@ -59,7 +59,7 @@ fun Date.getHour(): String {
 
     val hour = calendar.get(Calendar.HOUR)
     val minute = calendar.get(Calendar.MINUTE)
-    val amPm = if (calendar.get(Calendar.AM_PM) == Calendar.AM) "AM" else "PM"
+    val amPm = if (calendar.get(Calendar.AM_PM) == Calendar.AM) "a.m." else "p.m."
     val formattedMinute = String.format("%02d", minute)
 
     return "$hour $amPm"

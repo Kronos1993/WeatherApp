@@ -3,5 +3,5 @@ package com.kronos.domian.model
 import java.io.Serializable
 
 data class ForecastDay(
-    val forecastDay : List<DailyForecast>
+    val forecastDay : List<DailyForecast> = listOf()
 ) : Serializable

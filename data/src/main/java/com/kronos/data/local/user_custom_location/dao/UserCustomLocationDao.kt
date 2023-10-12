@@ -1,0 +1,24 @@
+package com.kronos.data.local.user_custom_location.dao
+
+import androidx.room.*
+import com.kronos.data.local.user_custom_location.entity.UserCustomLocationEntity
+
+@Dao
+interface UserCustomLocationDao {
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertOrUpdate(userCustomLocationEntity: UserCustomLocationEntity)
+
+    @Query("SELECT * FROM USER_CUSTOM_LOCATION")
+    suspend fun listAll(): List<UserCustomLocationEntity>
+
+    @Query("SELECT * FROM USER_CUSTOM_LOCATION WHERE IS_CURRENT = 1")
+    suspend fun getCurrentLocation(): UserCustomLocationEntity?
+
+    @Query("SELECT * FROM USER_CUSTOM_LOCATION WHERE IS_SELECTED = 1")
+    suspend fun getSelectedLocation(): UserCustomLocationEntity?
+
+    @Delete
+    suspend fun deleteEvent(userCustomLocationEntity: UserCustomLocationEntity)
+
+
+}

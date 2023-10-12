@@ -10,5 +10,5 @@ class InternalDbPersistenceOptionsImpl  @Inject constructor(
 ) : PersistenceOptions {
 
     override val basePath: String
-        get() = "my-box/db"
+        get() = "weather-app/db"
 }

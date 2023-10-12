@@ -1,4 +1,4 @@
-package com.kronos.data.data_source.weather
+package com.kronos.data.data_source.user_custom_location
 
 import com.kronos.domian.model.Response
 import com.kronos.domian.model.current.CurrentForecast

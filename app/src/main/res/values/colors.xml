@@ -3,10 +3,10 @@
     <color name="black">#212121</color>
     <color name="white">#FFFFFFFF</color>
 
-    <color name="primary">#607D8B</color>
-    <color name="primary_dark">#455A64</color>
-    <color name="primary_light">#CFD8DC</color>
-    <color name="accent">#9E9E9E</color>
+    <color name="primary">#FF9800</color>
+    <color name="primary_dark">#F57C00</color>
+    <color name="primary_light">#FFE0B2</color>
+    <color name="accent">#FFC107</color>
     <color name="primary_text">#212121</color>
     <color name="secondary_text">#757575</color>
     <color name="icon">#FFFFFF</color>
@@ -14,8 +14,12 @@
 
     <color name="blackText">#000000</color>
 
+    <color name="delete_color">#F44336</color>
+
     <color name="buttonBorderColor">#607D8B</color>
     <color name="backgroundCardColor">#FFFFFF</color>
+
+    <color name="selected_location_color">#F57C00</color>
 
     <color name="black_shade_1">#292D36</color>
 </resources>

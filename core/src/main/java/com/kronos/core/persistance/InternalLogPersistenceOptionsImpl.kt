@@ -10,5 +10,5 @@ class InternalLogPersistenceOptionsImpl  @Inject constructor(
 ) : PersistenceOptions {
 
     override val basePath: String
-        get() = "pokedex/Logs"
+        get() = "weather-app/Logs"
 }
