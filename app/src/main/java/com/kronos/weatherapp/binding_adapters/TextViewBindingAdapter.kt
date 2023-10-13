@@ -54,6 +54,21 @@ fun handleUV(view: TextView, uv: Int?) = view.run {
     text = uv.toString()
 }
 
+@BindingAdapter("handle_date_hour")
+fun showOnlyHour(view: TextView, current: Location?) = view.run {
+    if(current!=null){
+        var date = Date().of(current.localtime,true)
+        var dateFormat = SimpleDateFormat("EEE MMM d | h:mm aa", Locale.US)
+        var stringDate = ""
+        try{
+            stringDate = dateFormat.format(date)
+        }catch (e:Exception){
+
+        }
+        view.text = stringDate
+    }
+}
+
 @BindingAdapter("handle_day")
 fun handleDay(view: TextView, current: DailyForecast?) = view.run {
     if(current!=null){

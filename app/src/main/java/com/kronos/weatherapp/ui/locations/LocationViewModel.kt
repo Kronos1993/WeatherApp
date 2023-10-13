@@ -50,6 +50,10 @@ class LocationViewModel @Inject constructor(
         loading.postValue(false)
     }
 
+    fun postDate(date: Date) {
+        this.date.value = date
+    }
+
     fun getLocations() {
         loading.postValue(true)
         viewModelScope.launch(Dispatchers.IO) {

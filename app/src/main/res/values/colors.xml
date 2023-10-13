@@ -3,23 +3,26 @@
     <color name="black">#212121</color>
     <color name="white">#FFFFFFFF</color>
 
-    <color name="primary">#FF9800</color>
-    <color name="primary_dark">#F57C00</color>
-    <color name="primary_light">#FFE0B2</color>
-    <color name="accent">#FFC107</color>
+    <color name="primary">#673AB7</color>
+    <color name="primary_dark">#512DA8</color>
+    <color name="primary_light">#D1C4E9</color>
+    <color name="accent">#536DFE</color>
     <color name="primary_text">#212121</color>
     <color name="secondary_text">#757575</color>
     <color name="icon">#FFFFFF</color>
     <color name="divider">#BDBDBD</color>
 
+    <color name="whiteText">#FFF</color>
     <color name="blackText">#000000</color>
 
     <color name="delete_color">#F44336</color>
+    <color name="transparent">#00F44336</color>
 
     <color name="buttonBorderColor">#607D8B</color>
-    <color name="backgroundCardColor">#FFFFFF</color>
+    <color name="backgroundCardColor">#331866</color>
+    <color name="backgroundColor">#FFF</color>
 
-    <color name="selected_location_color">#F57C00</color>
+    <color name="selected_location_color">#FFFFFF</color>
 
     <color name="black_shade_1">#292D36</color>
 </resources>

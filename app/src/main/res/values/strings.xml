@@ -18,5 +18,9 @@
     <string name="speed_km">%s KM/H</string>
     <string name="speed_miles">%s M/H</string>
     <string name="loading_dialog_text">Loading</string>
+    <string name="wind">Wind</string>
+    <string name="humidity">Humidity</string>
+    <string name="uv_index">UV Index</string>
+    <string name="rain">Rain</string>
 
 </resources>

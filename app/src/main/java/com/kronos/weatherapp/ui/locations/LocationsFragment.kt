@@ -46,11 +46,16 @@ class LocationsFragment : Fragment() {
         savedInstanceState: Bundle?
     ) = binding.run {
         lifecycleOwner = this@LocationsFragment.viewLifecycleOwner
+        viewModel = this@LocationsFragment.viewModel
+        root
+    }
+
+    override fun onResume() {
+        super.onResume()
         initViewModel()
         initViews()
         setListeners()
         observeViewModel()
-        root
     }
 
     private fun setListeners() {
@@ -173,17 +178,17 @@ class LocationsFragment : Fragment() {
     }
 
     private fun initViewModel() {
+        viewModel.postDate(Date())
         viewModel.getLocations()
     }
 
     override fun onDestroyView() {
-        viewModel.destroy()
         binding.unbind()
         super.onDestroyView()
     }
 
     override fun onPause() {
-        binding.unbind()
+        viewModel.destroy()
         super.onPause()
     }
 

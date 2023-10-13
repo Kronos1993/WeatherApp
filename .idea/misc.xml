@@ -6,7 +6,10 @@
         <entry key="..\:/AndroidWorkspace/WeatherApp/app/src/main/res/drawable/ic_blowing_climate_forecast.xml" value="0.159" />
         <entry key="..\:/AndroidWorkspace/WeatherApp/app/src/main/res/drawable/ic_launcher_background.xml" value="0.159" />
         <entry key="..\:/AndroidWorkspace/WeatherApp/app/src/main/res/drawable/ic_locations.xml" value="0.159" />
+        <entry key="..\:/AndroidWorkspace/WeatherApp/app/src/main/res/drawable/rounded_background.xml" value="0.159" />
+        <entry key="..\:/AndroidWorkspace/WeatherApp/app/src/main/res/drawable/rounded_filled_background.xml" value="0.159" />
         <entry key="..\:/AndroidWorkspace/WeatherApp/app/src/main/res/drawable/screen_background.xml" value="0.159" />
+        <entry key="..\:/AndroidWorkspace/WeatherApp/app/src/main/res/drawable/screen_background_morning.xml" value="0.124" />
         <entry key="..\:/AndroidWorkspace/WeatherApp/app/src/main/res/drawable/screen_background_nigth.xml" value="0.159" />
         <entry key="..\:/AndroidWorkspace/WeatherApp/app/src/main/res/drawable/screen_background_noon.xml" value="0.159" />
         <entry key="..\:/AndroidWorkspace/WeatherApp/app/src/main/res/layout/activity_main.xml" value="0.25416666666666665" />

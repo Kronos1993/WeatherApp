@@ -67,6 +67,10 @@ class WeatherViewModel @Inject constructor(
         locationManager = WeakReference(locationProvider)
     }
 
+    fun postDate(date: Date) {
+        this.date.postValue(date)
+    }
+
     fun getWeather(city: String) {
         loading.postValue(true)
         viewModelScope.launch(Dispatchers.IO) {
@@ -208,4 +212,5 @@ class WeatherViewModel @Inject constructor(
         indicatorAdapter = WeakReference(IndicatorAdapter())
         locationManager = WeakReference(null)
     }
+
 }

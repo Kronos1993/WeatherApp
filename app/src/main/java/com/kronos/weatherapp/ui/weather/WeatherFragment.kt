@@ -129,10 +129,10 @@ class WeatherFragment : Fragment() {
             }
 
             var indicator = listOf<Indicator>(
-                Indicator("Wind Speed",requireContext().getString(R.string.speed_km, weather?.current.windSpeedKph.toString()),requireContext().resources.getDrawable(R.drawable.ic_blowing_climate_forecast)),
-                Indicator("Humidity",String.format("%.1f%%",weather?.current.windSpeedKph),requireContext().resources.getDrawable(R.drawable.ic_humidity)),
-                Indicator("UV",weather?.current.uv.toString(),requireContext().resources.getDrawable(R.drawable.ic_day_forecast_hot))//,
-                //Indicator("Wind Speed",requireContext().getString(R.string.speed_km, weather?.current.windSpeedKph.toString()),R.drawable.ic_blowing_climate_forecast),
+                Indicator(getString(R.string.wind),requireContext().getString(R.string.speed_km, weather?.current.windSpeedKph.toString()),requireContext().resources.getDrawable(R.drawable.ic_blowing_climate_forecast)),
+                Indicator(getString(R.string.humidity),String.format("%.1f%%",weather?.current.windSpeedKph),requireContext().resources.getDrawable(R.drawable.ic_humidity)),
+                Indicator(getString(R.string.uv_index),weather?.current.uv.toString(),requireContext().resources.getDrawable(R.drawable.ic_day_forecast_hot)),
+                Indicator(getString(R.string.rain),String.format("%.1fmm",weather?.current.precipitationMm),requireContext().resources.getDrawable(R.drawable.ic_climate_cloud_forecast)),
             )
             viewModel.indicatorAdapter.get()?.submitList(indicator)
             viewModel.indicatorAdapter.get()?.notifyDataSetChanged()
@@ -169,7 +169,7 @@ class WeatherFragment : Fragment() {
         viewModel.dailyWeatherAdapter.get()?.setUrlProvider(viewModel.urlProvider)
         binding.recyclerViewWeatherByDay.adapter = viewModel.dailyWeatherAdapter.get()
 
-        binding.recyclerViewIndicator.layoutManager = GridLayoutManager(context,2)
+        binding.recyclerViewIndicator.layoutManager = GridLayoutManager(context,4)
         binding.recyclerViewIndicator.setHasFixedSize(false)
         if (viewModel.indicatorAdapter.get() == null)
             viewModel.indicatorAdapter = WeakReference(IndicatorAdapter())
@@ -180,6 +180,7 @@ class WeatherFragment : Fragment() {
     }
 
     private fun initViewModel() {
+        viewModel.postDate(Date())
         if(viewModel.locationManager.get()==null)
             viewModel.postLocationManager(LocationServices.getFusedLocationProviderClient(requireContext()))
         if(viewModel.weather.value==null)
