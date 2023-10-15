@@ -124,7 +124,7 @@ class LocationViewModel @Inject constructor(
 
     fun deleteLocation(itemAt: UserCustomLocation) {
         viewModelScope.launch(Dispatchers.IO) {
-            if(!itemAt.isCurrent){
+            if(!itemAt.isCurrent || !itemAt.isSelected){
                 try {
                     var call = async {
                         userCustomLocationLocalRepository.delete(itemAt)
