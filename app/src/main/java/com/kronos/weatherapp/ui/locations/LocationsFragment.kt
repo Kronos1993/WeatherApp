@@ -7,12 +7,14 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.gms.location.LocationServices
+import com.kronos.core.adapters.AdapterItemClickListener
 import com.kronos.core.adapters.SwipeToDelete
 import com.kronos.core.extensions.binding.fragmentBinding
 import com.kronos.core.extensions.isToday
@@ -59,6 +61,9 @@ class LocationsFragment : Fragment() {
     }
 
     private fun setListeners() {
+        binding.addLocations.setOnClickListener{
+            findNavController().navigate(R.id.action_navigation_location_to_navigation_add_location)
+        }
     }
 
     private fun observeViewModel() {
@@ -120,6 +125,14 @@ class LocationsFragment : Fragment() {
         if (viewModel.userLocationAdapter.get() == null)
             viewModel.userLocationAdapter = WeakReference(UserLocationAdapter())
         binding.recyclerViewLocations.adapter = viewModel.userLocationAdapter.get()
+
+        viewModel.userLocationAdapter.get()?.setAdapterItemClick(object :
+            AdapterItemClickListener<UserCustomLocation> {
+            override fun onItemClick(t: UserCustomLocation, pos: Int) {
+                viewModel.setLocationSelected(t)
+            }
+
+        })
 
         val itemTouchHelperCallback: ItemTouchHelper.Callback = object :
             ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {

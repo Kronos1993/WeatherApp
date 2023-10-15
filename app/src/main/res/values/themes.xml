@@ -108,4 +108,30 @@
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Caption</item>
     </style>
 
+    <style name="Widget.FloatingActionButton" parent="Theme.WeatherApp">
+        <item name="tint">@color/icon</item>
+        <item name="android:backgroundTint">@color/primary</item>
+    </style>
+
+    <style name="Widget.ButtonRound" parent="Theme.WeatherApp">
+        <item name="cornerRadius">@dimen/radius_24</item>
+        <item name="iconTint">@color/white</item>
+        <item name="android:textColor">@color/whiteText</item>
+        <item name="android:layout_marginStart">@dimen/margin_5</item>
+        <item name="android:layout_marginEnd">@dimen/margin_5</item>
+    </style>
+
+    <style name="TextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+        <item name="boxStrokeWidth">2dp</item>
+        <item name="boxStrokeColor">@color/mtrl_textinput_default_box_stroke_color</item>
+        <item name="errorTextAppearance">@color/error_color</item>
+        <item name="android:layout_marginStart">@dimen/margin_10</item>
+        <item name="android:layout_marginEnd">@dimen/margin_10</item>
+        <item name="android:layout_marginTop">@dimen/margin_10</item>
+    </style>
+
+    <style name="TextInputEditText" parent="Widget.AppCompat.EditText">
+        <item name="android:textColor">@color/primary_text</item>
+    </style>
+
 </resources>

@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/AndroidWorkspace/WeatherApp/app/src/main/res/drawable/ic_add_location.xml" value="0.1695" />
         <entry key="..\:/AndroidWorkspace/WeatherApp/app/src/main/res/drawable/ic_blowing_climate_forecast.xml" value="0.159" />
         <entry key="..\:/AndroidWorkspace/WeatherApp/app/src/main/res/drawable/ic_launcher_background.xml" value="0.159" />
         <entry key="..\:/AndroidWorkspace/WeatherApp/app/src/main/res/drawable/ic_locations.xml" value="0.159" />
@@ -15,8 +16,10 @@
         <entry key="..\:/AndroidWorkspace/WeatherApp/app/src/main/res/layout/activity_main.xml" value="0.25416666666666665" />
         <entry key="..\:/AndroidWorkspace/WeatherApp/app/src/main/res/layout/activity_splash.xml" value="0.25416666666666665" />
         <entry key="..\:/AndroidWorkspace/WeatherApp/app/src/main/res/layout/fragment_about.xml" value="0.25416666666666665" />
+        <entry key="..\:/AndroidWorkspace/WeatherApp/app/src/main/res/layout/fragment_add_locatin_dialog.xml" value="0.24010416666666667" />
+        <entry key="..\:/AndroidWorkspace/WeatherApp/app/src/main/res/layout/fragment_add_location_dialog.xml" value="0.2" />
         <entry key="..\:/AndroidWorkspace/WeatherApp/app/src/main/res/layout/fragment_location.xml" value="0.11065573770491803" />
-        <entry key="..\:/AndroidWorkspace/WeatherApp/app/src/main/res/layout/fragment_weather.xml" value="0.264" />
+        <entry key="..\:/AndroidWorkspace/WeatherApp/app/src/main/res/layout/fragment_weather.xml" value="0.152" />
         <entry key="..\:/AndroidWorkspace/WeatherApp/app/src/main/res/layout/item_indicator.xml" value="0.136" />
         <entry key="..\:/AndroidWorkspace/WeatherApp/app/src/main/res/layout/item_user_location.xml" value="0.25416666666666665" />
         <entry key="..\:/AndroidWorkspace/WeatherApp/app/src/main/res/layout/item_weather_daily.xml" value="0.25416666666666665" />

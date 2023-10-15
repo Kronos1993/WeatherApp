@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.bumptech.glide.Glide
 import com.google.android.gms.location.LocationServices
 import com.kronos.core.extensions.binding.fragmentBinding
@@ -53,6 +54,9 @@ class WeatherFragment : Fragment() {
     }
 
     private fun setListeners() {
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            viewModel.initLocations()
+        }
     }
 
     private fun observeViewModel() {
@@ -83,24 +87,7 @@ class WeatherFragment : Fragment() {
     }
 
     private fun handleLoading(b: Boolean) {
-        try {
-            if (b) {
-                LoadingDialog.getProgressDialog(
-                    requireContext(),
-                    R.string.loading_dialog_text,
-                    R.color.primary_dark
-                )!!.show()
-            } else {
-                LoadingDialog.getProgressDialog(
-                    requireContext(),
-                    R.string.loading_dialog_text,
-                    R.color.primary_dark
-                )!!.dismiss()
-            }
-        }catch (e:IllegalArgumentException){
-            e.printStackTrace()
-        }
-
+        binding.swipeRefreshLayout.isRefreshing = b
     }
 
     private fun handleWeather(weather: Forecast?) {
@@ -176,14 +163,13 @@ class WeatherFragment : Fragment() {
         viewModel.indicatorAdapter.get()?.setUrlProvider(viewModel.urlProvider)
         binding.recyclerViewIndicator.adapter = viewModel.indicatorAdapter.get()
 
-
     }
 
     private fun initViewModel() {
         viewModel.postDate(Date())
         if(viewModel.locationManager.get()==null)
             viewModel.postLocationManager(LocationServices.getFusedLocationProviderClient(requireContext()))
-        if(viewModel.weather.value==null)
+        //if(viewModel.weather.value==null)
             viewModel.initLocations()
     }
 

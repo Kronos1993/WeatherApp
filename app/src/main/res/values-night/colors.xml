@@ -12,6 +12,7 @@
     <color name="primary_dark">#9575CD</color>
     <color name="primary_light">#B39DDB</color>
     <color name="accent">#81D4FA</color>
+    <color name="error_color">#EF9A9A</color>
 
     <color name="primary_text">#212121</color>
     <color name="secondary_text">#757575</color>
