@@ -69,6 +69,13 @@
         <item name="contentPadding">@dimen/margin_5</item>
     </style>
 
+    <style name="Widget.CardView.NoBackground" parent="CardView">
+        <item name="cardElevation">@dimen/cardview_default_elevation</item>
+        <item name="cardCornerRadius">@dimen/card_radius_6</item>
+        <item name="android:layout_margin">@dimen/margin_5</item>
+        <item name="contentPadding">@dimen/margin_5</item>
+    </style>
+
     <style name="Widget.TextView.TextViewRound" parent="Theme.WeatherApp">
         <item name="android:textColor">@color/white</item>
         <item name="android:layout_marginStart">@dimen/margin_10</item>

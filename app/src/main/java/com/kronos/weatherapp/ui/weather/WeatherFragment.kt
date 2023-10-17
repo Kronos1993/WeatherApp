@@ -18,6 +18,7 @@ import com.kronos.core.extensions.isToday
 import com.kronos.core.extensions.of
 import com.kronos.core.util.LoadingDialog
 import com.kronos.core.util.show
+import com.kronos.core.util.updateWidget
 import com.kronos.domian.model.DailyForecast
 import com.kronos.domian.model.ForecastDay
 import com.kronos.domian.model.Hour
@@ -25,6 +26,7 @@ import com.kronos.domian.model.forecast.Forecast
 import com.kronos.weatherapp.R
 import com.kronos.weatherapp.databinding.FragmentWeatherBinding
 import com.kronos.weatherapp.ui.weather.model.Indicator
+import com.kronos.weatherapp.widget.WeatherWidgetProvider
 import dagger.hilt.android.AndroidEntryPoint
 import java.lang.ref.WeakReference
 import java.util.*
@@ -139,6 +141,7 @@ class WeatherFragment : Fragment() {
         }else{
             viewModel.getWeather("Panama")
         }
+        updateWidget(requireContext(),WeatherWidgetProvider::class.java)
     }
 
     private fun initViews() {
