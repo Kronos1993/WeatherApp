@@ -59,7 +59,7 @@ class WeatherWidgetProvider @Inject constructor() : AppWidgetProvider() {
         appWidgetId: Int
     ) {
         val remoteViews = RemoteViews(context.packageName, R.layout.weather_widget)
-        getWeather(remoteViews,context)
+        println("loading weather from on update widget")
         val intent = Intent(context, WeatherWidgetProvider::class.java)
         intent.action = "REFRESH"
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetId)
@@ -70,6 +70,7 @@ class WeatherWidgetProvider @Inject constructor() : AppWidgetProvider() {
     }
 
     private fun getWeather(remoteViews: RemoteViews, context: Context) {
+
         runBlocking(Dispatchers.IO) {
             remoteViews.setViewVisibility(R.id.widget_progress_bar,View.VISIBLE)
             remoteViews.setViewVisibility(R.id.widget_image_view_refresh,View.GONE)
@@ -122,7 +123,7 @@ class WeatherWidgetProvider @Inject constructor() : AppWidgetProvider() {
                     R.id.widget_text_view_temp,
                     String.format(
                         context.getString(
-                            R.string.temp_celsius,
+                            R.string.temp_celsius_widget,
                             response.data!!.current.tempC.toString()
                         )
                     )

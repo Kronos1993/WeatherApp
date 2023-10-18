@@ -45,6 +45,7 @@
                         style="@style/Widget.TextView.TextViewHeader"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:textStyle="bold"
                         android:gravity="center"
                         android:text="@{viewModel.weather.current.condition.description}"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -75,10 +76,11 @@
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/text_view_temp"
-                        style="@style/Widget.TextView.TextViewSubHeader"
+                        style="@style/Widget.TextView.TextViewHeader"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:gravity="center"
+                        android:textStyle="bold"
                         app:handle_temp="@{viewModel.weather.current}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"

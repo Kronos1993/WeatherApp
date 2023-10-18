@@ -58,13 +58,15 @@
 
             <ImageView
                 android:id="@+id/widget_image_view_current"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_gravity="center"
                 android:src="@drawable/ic_weather_app_icon"/>
 
             <TextView
                 android:id="@+id/widget_text_view_temp"
-                style="@style/Widget.TextView.TextViewSubHeader"
+                style="@style/Widget.TextView.TextViewHeader"
+                android:textStyle="bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -96,8 +98,8 @@
 
                     <ImageView
                         android:id="@+id/widget_image_view_day_1"
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
                         android:layout_gravity="center" />
                 </LinearLayout>
 
@@ -119,8 +121,8 @@
 
                     <ImageView
                         android:id="@+id/widget_image_view_day_2"
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
                         android:layout_gravity="center" />
 
                 </LinearLayout>
@@ -144,8 +146,8 @@
 
                     <ImageView
                         android:id="@+id/widget_image_view_day_3"
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
                         android:layout_gravity="center" />
 
                 </LinearLayout>

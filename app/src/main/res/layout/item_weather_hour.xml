@@ -50,11 +50,12 @@
                 style="@style/Widget.TextView.TextViewNormal"
                 android:gravity="center"
                 app:handle_temp="@{hour.tempC}"
+                android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/image_view_current_weather" />
 
-            <com.google.android.material.textview.MaterialTextView
+<!--            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/text_view_rain_possibility"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -63,7 +64,7 @@
                 app:handle_rain_possibility="@{hour.chanceOfRain}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text_view_temp" />
+                app:layout_constraintTop_toBottomOf="@+id/text_view_temp" />-->
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

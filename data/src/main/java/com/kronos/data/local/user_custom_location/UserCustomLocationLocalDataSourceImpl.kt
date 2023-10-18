@@ -65,8 +65,8 @@ class UserCustomLocationLocalDataSourceImpl @Inject constructor(
     ): UserCustomLocation {
         try {
             val entity = userCustomLocation.toEntity()
-
             val internalDb = databaseFactory.loadLocalDatabase() as ApplicationDatabase
+            internalDb.userCustomLocationDao().cleanSelectedLocation()
             internalDb.userCustomLocationDao().insertOrUpdate(entity)
 
         } catch (ex: Exception) {

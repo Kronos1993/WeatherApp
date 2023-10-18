@@ -12,6 +12,7 @@
     <string name="title_location">Location</string>
     <string name="title_about">About</string>
     <string name="temp_celsius">%s°C</string>
+    <string name="temp_celsius_widget">%s°</string>
     <string name="temp_fahrenheit">%s°F</string>
     <string name="feels_like_temp_celsius">Feels like %s°C</string>
     <string name="feels_like_temp_fahrenheit">Feels like %s°F</string>

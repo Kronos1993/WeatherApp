@@ -1,32 +1,24 @@
 package com.kronos.weatherapp.ui.weather
 
-import android.content.Context
-import android.location.LocationManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.bumptech.glide.Glide
 import com.google.android.gms.location.LocationServices
 import com.kronos.core.extensions.binding.fragmentBinding
 import com.kronos.core.extensions.isToday
 import com.kronos.core.extensions.of
-import com.kronos.core.util.LoadingDialog
 import com.kronos.core.util.show
-import com.kronos.core.util.updateWidget
 import com.kronos.domian.model.DailyForecast
-import com.kronos.domian.model.ForecastDay
 import com.kronos.domian.model.Hour
 import com.kronos.domian.model.forecast.Forecast
 import com.kronos.weatherapp.R
 import com.kronos.weatherapp.databinding.FragmentWeatherBinding
 import com.kronos.weatherapp.ui.weather.model.Indicator
-import com.kronos.weatherapp.widget.WeatherWidgetProvider
 import dagger.hilt.android.AndroidEntryPoint
 import java.lang.ref.WeakReference
 import java.util.*
@@ -89,39 +81,59 @@ class WeatherFragment : Fragment() {
     }
 
     private fun handleLoading(b: Boolean) {
-        binding.swipeRefreshLayout.isRefreshing = b
+        if (b != binding.swipeRefreshLayout.isRefreshing)
+            binding.swipeRefreshLayout.isRefreshing = b
     }
 
     private fun handleWeather(weather: Forecast?) {
-        if(weather!=null){
+        if (weather != null) {
             var currentDayForecast: DailyForecast? = null
             var hours = mutableListOf<Hour>()
-            if (weather.forecast.forecastDay.isNotEmpty()){
-                for (item in weather.forecast.forecastDay){
+            if (weather.forecast.forecastDay.isNotEmpty()) {
+                for (item in weather.forecast.forecastDay) {
                     var date = Date().of(item.date)
-                    if (date!=null){
-                        if (date.isToday()){
+                    if (date != null) {
+                        if (date.isToday()) {
                             currentDayForecast = item
                             break;
                         }
                     }
                 }
-                if(currentDayForecast==null){
+                if (currentDayForecast == null) {
                     currentDayForecast = weather.forecast.forecastDay[0]
                 }
-                for (item in currentDayForecast.hours){
-                    var date = Date().of(item.time,true)
-                    if (date!!.after(Date())){
+                for (item in currentDayForecast.hours) {
+                    var date = Date().of(item.time, true)
+                    if (date!!.after(Date())) {
                         hours.add(item)
                     }
                 }
             }
 
-            var indicator = listOf<Indicator>(
-                Indicator(getString(R.string.wind),requireContext().getString(R.string.speed_km, weather?.current.windSpeedKph.toString()),requireContext().resources.getDrawable(R.drawable.ic_blowing_climate_forecast)),
-                Indicator(getString(R.string.humidity),String.format("%.1f%%",weather?.current.windSpeedKph),requireContext().resources.getDrawable(R.drawable.ic_humidity)),
-                Indicator(getString(R.string.uv_index),weather?.current.uv.toString(),requireContext().resources.getDrawable(R.drawable.ic_day_forecast_hot)),
-                Indicator(getString(R.string.rain),String.format("%.1fmm",weather?.current.precipitationMm),requireContext().resources.getDrawable(R.drawable.ic_climate_cloud_forecast)),
+            var indicator = listOf(
+                Indicator(
+                    getString(R.string.wind),
+                    requireContext().getString(
+                        R.string.speed_km,
+                        weather?.current.windSpeedKph.toString()
+                    ),
+                    requireContext().resources.getDrawable(R.drawable.ic_blowing_climate_forecast)
+                ),
+                Indicator(
+                    getString(R.string.humidity),
+                    String.format("%.1f%%", weather?.current.windSpeedKph),
+                    requireContext().resources.getDrawable(R.drawable.ic_humidity)
+                ),
+                Indicator(
+                    getString(R.string.uv_index),
+                    weather?.current.uv.toString(),
+                    requireContext().resources.getDrawable(R.drawable.ic_day_forecast_hot)
+                ),
+                Indicator(
+                    getString(R.string.rain),
+                    String.format("%.1fmm", weather?.current.precipitationMm),
+                    requireContext().resources.getDrawable(R.drawable.ic_climate_cloud_forecast)
+                ),
             )
             viewModel.indicatorAdapter.get()?.submitList(indicator)
             viewModel.indicatorAdapter.get()?.notifyDataSetChanged()
@@ -136,16 +148,18 @@ class WeatherFragment : Fragment() {
 
             viewModel.dailyWeatherAdapter.get()?.submitList(list)
             viewModel.dailyWeatherAdapter.get()?.notifyDataSetChanged()
+            Glide.with(requireContext())
+                .load(viewModel.urlProvider.getImageUrl(weather.current.condition.icon))
+                .into(binding.imageCurrentWeather)
 
-            Glide.with(requireContext()).load(viewModel.urlProvider.getImageUrl(weather.current.condition.icon)).into(binding.imageCurrentWeather)
-        }else{
-            viewModel.getWeather("Panama")
+            viewModel.loading.postValue(false)
         }
-        updateWidget(requireContext(),WeatherWidgetProvider::class.java)
     }
 
+
     private fun initViews() {
-        binding.recyclerViewWeatherHourly.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        binding.recyclerViewWeatherHourly.layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         binding.recyclerViewWeatherHourly.setHasFixedSize(false)
         if (viewModel.hourWeatherAdapter.get() == null)
             viewModel.hourWeatherAdapter = WeakReference(WeatherHourAdapter())
@@ -159,7 +173,7 @@ class WeatherFragment : Fragment() {
         viewModel.dailyWeatherAdapter.get()?.setUrlProvider(viewModel.urlProvider)
         binding.recyclerViewWeatherByDay.adapter = viewModel.dailyWeatherAdapter.get()
 
-        binding.recyclerViewIndicator.layoutManager = GridLayoutManager(context,4)
+        binding.recyclerViewIndicator.layoutManager = GridLayoutManager(context, 4)
         binding.recyclerViewIndicator.setHasFixedSize(false)
         if (viewModel.indicatorAdapter.get() == null)
             viewModel.indicatorAdapter = WeakReference(IndicatorAdapter())
@@ -170,16 +184,25 @@ class WeatherFragment : Fragment() {
 
     private fun initViewModel() {
         viewModel.postDate(Date())
-        if(viewModel.locationManager.get()==null)
-            viewModel.postLocationManager(LocationServices.getFusedLocationProviderClient(requireContext()))
+        viewModel.loading.value = (true)
+        if (viewModel.locationManager.get() == null)
+            viewModel.postLocationManager(
+                LocationServices.getFusedLocationProviderClient(
+                    requireContext()
+                )
+            )
         //if(viewModel.weather.value==null)
-            viewModel.initLocations()
+        viewModel.initLocations()
     }
 
     override fun onDestroy() {
-        viewModel.destroy()
         binding.unbind()
         super.onDestroy()
+    }
+
+    override fun onPause() {
+        viewModel.destroy()
+        super.onPause()
     }
 
 

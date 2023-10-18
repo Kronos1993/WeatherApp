@@ -70,7 +70,7 @@ class LocationViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 var call = async {
-                    var location = UserCustomLocation(cityName = cityName.get()!!)
+                    var location = UserCustomLocation(cityName = cityName.get()!!, isSelected = true)
                     userCustomLocationLocalRepository.saveLocation(location)
                     log("Custom location: ${cityName.get()} added.", LoggerType.INFO)
                 }
@@ -91,9 +91,6 @@ class LocationViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 var call = async {
-                    var currentSelected = userCustomLocationLocalRepository.getSelectedLocation()
-                    currentSelected!!.isSelected = false
-                    userCustomLocationLocalRepository.saveLocation(currentSelected)
                     userLocation.isSelected = true
                     userCustomLocationLocalRepository.saveLocation(userLocation)
                     log("Custom location: ${cityName.get()} added.", LoggerType.INFO)
@@ -124,7 +121,7 @@ class LocationViewModel @Inject constructor(
 
     fun deleteLocation(itemAt: UserCustomLocation) {
         viewModelScope.launch(Dispatchers.IO) {
-            if(!itemAt.isCurrent || !itemAt.isSelected){
+            if(!(itemAt.isCurrent || itemAt.isSelected)){
                 try {
                     var call = async {
                         userCustomLocationLocalRepository.delete(itemAt)
