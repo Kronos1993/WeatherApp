@@ -5,6 +5,7 @@
       <map>
         <entry key="..\:/AndroidWorkspace/WeatherApp/app/src/main/res/drawable/ic_add_location.xml" value="0.1695" />
         <entry key="..\:/AndroidWorkspace/WeatherApp/app/src/main/res/drawable/ic_blowing_climate_forecast.xml" value="0.159" />
+        <entry key="..\:/AndroidWorkspace/WeatherApp/app/src/main/res/drawable/ic_climate_cloud_forecast.xml" value="0.1695" />
         <entry key="..\:/AndroidWorkspace/WeatherApp/app/src/main/res/drawable/ic_launcher_background.xml" value="0.159" />
         <entry key="..\:/AndroidWorkspace/WeatherApp/app/src/main/res/drawable/ic_locations.xml" value="0.159" />
         <entry key="..\:/AndroidWorkspace/WeatherApp/app/src/main/res/drawable/rounded_background.xml" value="0.159" />
@@ -22,7 +23,7 @@
         <entry key="..\:/AndroidWorkspace/WeatherApp/app/src/main/res/layout/fragment_weather.xml" value="0.152" />
         <entry key="..\:/AndroidWorkspace/WeatherApp/app/src/main/res/layout/item_indicator.xml" value="0.136" />
         <entry key="..\:/AndroidWorkspace/WeatherApp/app/src/main/res/layout/item_user_location.xml" value="0.25416666666666665" />
-        <entry key="..\:/AndroidWorkspace/WeatherApp/app/src/main/res/layout/item_weather_daily.xml" value="0.25416666666666665" />
+        <entry key="..\:/AndroidWorkspace/WeatherApp/app/src/main/res/layout/item_weather_daily.xml" value="0.4" />
         <entry key="..\:/AndroidWorkspace/WeatherApp/app/src/main/res/layout/item_weather_hour.xml" value="0.2" />
         <entry key="..\:/AndroidWorkspace/WeatherApp/app/src/main/res/layout/item_widget_weather_day.xml" value="0.25416666666666665" />
         <entry key="..\:/AndroidWorkspace/WeatherApp/app/src/main/res/layout/weather_widget.xml" value="0.264" />

@@ -12,6 +12,7 @@ import android.view.View
 import android.widget.RemoteViews
 import com.kronos.core.extensions.isToday
 import com.kronos.core.extensions.of
+import com.kronos.core.extensions.transformDateToTodayOrYesterday
 import com.kronos.domian.model.DailyForecast
 import com.kronos.domian.repository.UserCustomLocationLocalRepository
 import com.kronos.domian.repository.WeatherRemoteRepository
@@ -72,8 +73,8 @@ class WeatherWidgetProvider @Inject constructor() : AppWidgetProvider() {
     private fun getWeather(remoteViews: RemoteViews, context: Context) {
 
         runBlocking(Dispatchers.IO) {
-            remoteViews.setViewVisibility(R.id.widget_progress_bar,View.VISIBLE)
-            remoteViews.setViewVisibility(R.id.widget_image_view_refresh,View.GONE)
+            remoteViews.setViewVisibility(R.id.widget_progress_bar, View.VISIBLE)
+            remoteViews.setViewVisibility(R.id.widget_image_view_refresh, View.GONE)
 
             var currentCity = customUserCustomLocationLocalRepository.getSelectedLocation()
             if (currentCity == null)
@@ -117,7 +118,11 @@ class WeatherWidgetProvider @Inject constructor() : AppWidgetProvider() {
 
                 remoteViews.setTextViewText(
                     R.id.widget_text_view_location,
-                    "${response.data!!.location.name}/${response.data!!.location.country}"
+                    "${response.data!!.location.name} ${
+                        Date().transformDateToTodayOrYesterday(
+                            response.data!!.location.localtime
+                        )
+                    }"
                 )
                 remoteViews.setTextViewText(
                     R.id.widget_text_view_temp,
@@ -129,8 +134,8 @@ class WeatherWidgetProvider @Inject constructor() : AppWidgetProvider() {
                     )
                 )
             }
-            remoteViews.setViewVisibility(R.id.widget_progress_bar,View.GONE)
-            remoteViews.setViewVisibility(R.id.widget_image_view_refresh,View.VISIBLE)
+            remoteViews.setViewVisibility(R.id.widget_progress_bar, View.GONE)
+            remoteViews.setViewVisibility(R.id.widget_image_view_refresh, View.VISIBLE)
         }
     }
 
@@ -139,7 +144,7 @@ class WeatherWidgetProvider @Inject constructor() : AppWidgetProvider() {
         val appWidgetManager = AppWidgetManager.getInstance(context)
         val remoteViews = RemoteViews(context.packageName, R.layout.weather_widget)
         val widget = ComponentName(context, WeatherWidgetProvider::class.java)
-        getWeather(remoteViews,context)
+        getWeather(remoteViews, context)
         appWidgetManager.updateAppWidget(widget, remoteViews)
     }
 
