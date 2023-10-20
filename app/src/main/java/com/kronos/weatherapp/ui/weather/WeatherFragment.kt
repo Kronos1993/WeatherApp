@@ -9,6 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.google.android.gms.common.util.CollectionUtils.listOf
 import com.google.android.gms.location.LocationServices
 import com.kronos.core.adapters.AdapterItemClickListener
 import com.kronos.core.extensions.binding.fragmentBinding
@@ -90,10 +91,10 @@ class WeatherFragment : Fragment() {
     private fun handleWeather(weather: Forecast?) {
         if (weather != null) {
             var currentDayForecast: DailyForecast? = null
-            var hours = mutableListOf<Hour>()
+            val hours = mutableListOf<Hour>()
             if (weather.forecast.forecastDay.isNotEmpty()) {
                 for (item in weather.forecast.forecastDay) {
-                    var date = Date().of(item.date)
+                    val date = Date().of(item.date)
                     if (date != null) {
                         if (date.isToday()) {
                             currentDayForecast = item
@@ -105,35 +106,35 @@ class WeatherFragment : Fragment() {
                     currentDayForecast = weather.forecast.forecastDay[0]
                 }
                 for (item in currentDayForecast.hours) {
-                    var date = Date().of(item.time, true)
+                    val date = Date().of(item.time, true)
                     if (date!!.after(Date())) {
                         hours.add(item)
                     }
                 }
             }
 
-            var indicator = listOf(
+            val indicator = listOf(
                 Indicator(
                     getString(R.string.wind),
                     requireContext().getString(
                         R.string.speed_km,
-                        weather?.current.windSpeedKph.toString()
+                        weather.current?.windSpeedKph.toString()
                     ),
                     requireContext().resources.getDrawable(R.drawable.ic_blowing_climate_forecast)
                 ),
                 Indicator(
                     getString(R.string.humidity),
-                    String.format("%.1f%%", weather?.current.windSpeedKph),
+                    String.format("%.1f%%", weather?.current?.windSpeedKph),
                     requireContext().resources.getDrawable(R.drawable.ic_humidity)
                 ),
                 Indicator(
                     getString(R.string.uv_index),
-                    weather?.current.uv.toString(),
+                    weather?.current?.uv.toString(),
                     requireContext().resources.getDrawable(R.drawable.ic_day_forecast_hot)
                 ),
                 Indicator(
                     getString(R.string.rain),
-                    String.format("%.1fmm", weather?.current.precipitationMm),
+                    String.format("%.1fmm", weather?.current?.precipitationMm),
                     requireContext().resources.getDrawable(R.drawable.ic_climate_cloud_forecast)
                 ),
             )

@@ -2,31 +2,32 @@
 buildscript {
 
     ext {
-        versionCompileSdk = 33
+        versionCompileSdk = 34
         versionMinSdk = 24
-        versionTargetSdk = 33
+        versionTargetSdk = 34
         versionApacheCommonsIo = '2.5'
-        kotlin_version = "1.6.10"
-        material_version = "1.8.0"
-        standardLibrary = "1.5.20"
-        coroutines = "1.3.9"
-        lifecycle = "2.5.1"
+        kotlin_version = "1.9.0"
+        material_version = '1.10.0'
+        standardLibrary = "1.8.20"
+        coroutines = '1.7.3'
+        lifecycle = '2.6.2'
         lifecycleExtensions = "2.1.0"
         groupie_version = "2.9.0"
-        androidXCore_version = "1.7.0"
-        appcompat_version = "1.4.1"
-        constraintLayout_version = "2.1.3"
-        navigation_version = '2.5.2'
+        androidXCore_version = '1.12.0'
+        appcompat_version = '1.6.1'
+        constraintLayout_version = '2.1.4'
+        navigation_version = '2.7.4'
+        safe_arg_navigation_version = '2.5.3'
         android_legacy = "1.0.0"
         fragments = "1.4.1"
         activity_version = "1.4.0"
-        dagger_hilt = "2.38.1"
+        dagger_hilt = '2.48.1'
         junit_version = "4.13.2"
         espresso_core = "3.4.0"
         kotlin_serialization = "1.3.2"
         versionApacheCommonsIo = '2.10.0'
         room_version = "1.1.1"
-        room_version_mx = "2.4.2"
+        room_version_mx = '2.6.0'
         retrofit_version = "2.9.0"
         gson_version = "2.9.0"
         app_android = [
@@ -55,19 +56,21 @@ buildscript {
         maven { url "https://jitpack.io" }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.1.2'
-        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.21'
+        classpath 'com.android.tools.build:gradle:8.1.2'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath("com.google.dagger:hilt-android-gradle-plugin:$dagger_hilt")
         classpath "org.jetbrains.kotlin:kotlin-serialization:$kotlin_version"
-        classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$navigation_version"
+        classpath("androidx.navigation:navigation-safe-args-gradle-plugin:$safe_arg_navigation_version")
+
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
+
     }
 }
+
 plugins {
-    id 'com.android.application' version '7.1.2' apply false
-    id 'com.android.library' version '7.1.2' apply false
-    id 'org.jetbrains.kotlin.android' version '1.6.21' apply false
+    id("com.android.application") version "8.1.2" apply false
+    id("org.jetbrains.kotlin.android") version "1.9.0" apply false
 }
 
 

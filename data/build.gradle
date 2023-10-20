@@ -1,5 +1,9 @@
 apply from: "../kronos_base.gradle"
 
+android{
+    namespace 'com.kronos.data'
+}
+
 dependencies {
     implementation project(path: ':domain')
     implementation project(path: ':webclient')
