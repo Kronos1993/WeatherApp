@@ -4,7 +4,7 @@ import java.io.Serializable
 
 data class Location(
     val name: String = "",
-    val regionval: String? = "",
+    val region: String? = "",
     val country: String= "",
     val lat: Double= 0.0,
     val lon: Double= 0.0,

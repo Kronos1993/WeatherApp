@@ -70,7 +70,44 @@ class WeatherViewModel @Inject constructor(
         this.date.postValue(date)
     }
 
-    private fun getWeather(city: String) {
+    private fun getWeather(lat: Double,long:Double) {
+        viewModelScope.launch(Dispatchers.IO) {
+            loading.postValue(true)
+            try {
+                val call = async {
+                    val response = weatherRemoteRepository.getWeatherDataForecast(
+                        lat,
+                        long,
+                        context.resources.getString(R.string.default_language),
+                        context.resources.getString(R.string.api_key),
+                        context.resources.getInteger(R.integer.default_days)
+                    )
+                    log(
+                        "Weather from city: ${response.data?.location?.name} acquired",
+                        LoggerType.INFO
+                    )
+                    if (response.ex == null) {
+                        updateWidget(context, WeatherWidgetProvider::class.java)
+                        postWeather(response)
+                    } else {
+                        val err = Hashtable<String, String>()
+                        err["error"] = response.ex!!.message
+                        error.postValue(err)
+                        log("Weather error : ${response.ex!!.message}", LoggerType.ERROR)
+                    }
+                }
+                call.await()
+            } catch (e: Exception) {
+                val err = Hashtable<String, String>()
+                err["error"] = e.message
+                error.postValue(err)
+                loading.postValue(false)
+                log("Weather error : ${e.message}", LoggerType.ERROR)
+            }
+        }
+    }
+
+    private fun getWeather(city:String) {
         viewModelScope.launch(Dispatchers.IO) {
             loading.postValue(true)
             try {
@@ -93,6 +130,7 @@ class WeatherViewModel @Inject constructor(
                         err["error"] = response.ex!!.message
                         error.postValue(err)
                         log("Weather error : ${response.ex!!.message}", LoggerType.ERROR)
+                        loading.postValue(false)
                     }
                 }
                 call.await()
@@ -160,7 +198,7 @@ class WeatherViewModel @Inject constructor(
             locationManager.get()?.lastLocation?.addOnSuccessListener {
                 if (it != null) {
                     var city = getCityName(context, it)
-                    getWeather(city)
+                    getWeather(it.latitude,it.longitude)
                     saveCurrentLocation(city, it)
                 }
             }
@@ -190,8 +228,12 @@ class WeatherViewModel @Inject constructor(
                 locationCallback,
                 Looper.getMainLooper()
             )
-        } catch (_: SecurityException) {
-            getWeather("Panama")
+        } catch (e: SecurityException) {
+            val err = Hashtable<String, String>()
+            err["error"] = e.message
+            error.postValue(err)
+            loading.postValue(false)
+            log("Weather error : ${e.message}", LoggerType.ERROR)
         }
     }
 

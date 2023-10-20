@@ -3,12 +3,14 @@ package com.kronos.weatherapp.ui.weather
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.android.gms.location.LocationServices
+import com.kronos.core.adapters.AdapterItemClickListener
 import com.kronos.core.extensions.binding.fragmentBinding
 import com.kronos.core.extensions.isToday
 import com.kronos.core.extensions.of
@@ -165,6 +167,13 @@ class WeatherFragment : Fragment() {
             viewModel.hourWeatherAdapter = WeakReference(WeatherHourAdapter())
         viewModel.hourWeatherAdapter.get()?.setUrlProvider(viewModel.urlProvider)
         binding.recyclerViewWeatherHourly.adapter = viewModel.hourWeatherAdapter.get()
+        viewModel.hourWeatherAdapter.get()?.setAdapterItemClick(object :
+            AdapterItemClickListener<Hour> {
+            override fun onItemClick(t: Hour, pos: Int) {
+                Toast.makeText(requireContext(),t.condition.description,Toast.LENGTH_SHORT).show()
+            }
+
+        })
 
         binding.recyclerViewWeatherByDay.layoutManager = LinearLayoutManager(context)
         binding.recyclerViewWeatherByDay.setHasFixedSize(false)

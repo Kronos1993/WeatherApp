@@ -63,4 +63,30 @@ class WeatherRemoteDataSourceImpl @Inject constructor(
         return result
     }
 
+    override suspend fun weatherForecast(
+        lat: Double,
+        lon: Double,
+        lang: String,
+        apiKey: String,
+        days: Int
+    ): Response<Forecast> {
+        var result: Response<Forecast> =
+            try {
+                weatherApi.weatherForecast("${lat},${lon}", lang, apiKey, days).execute().let {
+                    if (it.isSuccessful && it.body() != null) {
+                        var response = it.body()!!
+                        var currentForecast = response.toForecast()
+                        Response<Forecast>(currentForecast, null, code = it.code())
+                    } else {
+                        Response<Forecast>(null, null, code = it.code())
+                    }
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Response<Forecast>(null, e, listOf(e.message.toString()), code = 500)
+            }
+        Log.e(this::javaClass.name, "response: $result")
+        return result
+    }
+
 }

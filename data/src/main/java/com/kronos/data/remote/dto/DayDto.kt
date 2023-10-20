@@ -5,8 +5,8 @@ import java.io.Serializable
 data class DayDto(
     val maxtemp_c: Double,
     val maxtemp_f: Double,
-    val memp_c: Double,
-    val memp_f: Double,
+    val mintemp_c: Double,
+    val mintemp_f: Double,
     val avgtemp_c: Double,
     val avgtemp_f: Double,
     val maxwind_mph: Double,

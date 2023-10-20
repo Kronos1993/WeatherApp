@@ -4,7 +4,7 @@ import java.io.Serializable
 
 data class LocationDto(
     val name: String,
-    val regionval: String?,
+    val region: String?,
     val country: String,
     val lat: Double,
     val lon: Double,

@@ -1,6 +1,7 @@
 package com.kronos.weatherapp
 
 import android.Manifest
+import android.content.pm.PackageManager
 import android.os.Bundle
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
@@ -68,6 +69,24 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)*/
         navView.setupWithNavController(navController)
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String?>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        var grantedPermissions = true
+        for (grantResult in grantResults) {
+            grantedPermissions =
+                grantedPermissions and (grantResult == PackageManager.PERMISSION_GRANTED)
+        }
+        if (grantedPermissions) {
+            init()
+        } else {
+            finish()
+        }
     }
 
 }

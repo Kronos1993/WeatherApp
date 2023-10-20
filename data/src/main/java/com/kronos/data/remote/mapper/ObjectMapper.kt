@@ -1,6 +1,6 @@
 package com.kronos.data.remote.mapper
 
-import com.kronos.data.remote.current.CurrentForecastResponseDto
+import com.kronos.data.remote.dto.current.CurrentForecastResponseDto
 import com.kronos.data.remote.dto.*
 import com.kronos.data.remote.dto.forecast.ForecastResponseDto
 import com.kronos.domian.model.*
@@ -57,8 +57,8 @@ fun DailyForecastDto.toDailyForecast() = DailyForecast(
 fun DayDto.toDay() = Day(
     maxtempC = maxtemp_c,
     maxtempF = maxtemp_f,
-    mempC = memp_c,
-    mempF = memp_f,
+    mempC = mintemp_c,
+    mempF = mintemp_f,
     avgtempC = avgtemp_c,
     avgtempF = avgtemp_f,
     maxwindMph = maxwind_mph,
@@ -100,8 +100,8 @@ fun HourDto.toHour() = Hour(
     windchillF = windchill_f,
     heatindexC = heatindex_c,
     heatindexF = heatindex_f,
-    dewpoC = dewpo_c,
-    dewpoF = dewpo_f,
+    dewpoC = dewpoint_c,
+    dewpoF = dewpoint_f,
     willItRain = will_it_rain == 1,
     chanceOfRain = chance_of_rain,
     willItSnow = will_it_snow == 1,
@@ -115,7 +115,7 @@ fun HourDto.toHour() = Hour(
 
 fun LocationDto.toLocation() = Location(
     name = name,
-    regionval = regionval,
+    region = region,
     country = country,
     lat = lat,
     lon = lon,

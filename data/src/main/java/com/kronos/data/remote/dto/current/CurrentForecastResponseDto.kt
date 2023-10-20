@@ -1,4 +1,4 @@
-package com.kronos.data.remote.current
+package com.kronos.data.remote.dto.current
 
 import com.kronos.data.remote.dto.CurrentWeatherDto
 import com.kronos.data.remote.dto.LocationDto

@@ -81,8 +81,8 @@ fun Date.transformDateToTodayOrYesterday(inputDate: String): String {
     calendar.add(Calendar.DATE, -1)
     val yesterday = calendar.time
 
-    val resultToYes = SimpleDateFormat("HH:mm", Locale.getDefault())
-    val resultOtherDay = SimpleDateFormat("dd/MM/yy HH:mm", Locale.getDefault())
+    val resultToYes = SimpleDateFormat("hh:mm aa", Locale.getDefault())
+    val resultOtherDay = SimpleDateFormat("dd/MM/yy hh:mm aa", Locale.getDefault())
 
     return when {
         this.isSameDay(date,today) -> "today ${resultToYes.format(date)}"

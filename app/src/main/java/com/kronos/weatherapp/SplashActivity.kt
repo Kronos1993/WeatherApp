@@ -113,7 +113,7 @@ class SplashActivity : AppCompatActivity() {
         Handler(Looper.getMainLooper()).postDelayed({
             navigate(this, MainActivity::class.java)
             finish()
-        }, 3000)
+        }, 300)
     }
 
 

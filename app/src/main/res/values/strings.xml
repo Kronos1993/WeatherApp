@@ -2,7 +2,7 @@
     <string name="app_name">Weather App</string>
 
     <string name="required_field">This field is required</string>
-    <string name="permission_dialog_message">This permission are required</string>
+    <string name="permission_dialog_message">Access storage permission is required to save user locations</string>
     <string name="permission_dialog_title">Permissions required</string>
     <string name="ok">Ok</string>
     <string name="cancel">Cancel</string>
