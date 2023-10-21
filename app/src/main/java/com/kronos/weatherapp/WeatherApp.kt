@@ -32,7 +32,7 @@ class WeatherApp:Application(){
         super.onCreate()
         try {
             createNotificationChanel()
-            scheduleJob(applicationContext, 1800000L)
+            scheduleJob(applicationContext, 3600000L)
             exceptionHandler.init(this)
             logger.configure()
         }catch (e:Exception){
