@@ -9,22 +9,24 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
-import com.google.android.gms.common.util.CollectionUtils.listOf
 import com.google.android.gms.location.LocationServices
 import com.kronos.core.adapters.AdapterItemClickListener
 import com.kronos.core.extensions.binding.fragmentBinding
 import com.kronos.core.extensions.isToday
 import com.kronos.core.extensions.of
 import com.kronos.core.util.show
+import com.kronos.core.util.updateWidget
 import com.kronos.domian.model.DailyForecast
 import com.kronos.domian.model.Hour
 import com.kronos.domian.model.forecast.Forecast
 import com.kronos.weatherapp.R
 import com.kronos.weatherapp.databinding.FragmentWeatherBinding
 import com.kronos.weatherapp.ui.weather.model.Indicator
+import com.kronos.weatherapp.widget.WeatherWidgetProvider
 import dagger.hilt.android.AndroidEntryPoint
 import java.lang.ref.WeakReference
-import java.util.*
+import java.util.Date
+import java.util.Hashtable
 
 @AndroidEntryPoint
 class WeatherFragment : Fragment() {
@@ -139,7 +141,8 @@ class WeatherFragment : Fragment() {
                 ),
             )
             viewModel.indicatorAdapter.get()?.submitList(indicator)
-            viewModel.indicatorAdapter.get()?.notifyDataSetChanged()
+            viewModel.indicatorAdapter.get()
+                ?.notifyItemRangeChanged(0, viewModel.indicatorAdapter.get()!!.itemCount)
 
             var list = arrayListOf<DailyForecast>()
             list.addAll(weather.forecast.forecastDay.filter {
@@ -147,10 +150,12 @@ class WeatherFragment : Fragment() {
             })
 
             viewModel.hourWeatherAdapter.get()?.submitList(hours)
-            viewModel.hourWeatherAdapter.get()?.notifyDataSetChanged()
+            viewModel.hourWeatherAdapter.get()
+                ?.notifyItemRangeChanged(0, viewModel.hourWeatherAdapter.get()!!.itemCount)
 
             viewModel.dailyWeatherAdapter.get()?.submitList(list)
-            viewModel.dailyWeatherAdapter.get()?.notifyDataSetChanged()
+            viewModel.dailyWeatherAdapter.get()
+                ?.notifyItemRangeChanged(0, viewModel.dailyWeatherAdapter.get()!!.itemCount)
             Glide.with(requireContext())
                 .load(viewModel.urlProvider.getImageUrl(weather.current.condition.icon))
                 .into(binding.imageCurrentWeather)
@@ -171,9 +176,8 @@ class WeatherFragment : Fragment() {
         viewModel.hourWeatherAdapter.get()?.setAdapterItemClick(object :
             AdapterItemClickListener<Hour> {
             override fun onItemClick(t: Hour, pos: Int) {
-                Toast.makeText(requireContext(),t.condition.description,Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), t.condition.description, Toast.LENGTH_SHORT).show()
             }
-
         })
 
         binding.recyclerViewWeatherByDay.layoutManager = LinearLayoutManager(context)
@@ -201,12 +205,12 @@ class WeatherFragment : Fragment() {
                     requireContext()
                 )
             )
-        //if(viewModel.weather.value==null)
         viewModel.initLocations()
     }
 
     override fun onDestroy() {
         binding.unbind()
+        updateWidget(requireContext(), WeatherWidgetProvider::class.java)
         super.onDestroy()
     }
 
@@ -214,6 +218,4 @@ class WeatherFragment : Fragment() {
         viewModel.destroy()
         super.onPause()
     }
-
-
 }

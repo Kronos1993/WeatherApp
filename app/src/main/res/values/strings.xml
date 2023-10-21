@@ -28,4 +28,7 @@
     <string name="add_location">Add</string>
     <string name="cant_delete_current_location">You cant delete this location</string>
 
+    <string name="notification_title">Weather App</string>
+    <string name="notification_details">%s with %s°C</string>
+
 </resources>

@@ -66,7 +66,7 @@ class WeatherWidgetProvider @Inject constructor() : AppWidgetProvider() {
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetId)
         val pendingIntent =
             PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_IMMUTABLE)
-        remoteViews.setOnClickPendingIntent(R.id.widget_layout_header, pendingIntent)
+        remoteViews.setOnClickPendingIntent(R.id.widget_image_view_refresh, pendingIntent)
         appWidgetManager.updateAppWidget(appWidgetId, remoteViews)
     }
 

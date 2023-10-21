@@ -1,0 +1,128 @@
+package com.kronos.weatherapp.job
+
+import android.app.job.JobParameters
+import android.app.job.JobService
+import android.util.Log
+import com.kronos.core.extensions.formatDate
+import com.kronos.core.notification.INotifications
+import com.kronos.core.notification.NotificationGroup
+import com.kronos.core.notification.NotificationType
+import com.kronos.core.util.updateWidget
+import com.kronos.domian.model.Response
+import com.kronos.domian.model.forecast.Forecast
+import com.kronos.domian.repository.UserCustomLocationLocalRepository
+import com.kronos.domian.repository.WeatherRemoteRepository
+import com.kronos.logger.LoggerType
+import com.kronos.logger.interfaces.ILogger
+import com.kronos.weatherapp.R
+import com.kronos.weatherapp.TAG
+import com.kronos.weatherapp.widget.WeatherWidgetProvider
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
+import java.util.*
+import javax.inject.Inject
+
+const val notificationJobId = 1
+
+@AndroidEntryPoint
+class WeatherNotificationJob : JobService() {
+
+    private var jobCancelled = false
+
+    @Inject
+    lateinit var weatherRemoteRepository: WeatherRemoteRepository
+
+    @Inject
+    lateinit var userCustomLocationLocalRepository: UserCustomLocationLocalRepository
+
+    @Inject
+    lateinit var notification: INotifications
+
+    @Inject
+    lateinit var logger: ILogger
+
+    override fun onStartJob(params: JobParameters): Boolean {
+        Log.d(TAG, "onStartJob")
+        Log.d(TAG, "Current job started: ${params.jobId}")
+        Log.d(TAG, "Current Job Params: ${params.jobId}")
+        logger.write(this::class.java.name, LoggerType.INFO, "Current job started: ${params.jobId} on ${Date().formatDate("dd-MM-yyyy")}")
+        logger.write(this::class.java.name, LoggerType.INFO, "Current Job Params: ${params.jobId}")
+        doWork(params)
+        return true
+    }
+
+    override fun onStopJob(params: JobParameters): Boolean {
+        Log.d(TAG, "onStopJob")
+        Log.d(TAG, "Current job stopped: ${params.jobId}")
+        logger.write(this::class.java.name, LoggerType.INFO, "Current job stopped: ${params.jobId} on ${Date().formatDate("dd-MM-yyyy")}")
+        return true
+    }
+
+    private fun doWork(params: JobParameters) {
+        Log.d(TAG, "doWork")
+        Log.d(TAG, "Current Do Work Params: ${params.jobId}")
+        logger.write(
+            this::class.java.name,
+            LoggerType.INFO,
+            "Current Do Work Params: ${params.jobId} on ${Date().formatDate("dd-MM-yyyy")}"
+        )
+        if (params != null && params.jobId == notificationJobId) {
+            refreshWeather(params)
+        }
+    }
+
+    private fun refreshWeather(params: JobParameters) {
+        runBlocking(Dispatchers.IO) {
+            logger.write(
+                this::class.java.name,
+                LoggerType.INFO,
+                "Current Do Work Params: Refreshing weather on ${Date().formatDate("dd-MM-yyyy")}"
+            )
+            var currentCity = userCustomLocationLocalRepository.getSelectedLocation()
+            if (currentCity == null)
+                currentCity = userCustomLocationLocalRepository.getCurrentLocation()
+
+            var response = Response<Forecast>()
+            if (currentCity!!.isCurrent){
+                response = weatherRemoteRepository.getWeatherDataForecast(
+                    currentCity!!.lat!!,
+                    currentCity!!.lon!!,
+                    applicationContext.resources.getString(R.string.default_language),
+                    applicationContext.resources.getString(R.string.api_key),
+                    applicationContext.resources.getInteger(R.integer.default_days)
+                )
+            }else{
+                response = weatherRemoteRepository.getWeatherDataForecast(
+                    currentCity!!.cityName,
+                    applicationContext.resources.getString(R.string.default_language),
+                    applicationContext.resources.getString(R.string.api_key),
+                    applicationContext.resources.getInteger(R.integer.default_days)
+                )
+            }
+
+            if (response.data != null) {
+                notification.createNotification(
+                    applicationContext.getString(R.string.notification_title),
+                    applicationContext.getString(R.string.notification_details)
+                        .format(
+                            response.data!!.current.condition.description,
+                            response.data!!.current.tempC
+                        ),
+                    NotificationGroup.GENERAL.name,
+                    NotificationType.WEATHER_STATUS,
+                    R.drawable.ic_weather_app_icon,
+                    applicationContext
+                )
+            }
+            updateWidget(applicationContext, WeatherWidgetProvider::class.java)
+        }
+    }
+
+}
+
+
+
+
+
+
