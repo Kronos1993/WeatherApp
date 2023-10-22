@@ -19,7 +19,7 @@ import dagger.hilt.android.HiltAndroidApp
 import javax.inject.Inject
 
 const val TAG = "WeatherApp"
-const val NOTIFICATION_CHANNEL = "PARCEL_TRACKING_NOTIFICATION_CHANNEL"
+const val NOTIFICATION_CHANNEL = "WEATHER_APP_NOTIFICATION_CHANNEL"
 @HiltAndroidApp
 class WeatherApp:Application(){
 

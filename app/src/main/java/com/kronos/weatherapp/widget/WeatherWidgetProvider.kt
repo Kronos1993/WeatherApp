@@ -13,7 +13,10 @@ import android.widget.RemoteViews
 import com.kronos.core.extensions.isToday
 import com.kronos.core.extensions.of
 import com.kronos.core.extensions.transformDateToTodayOrYesterday
+import com.kronos.core.util.PreferencesUtil
 import com.kronos.domian.model.DailyForecast
+import com.kronos.domian.model.Response
+import com.kronos.domian.model.forecast.Forecast
 import com.kronos.domian.repository.UserCustomLocationLocalRepository
 import com.kronos.domian.repository.WeatherRemoteRepository
 import com.kronos.logger.interfaces.ILogger
@@ -80,12 +83,32 @@ class WeatherWidgetProvider @Inject constructor() : AppWidgetProvider() {
             if (currentCity == null)
                 currentCity = customUserCustomLocationLocalRepository.getCurrentLocation()
 
-            var response = weatherRemoteRepository.getWeatherDataForecast(
-                currentCity!!.cityName,
-                context.resources.getString(R.string.default_language),
-                context.resources.getString(R.string.api_key),
-                context.resources.getInteger(R.integer.default_days)
-            )
+            var response = Response<Forecast>()
+            if (currentCity!=null){
+                if (currentCity!!.isCurrent){
+                    response = weatherRemoteRepository.getWeatherDataForecast(
+                        currentCity!!.lat!!,
+                        currentCity!!.lon!!,
+                        context.resources.getString(R.string.default_language_value),
+                        context.resources.getString(R.string.api_key),
+                        context.resources.getString(R.string.default_days_values).toInt()
+                    )
+                }else{
+                    response = weatherRemoteRepository.getWeatherDataForecast(
+                        currentCity!!.cityName,
+                        context.resources.getString(R.string.default_language_value),
+                        context.resources.getString(R.string.api_key),
+                        context.resources.getString(R.string.default_days_values).toInt()
+                    )
+                }
+            }else{
+                response = weatherRemoteRepository.getWeatherDataForecast(
+                    PreferencesUtil.getPreference(context,context.getString(R.string.default_city_key),context.getString(R.string.default_city_value))!!,
+                    PreferencesUtil.getPreference(context,context.getString(R.string.default_lang_key),context.getString(R.string.default_language_value))!!,
+                    context.resources.getString(R.string.api_key),
+                    PreferencesUtil.getPreference(context,context.getString(R.string.default_days_key),context.resources.getString(R.string.default_days_values))!!.toInt()
+                )
+            }
 
             if (response.data != null) {
                 var list = arrayListOf<DailyForecast>()

@@ -7,6 +7,7 @@ import com.kronos.core.extensions.formatDate
 import com.kronos.core.notification.INotifications
 import com.kronos.core.notification.NotificationGroup
 import com.kronos.core.notification.NotificationType
+import com.kronos.core.util.PreferencesUtil
 import com.kronos.core.util.updateWidget
 import com.kronos.domian.model.Response
 import com.kronos.domian.model.forecast.Forecast
@@ -84,30 +85,38 @@ class WeatherNotificationJob : JobService() {
                 currentCity = userCustomLocationLocalRepository.getCurrentLocation()
 
             var response = Response<Forecast>()
-            if (currentCity!!.isCurrent){
-                response = weatherRemoteRepository.getWeatherDataForecast(
-                    currentCity!!.lat!!,
-                    currentCity!!.lon!!,
-                    applicationContext.resources.getString(R.string.default_language),
-                    applicationContext.resources.getString(R.string.api_key),
-                    applicationContext.resources.getInteger(R.integer.default_days)
-                )
+            if (currentCity!=null){
+                if (currentCity!!.isCurrent){
+                    response = weatherRemoteRepository.getWeatherDataForecast(
+                        currentCity!!.lat!!,
+                        currentCity!!.lon!!,
+                        applicationContext.resources.getString(R.string.default_language_value),
+                        applicationContext.resources.getString(R.string.api_key),
+                        applicationContext.resources.getString(R.string.default_days_values).toInt()
+                    )
+                }else{
+                    response = weatherRemoteRepository.getWeatherDataForecast(
+                        currentCity!!.cityName,
+                        applicationContext.resources.getString(R.string.default_language_value),
+                        applicationContext.resources.getString(R.string.api_key),
+                        applicationContext.resources.getString(R.string.default_days_values).toInt()
+                    )
+                }
             }else{
                 response = weatherRemoteRepository.getWeatherDataForecast(
-                    currentCity!!.cityName,
-                    applicationContext.resources.getString(R.string.default_language),
+                    PreferencesUtil.getPreference(applicationContext,application.getString(R.string.default_city_key),applicationContext.getString(R.string.default_city_value))!!,
+                    PreferencesUtil.getPreference(applicationContext,application.getString(R.string.default_lang_key),applicationContext.getString(R.string.default_language_value))!!,
                     applicationContext.resources.getString(R.string.api_key),
-                    applicationContext.resources.getInteger(R.integer.default_days)
+                    PreferencesUtil.getPreference(applicationContext,application.getString(R.string.default_days_key),applicationContext.resources.getString(R.string.default_days_values))!!.toInt()
                 )
             }
-
             if (response.data != null) {
                 notification.createNotification(
-                    applicationContext.getString(R.string.notification_title),
+                    applicationContext.getString(R.string.notification_title).format(response.data!!.current.tempC,response.data!!.location.region),
                     applicationContext.getString(R.string.notification_details)
                         .format(
                             response.data!!.current.condition.description,
-                            response.data!!.current.tempC
+                            response.data!!.current.feelslikeC
                         ),
                     NotificationGroup.GENERAL.name,
                     NotificationType.WEATHER_STATUS,

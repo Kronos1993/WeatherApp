@@ -3,12 +3,13 @@ package com.kronos.weatherapp.ui.weather
 import android.content.Context
 import android.location.Geocoder
 import android.location.Location
+import android.location.LocationManager
 import android.os.Looper
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.location.*
 import com.kronos.core.extensions.asLiveData
-import com.kronos.core.util.updateWidget
+import com.kronos.core.util.PreferencesUtil
 import com.kronos.core.view_model.ParentViewModel
 import com.kronos.domian.model.Response
 import com.kronos.domian.model.UserCustomLocation
@@ -18,12 +19,10 @@ import com.kronos.domian.repository.WeatherRemoteRepository
 import com.kronos.logger.LoggerType
 import com.kronos.logger.interfaces.ILogger
 import com.kronos.weatherapp.R
-import com.kronos.weatherapp.widget.WeatherWidgetProvider
 import com.kronos.webclient.UrlProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import java.io.IOException
 import java.lang.ref.WeakReference
@@ -34,7 +33,7 @@ import javax.inject.Inject
 class WeatherViewModel @Inject constructor(
     @ApplicationContext val context: Context,
     private var weatherRemoteRepository: WeatherRemoteRepository,
-    var userCustomLocationLocalRepository: UserCustomLocationLocalRepository,
+    private var userCustomLocationLocalRepository: UserCustomLocationLocalRepository,
     var urlProvider: UrlProvider,
     var logger: ILogger,
 ) : ParentViewModel() {
@@ -70,16 +69,24 @@ class WeatherViewModel @Inject constructor(
         this.date.postValue(date)
     }
 
-    private fun getWeather(lat: Double,long:Double) {
+    private fun getWeather(lat: Double, long: Double) {
         viewModelScope.launch(Dispatchers.IO) {
             loading.postValue(true)
             try {
                 val response = weatherRemoteRepository.getWeatherDataForecast(
                     lat,
                     long,
-                    context.resources.getString(R.string.default_language),
+                    PreferencesUtil.getPreference(
+                        context,
+                        context.getString(R.string.default_lang_key),
+                        context.getString(R.string.default_language_value)
+                    )!!,
                     context.resources.getString(R.string.api_key),
-                    context.resources.getInteger(R.integer.default_days)
+                    PreferencesUtil.getPreference(
+                        context,
+                        context.getString(R.string.default_days_key),
+                        context.getString(R.string.default_days_values)
+                    )!!.toInt()
                 )
                 log(
                     "Weather from city: ${response.data?.location?.name} acquired",
@@ -94,6 +101,7 @@ class WeatherViewModel @Inject constructor(
                     log("Weather error : ${response.ex!!.message}", LoggerType.ERROR)
                 }
             } catch (e: Exception) {
+                e.printStackTrace()
                 val err = Hashtable<String, String>()
                 err["error"] = e.message
                 error.postValue(err)
@@ -103,15 +111,23 @@ class WeatherViewModel @Inject constructor(
         }
     }
 
-    private fun getWeather(city:String) {
+    private fun getWeather(city: String) {
         viewModelScope.launch(Dispatchers.IO) {
             loading.postValue(true)
             try {
                 val response = weatherRemoteRepository.getWeatherDataForecast(
                     city,
-                    context.resources.getString(R.string.default_language),
+                    PreferencesUtil.getPreference(
+                        context,
+                        context.getString(R.string.default_lang_key),
+                        context.getString(R.string.default_language_value)
+                    )!!,
                     context.resources.getString(R.string.api_key),
-                    context.resources.getInteger(R.integer.default_days)
+                    PreferencesUtil.getPreference(
+                        context,
+                        context.getString(R.string.default_days_key),
+                        context.getString(R.string.default_days_values)
+                    )!!.toInt()
                 )
                 log(
                     "Weather from city: ${response.data?.location?.name} acquired",
@@ -127,6 +143,7 @@ class WeatherViewModel @Inject constructor(
                     loading.postValue(false)
                 }
             } catch (e: Exception) {
+                e.printStackTrace()
                 val err = Hashtable<String, String>()
                 err["error"] = e.message
                 error.postValue(err)
@@ -144,16 +161,16 @@ class WeatherViewModel @Inject constructor(
     }
 
     private fun getCityName(context: Context, location: Location): String {
+        var city = context.getString(R.string.default_city_value)
         val geocoder = Geocoder(context, Locale.getDefault())
         try {
             val addresses = geocoder.getFromLocation(location.latitude, location.longitude, 1)
-            if (addresses?.isNotEmpty() == true) {
-                return addresses[0].locality
-            }
+            if (addresses?.isNotEmpty() == true) city = addresses[0].locality
         } catch (e: IOException) {
+            e.printStackTrace()
             log(e.message.toString(), LoggerType.ERROR)
         }
-        return "Ciudad Desconocida"
+        return city
     }
 
     fun initLocations() {
@@ -161,17 +178,27 @@ class WeatherViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 var response = userCustomLocationLocalRepository.getSelectedLocation()
+                if (response == null) {
+                    response = userCustomLocationLocalRepository.getCurrentLocation()
+                }
                 if (response != null) {
                     postUserLocation(response!!)
                     if (response!!.isCurrent && response!!.isSelected)
-                        getGpsLocation()
-                    else{
+                        getGpsLocation(response)
+                    else {
                         getWeather(response!!.cityName)
                     }
                 } else {
-                    getGpsLocation()
+                    getWeather(
+                        PreferencesUtil.getPreference(
+                            context,
+                            context.getString(R.string.default_city_key),
+                            context.getString(R.string.default_city_value)
+                        )!!
+                    )
                 }
             } catch (e: Exception) {
+                e.printStackTrace()
                 val err = Hashtable<String, String>()
                 err["error"] = e.message
                 error.postValue(err)
@@ -181,40 +208,48 @@ class WeatherViewModel @Inject constructor(
         }
     }
 
-    private fun getGpsLocation() {
+    private fun getGpsLocation(userLocation: UserCustomLocation) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                locationManager.get()?.lastLocation?.addOnSuccessListener {
-                    if (it != null) {
-                        var city = getCityName(context, it)
-                        getWeather(it.latitude,it.longitude)
-                        saveCurrentLocation(city, it)
+
+                if ((context.getSystemService(Context.LOCATION_SERVICE) as LocationManager).isProviderEnabled(
+                        LocationManager.GPS_PROVIDER
+                    )
+                ) {
+                    val locationRequest = LocationRequest.Builder(
+                        Priority.PRIORITY_HIGH_ACCURACY,
+                        1800000
+                    ).apply {
+                        setGranularity(Granularity.GRANULARITY_PERMISSION_LEVEL)
+                        setWaitForAccurateLocation(true)
+                    }.build()
+
+                    locationCallback = object : LocationCallback() {
+                        override fun onLocationResult(p0: LocationResult) {
+                            super.onLocationResult(p0)
+                            /*var city = getCityName(context, p0.lastLocation)
+                            getWeather(city)
+                            saveCurrentLocation(city,location)*/
+                        }
                     }
-                }
 
-                val locationRequest = LocationRequest.Builder(
-                    Priority.PRIORITY_HIGH_ACCURACY,
-                    1800000
-                ).apply {
-                    setGranularity(Granularity.GRANULARITY_PERMISSION_LEVEL)
-                    setWaitForAccurateLocation(true)
-                }.build()
-
-                locationCallback = object : LocationCallback() {
-                    override fun onLocationResult(p0: LocationResult) {
-                        super.onLocationResult(p0)
-                        /*var city = getCityName(context, p0.lastLocation)
-                        getWeather(city)
-                        saveCurrentLocation(city,location)*/
+                    locationManager.get()?.requestLocationUpdates(
+                        locationRequest,
+                        locationCallback,
+                        Looper.getMainLooper()
+                    )
+                    locationManager.get()?.lastLocation?.addOnSuccessListener {
+                        if (it != null) {
+                            var city = getCityName(context, it)
+                            getWeather(it.latitude, it.longitude)
+                            saveCurrentLocation(city, it)
+                        }
                     }
-                }
+                } else
+                    getWeather(userLocation.lat!!, userLocation.lon!!)
 
-                locationManager.get()?.requestLocationUpdates(
-                    locationRequest,
-                    locationCallback,
-                    Looper.getMainLooper()
-                )
             } catch (e: SecurityException) {
+                e.printStackTrace()
                 val err = Hashtable<String, String>()
                 err["error"] = e.message
                 error.postValue(err)

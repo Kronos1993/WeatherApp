@@ -1,0 +1,45 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory
+        app:title="@string/app_city_header"
+        app:iconSpaceReserved="false"
+        app:icon="@drawable/ic_city"
+        app:summary="@string/setting_city_summary">
+
+        <EditTextPreference
+            app:defaultValue="Panama"
+            app:key="@string/default_city_key"
+            app:title="@string/app_city_header"
+            app:useSimpleSummaryProvider="true" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:title="@string/app_language_header"
+        app:iconSpaceReserved="false"
+        app:icon="@drawable/ic_language"
+        app:summary="@string/setting_language_summary">
+        <ListPreference
+            app:defaultValue="en"
+            app:entries="@array/language_entries"
+            app:entryValues="@array/language_values"
+            app:key="@string/default_lang_key"
+            app:title="@string/app_language_header"
+            app:useSimpleSummaryProvider="true" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:title="@string/app_days_header"
+        app:iconSpaceReserved="false"
+        app:icon="@drawable/ic_day"
+        app:summary="@string/setting_days_summary">
+        <ListPreference
+            app:defaultValue="7"
+            app:entries="@array/days_entries"
+            app:entryValues="@array/days_values"
+            app:key="@string/default_days_key"
+            app:title="@string/app_days_header"
+            app:useSimpleSummaryProvider="true" />
+    </PreferenceCategory>
+
+</PreferenceScreen>
