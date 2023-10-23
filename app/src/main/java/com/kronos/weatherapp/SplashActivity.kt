@@ -12,8 +12,11 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.kronos.core.extensions.binding.activityBinding
 import com.kronos.core.util.navigate
 import com.kronos.core.util.validatePermission
+import com.kronos.logger.LoggerType
+import com.kronos.logger.interfaces.ILogger
 import com.kronos.weatherapp.databinding.ActivitySplashBinding
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class SplashActivity : AppCompatActivity() {
@@ -22,12 +25,16 @@ class SplashActivity : AppCompatActivity() {
     private var grantedAll = false
     private var grantedFullStorage = false
 
+    @Inject
+    lateinit var logger: ILogger
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding.run {
             lifecycleOwner = this@SplashActivity
             setContentView(root)
             checkFullStorageAccess()
+            logger.write(this::class.java.name, LoggerType.INFO,"Splash activity Initialized")
         }
     }
 
@@ -49,11 +56,14 @@ class SplashActivity : AppCompatActivity() {
                 1
             )
         } else {
+            logger.write(this::class.java.name, LoggerType.INFO,"Permission checked")
             init()
         }
     }
 
     private fun checkFullStorageAccess() {
+        logger.write(this::class.java.name, LoggerType.INFO,"Checking storage permission")
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             grantedFullStorage = Environment.isExternalStorageManager()
             if (!grantedFullStorage) {
@@ -94,6 +104,7 @@ class SplashActivity : AppCompatActivity() {
                 grantedPermissions and (grantResult == PackageManager.PERMISSION_GRANTED)
         }
         if (grantedPermissions) {
+            logger.write(this::class.java.name, LoggerType.INFO,"Permission granted")
             init()
         } else {
             finish()
@@ -110,6 +121,7 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private fun init() {
+        logger.write(this::class.java.name, LoggerType.INFO,"Splash activity timer run")
         Handler(Looper.getMainLooper()).postDelayed({
             navigate(this, MainActivity::class.java)
             finish()

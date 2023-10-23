@@ -52,7 +52,7 @@ class WeatherAppNotifications @Inject constructor() : INotifications {
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                     .setCategory(NotificationCompat.CATEGORY_MESSAGE)
                     .setGroup(group)
-                    .setAutoCancel(true)
+                    .setAutoCancel(false)
                     .setContentIntent(pendingIntent)
                     .build()
             notificationManager.notify(notificationsId.ordinal, notification)

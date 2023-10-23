@@ -10,6 +10,7 @@ import android.content.ComponentName
 import android.content.Context
 import android.os.Build
 import android.util.Log
+import com.kronos.logger.LoggerType
 import com.kronos.logger.exception.ExceptionHandler
 import com.kronos.logger.interfaces.ILogger
 import com.kronos.weatherapp.job.WeatherNotificationJob
@@ -36,6 +37,7 @@ class WeatherApp:Application(){
             exceptionHandler.init(this)
             logger.configure()
         }catch (e:Exception){
+            logger.write(this::class.java.name, LoggerType.ERROR, e.message.toString())
         }
     }
 
@@ -53,22 +55,26 @@ class WeatherApp:Application(){
     }
 
     private fun scheduleJob(context: Context, periodic: Long) {
+        try {
+            val componentName = ComponentName(context, WeatherNotificationJob::class.java)
+            var jobInfo: JobInfo? = null
 
-        val componentName = ComponentName(context, WeatherNotificationJob::class.java)
-        var jobInfo: JobInfo? = null
+            jobInfo = JobInfo.Builder(notificationJobId, componentName)
+                .setPersisted(true)
+                .setPeriodic(periodic)
+                .build()
 
-        jobInfo = JobInfo.Builder(notificationJobId, componentName)
-            .setPersisted(true)
-            .setPeriodic(periodic)
-            .build()
+            val scheduler =
+                context.getSystemService(JobService.JOB_SCHEDULER_SERVICE) as JobScheduler
+            val resultCode = scheduler.schedule(jobInfo!!)
+            if (resultCode == JobScheduler.RESULT_SUCCESS) {
+                Log.d(TAG, "Job service schedule success $notificationJobId")
+            } else {
+                Log.d(TAG, "Job service schedule failed $notificationJobId")
+            }
+        }catch (e:Exception){
+            logger.write(this::class.java.name, LoggerType.ERROR, e.message.toString())
 
-        val scheduler =
-            context.getSystemService(JobService.JOB_SCHEDULER_SERVICE) as JobScheduler
-        val resultCode = scheduler.schedule(jobInfo!!)
-        if (resultCode == JobScheduler.RESULT_SUCCESS) {
-            Log.d(TAG, "Job service schedule success $notificationJobId")
-        } else {
-            Log.d(TAG, "Job service schedule failed $notificationJobId")
         }
     }
 }

@@ -189,13 +189,7 @@ class WeatherViewModel @Inject constructor(
                         getWeather(response!!.cityName)
                     }
                 } else {
-                    getWeather(
-                        PreferencesUtil.getPreference(
-                            context,
-                            context.getString(R.string.default_city_key),
-                            context.getString(R.string.default_city_value)
-                        )!!
-                    )
+                    getGpsLocation(null)
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -208,10 +202,9 @@ class WeatherViewModel @Inject constructor(
         }
     }
 
-    private fun getGpsLocation(userLocation: UserCustomLocation) {
+    private fun getGpsLocation(userLocation: UserCustomLocation?) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
-
                 if ((context.getSystemService(Context.LOCATION_SERVICE) as LocationManager).isProviderEnabled(
                         LocationManager.GPS_PROVIDER
                     )
@@ -227,9 +220,9 @@ class WeatherViewModel @Inject constructor(
                     locationCallback = object : LocationCallback() {
                         override fun onLocationResult(p0: LocationResult) {
                             super.onLocationResult(p0)
-                            /*var city = getCityName(context, p0.lastLocation)
-                            getWeather(city)
-                            saveCurrentLocation(city,location)*/
+                            var city = getCityName(context, p0.lastLocation!!)
+                            /*getWeather(city)
+                            saveCurrentLocation(city,p0.lastLocation!!)*/
                         }
                     }
 
@@ -245,9 +238,23 @@ class WeatherViewModel @Inject constructor(
                             saveCurrentLocation(city, it)
                         }
                     }
-                } else
-                    getWeather(userLocation.lat!!, userLocation.lon!!)
-
+                } else{
+                    if (userLocation!=null){
+                        if (userLocation.lat!=null && userLocation.lon!=null)
+                            getWeather(userLocation.lat!!, userLocation.lon!!)
+                        else{
+                            getWeather(userLocation.cityName)
+                        }
+                    }else{
+                        getWeather(
+                            PreferencesUtil.getPreference(
+                                context,
+                                context.getString(R.string.default_city_key),
+                                context.getString(R.string.default_city_value)
+                            )!!
+                        )
+                    }
+                }
             } catch (e: SecurityException) {
                 e.printStackTrace()
                 val err = Hashtable<String, String>()

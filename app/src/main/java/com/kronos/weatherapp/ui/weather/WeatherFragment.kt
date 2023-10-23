@@ -19,6 +19,8 @@ import com.kronos.core.util.updateWidget
 import com.kronos.domian.model.DailyForecast
 import com.kronos.domian.model.Hour
 import com.kronos.domian.model.forecast.Forecast
+import com.kronos.logger.LoggerType
+import com.kronos.logger.interfaces.ILogger
 import com.kronos.weatherapp.R
 import com.kronos.weatherapp.databinding.FragmentWeatherBinding
 import com.kronos.weatherapp.ui.weather.model.Indicator
@@ -27,12 +29,16 @@ import dagger.hilt.android.AndroidEntryPoint
 import java.lang.ref.WeakReference
 import java.util.Date
 import java.util.Hashtable
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class WeatherFragment : Fragment() {
     private val binding by fragmentBinding<FragmentWeatherBinding>(R.layout.fragment_weather)
 
     private val viewModel by viewModels<WeatherViewModel>()
+
+    @Inject
+    lateinit var logger: ILogger
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -50,15 +56,20 @@ class WeatherFragment : Fragment() {
         initViews()
         setListeners()
         observeViewModel()
+        logger.write(this::class.java.name,LoggerType.INFO,"Fragment Weather Initialized")
     }
 
     private fun setListeners() {
+        logger.write(this::class.java.name,LoggerType.INFO,"Fragment Weather Listeners Initialized")
+
         binding.swipeRefreshLayout.setOnRefreshListener {
             viewModel.initLocations()
         }
     }
 
     private fun observeViewModel() {
+        logger.write(this::class.java.name,LoggerType.INFO,"Fragment Weather ViewModel observers")
+
         viewModel.weather.observe(this.viewLifecycleOwner, ::handleWeather)
         viewModel.loading.observe(this.viewLifecycleOwner, ::handleLoading)
         viewModel.error.observe(this.viewLifecycleOwner, ::handleError)
@@ -166,6 +177,8 @@ class WeatherFragment : Fragment() {
 
 
     private fun initViews() {
+        logger.write(this::class.java.name,LoggerType.INFO,"Fragment Weather View Ini")
+
         binding.recyclerViewWeatherHourly.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         binding.recyclerViewWeatherHourly.setHasFixedSize(false)
@@ -197,6 +210,8 @@ class WeatherFragment : Fragment() {
     }
 
     private fun initViewModel() {
+        logger.write(this::class.java.name,LoggerType.INFO,"Fragment Weather ViewModel Ini")
+
         viewModel.postDate(Date())
         viewModel.loading.value = (true)
         if (viewModel.locationManager.get() == null)
