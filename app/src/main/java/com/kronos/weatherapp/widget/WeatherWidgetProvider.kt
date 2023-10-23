@@ -29,6 +29,7 @@ import java.net.URL
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 
 
 @AndroidEntryPoint
@@ -85,17 +86,17 @@ class WeatherWidgetProvider @Inject constructor() : AppWidgetProvider() {
 
             var response = Response<Forecast>()
             if (currentCity!=null){
-                if (currentCity!!.isCurrent){
+                if (currentCity.isCurrent){
                     response = weatherRemoteRepository.getWeatherDataForecast(
-                        currentCity!!.lat!!,
-                        currentCity!!.lon!!,
+                        currentCity.lat!!,
+                        currentCity.lon!!,
                         context.resources.getString(R.string.default_language_value),
                         context.resources.getString(R.string.api_key),
                         context.resources.getString(R.string.default_days_values).toInt()
                     )
                 }else{
                     response = weatherRemoteRepository.getWeatherDataForecast(
-                        currentCity!!.cityName,
+                        currentCity.cityName,
                         context.resources.getString(R.string.default_language_value),
                         context.resources.getString(R.string.api_key),
                         context.resources.getString(R.string.default_days_values).toInt()
@@ -114,25 +115,42 @@ class WeatherWidgetProvider @Inject constructor() : AppWidgetProvider() {
                 var list = arrayListOf<DailyForecast>()
                 list.addAll(response.data!!.forecast.forecastDay.filter {
                     !Date().of(it.date)!!.isToday()
-                }.subList(0, 3))
+                })
 
-                remoteViews.setTextViewText(R.id.widget_text_view_day_1, "${getDay(list[0])}")
-                remoteViews.setTextViewText(R.id.widget_text_view_day_2, "${getDay(list[1])}")
-                remoteViews.setTextViewText(R.id.widget_text_view_day_3, "${getDay(list[2])}")
-
-                var urlCondition1 = URL(urlProvider.getImageUrl(list[0].day.condition.icon))
-                var urlCondition2 = URL(urlProvider.getImageUrl(list[1].day.condition.icon))
-                var urlCondition3 = URL(urlProvider.getImageUrl(list[2].day.condition.icon))
-
-                val bmp1 =
-                    BitmapFactory.decodeStream(urlCondition1.openConnection().getInputStream())
-                val bmp2 =
-                    BitmapFactory.decodeStream(urlCondition2.openConnection().getInputStream())
-                val bmp3 =
-                    BitmapFactory.decodeStream(urlCondition3.openConnection().getInputStream())
-                remoteViews.setImageViewBitmap(R.id.widget_image_view_day_1, bmp1)
-                remoteViews.setImageViewBitmap(R.id.widget_image_view_day_2, bmp2)
-                remoteViews.setImageViewBitmap(R.id.widget_image_view_day_3, bmp3)
+                if (list.size>=2){
+                    for (i in 1..list.size) {
+                        if(i==1){
+                            remoteViews.setTextViewText(
+                                R.id.widget_text_view_day_1,
+                                getDay(list[i-1])
+                            )
+                            var urlCondition1 = URL(urlProvider.getImageUrl(list[i-1].day.condition.icon))
+                            val bmp1 =
+                                BitmapFactory.decodeStream(urlCondition1.openConnection().getInputStream())
+                            remoteViews.setImageViewBitmap(R.id.widget_image_view_day_1, bmp1)
+                        }else if (i==2){
+                            remoteViews.setTextViewText(
+                                R.id.widget_text_view_day_2,
+                                getDay(list[i-1])
+                            )
+                            var urlCondition2 = URL(urlProvider.getImageUrl(list[i-1].day.condition.icon))
+                            val bmp2 =
+                                BitmapFactory.decodeStream(urlCondition2.openConnection().getInputStream())
+                            remoteViews.setImageViewBitmap(R.id.widget_image_view_day_2, bmp2)
+                        }else if (i==3){
+                            remoteViews.setTextViewText(
+                                R.id.widget_text_view_day_3,
+                                getDay(list[i-1])
+                            )
+                            var urlCondition3 = URL(urlProvider.getImageUrl(list[i-1].day.condition.icon))
+                            val bmp3 =
+                                BitmapFactory.decodeStream(urlCondition3.openConnection().getInputStream())
+                            remoteViews.setImageViewBitmap(R.id.widget_image_view_day_3, bmp3)
+                        }else{
+                            break;
+                        }
+                    }
+                }
 
                 var urlCondition =
                     URL(urlProvider.getImageUrl(response.data!!.current.condition.icon))
@@ -184,7 +202,7 @@ class WeatherWidgetProvider @Inject constructor() : AppWidgetProvider() {
     private fun getDay(current: DailyForecast?): String {
         var day = ""
         if (current != null) {
-            var date = Date().of(current.date)
+            val date = Date().of(current.date)
 
             val calendar = Calendar.getInstance()
             calendar.time = date
