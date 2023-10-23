@@ -27,15 +27,17 @@
     <!-- Preferences values days -->
     <string name="setting_days_summary">Select the amount of days to show</string>
     <string-array name="days_entries">
-        <item>7 days</item>
+        <item>3 days</item>
+        <!--<item>7 days</item>
         <item>14 days</item>
-        <item>21 days</item>
+        <item>21 days</item>-->
     </string-array>
 
     <string-array name="days_values">
-        <item>7</item>
+        <item>3</item>
+        <!--<item>7</item>
         <item>14</item>
-        <item>21</item>
+        <item>21</item>-->
     </string-array>
     <!-- End preferences values days -->
 
