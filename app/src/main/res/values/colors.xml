@@ -24,6 +24,7 @@
     <color name="backgroundColor">#FFF</color>
 
     <color name="selected_location_color">#FFFFFF</color>
+    <color name="my_location_icon_color">#FD5E5E</color>
 
     <color name="black_shade_1">#292D36</color>
 </resources>

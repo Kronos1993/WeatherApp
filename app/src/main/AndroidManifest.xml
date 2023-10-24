@@ -33,8 +33,6 @@
             </intent-filter>
         </activity>
 
-
-
         <receiver android:name=".widget.WeatherWidgetProvider"
             android:exported="true">
             <intent-filter>

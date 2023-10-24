@@ -57,8 +57,8 @@ fun handleUV(view: TextView, uv: Int?) = view.run {
 @BindingAdapter("handle_date_hour")
 fun showOnlyHour(view: TextView, current: Location?) = view.run {
     if(current!=null){
-        var date = Date().of(current.localtime,true)
-        var dateFormat = SimpleDateFormat("EEE MMM d | h:mm aa", Locale.US)
+        val date = Date().of(current.localtime,true)
+        val dateFormat = SimpleDateFormat("EEE MMM d | h:mm aa", Locale.US)
         var stringDate = ""
         try{
             stringDate = dateFormat.format(date)
