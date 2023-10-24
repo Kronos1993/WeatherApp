@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
@@ -40,7 +41,7 @@ class LocationsFragment : Fragment() {
 
     private val binding by fragmentBinding<FragmentLocationBinding>(R.layout.fragment_location)
 
-    private val viewModel by viewModels<LocationViewModel>()
+    private val viewModel by activityViewModels<LocationViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -116,7 +117,7 @@ class LocationsFragment : Fragment() {
 
     private fun handleLocations(list: List<UserCustomLocation>?) {
         viewModel.userLocationAdapter.get()?.submitList(list)
-        viewModel.userLocationAdapter.get()?.notifyDataSetChanged()
+        viewModel.userLocationAdapter.get()?.notifyItemRangeChanged(0,list!!.size)
     }
 
     private fun initViews() {

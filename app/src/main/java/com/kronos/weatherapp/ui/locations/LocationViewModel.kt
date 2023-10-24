@@ -49,12 +49,9 @@ class LocationViewModel @Inject constructor(
         loading.postValue(true)
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                var call = async {
-                    val response = userCustomLocationLocalRepository.listAll()
-                    log("Custom location: ${response.size} ", LoggerType.INFO)
-                    postLocations(response)
-                }
-                call.await()
+                val response = userCustomLocationLocalRepository.listAll()
+                log("Custom location: ${response.size} ", LoggerType.INFO)
+                postLocations(response)
             } catch (e: Exception) {
                 var err = Hashtable<String, String>()
                 err["error"] = e.message
@@ -69,13 +66,11 @@ class LocationViewModel @Inject constructor(
         loading.postValue(true)
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                var call = async {
-                    var location = UserCustomLocation(cityName = cityName.get()!!, isSelected = true)
-                    userCustomLocationLocalRepository.saveLocation(location)
-                    log("Custom location: ${cityName.get()} added.", LoggerType.INFO)
-                }
-                call.await()
+                var location = UserCustomLocation(cityName = cityName.get()!!, isSelected = true)
+                userCustomLocationLocalRepository.saveLocation(location)
+                log("Custom location: ${cityName.get()} added.", LoggerType.INFO)
                 getLocations()
+                cityName.set("")
             } catch (e: Exception) {
                 var err = Hashtable<String, String>()
                 err["error"] = e.message
@@ -90,12 +85,9 @@ class LocationViewModel @Inject constructor(
         loading.postValue(true)
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                var call = async {
-                    userLocation.isSelected = true
-                    userCustomLocationLocalRepository.saveLocation(userLocation)
-                    log("Custom location: ${cityName.get()} added.", LoggerType.INFO)
-                }
-                call.await()
+                userLocation.isSelected = true
+                userCustomLocationLocalRepository.saveLocation(userLocation)
+                log("Custom location: ${cityName.get()} selected.", LoggerType.INFO)
                 getLocations()
             } catch (e: Exception) {
                 var err = Hashtable<String, String>()
@@ -123,11 +115,8 @@ class LocationViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             if(!(itemAt.isCurrent || itemAt.isSelected)){
                 try {
-                    var call = async {
-                        userCustomLocationLocalRepository.delete(itemAt)
-                        log("Custom location deleted: ${itemAt.cityName} ", LoggerType.INFO)
-                    }
-                    call.await()
+                    userCustomLocationLocalRepository.delete(itemAt)
+                    log("Custom location deleted: ${itemAt.cityName} ", LoggerType.INFO)
                     getLocations()
                 } catch (e: Exception) {
                     var err = Hashtable<String, String>()
