@@ -78,7 +78,6 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle"
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
 
-
     implementation project(path: ':core')
     implementation project(path: ':domain')
     implementation project(path: ':data')
@@ -88,8 +87,6 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
     implementation 'com.github.f0ris.sweetalert:library:1.6.2'
     implementation 'io.github.medyo:android-about-page:2.0.0'
-    implementation 'org.osmdroid:osmdroid-android:6.1.17'
-
     implementation 'com.google.android.gms:play-services-location:21.0.1'
 
     testImplementation 'junit:junit:4.13.2'

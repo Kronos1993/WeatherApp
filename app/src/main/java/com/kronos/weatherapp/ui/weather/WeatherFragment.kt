@@ -150,6 +150,16 @@ class WeatherFragment : Fragment() {
                     String.format("%.1fmm", weather?.current?.precipitationMm),
                     requireContext().resources.getDrawable(R.drawable.ic_climate_cloud_forecast)
                 ),
+                Indicator(
+                    getString(R.string.sun),
+                    String.format(requireContext().getString(R.string.sunrise_sunset), currentDayForecast!!.astro.sunrise,currentDayForecast!!.astro.sunset),
+                    requireContext().resources.getDrawable(R.drawable.ic_sun_sunrise)
+                ),
+                Indicator(
+                    getString(R.string.visibility),
+                    String.format(requireContext().getString(R.string.visibility_km), currentDayForecast!!.day.avgvisKm.toString()),
+                    requireContext().resources.getDrawable(R.drawable.ic_visibility)
+                )
             )
             viewModel.indicatorAdapter.get()?.submitList(indicator)
             viewModel.indicatorAdapter.get()
@@ -175,7 +185,6 @@ class WeatherFragment : Fragment() {
         }
     }
 
-
     private fun initViews() {
         logger.write(this::class.java.name,LoggerType.INFO,"Fragment Weather View Ini")
 
@@ -200,7 +209,7 @@ class WeatherFragment : Fragment() {
         viewModel.dailyWeatherAdapter.get()?.setUrlProvider(viewModel.urlProvider)
         binding.recyclerViewWeatherByDay.adapter = viewModel.dailyWeatherAdapter.get()
 
-        binding.recyclerViewIndicator.layoutManager = GridLayoutManager(context, 4)
+        binding.recyclerViewIndicator.layoutManager = GridLayoutManager(context, 3)
         binding.recyclerViewIndicator.setHasFixedSize(false)
         if (viewModel.indicatorAdapter.get() == null)
             viewModel.indicatorAdapter = WeakReference(IndicatorAdapter())

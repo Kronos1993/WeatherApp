@@ -53,7 +53,12 @@ buildscript {
     repositories {
         google()
         mavenCentral()
-        maven { url "https://jitpack.io" }
+        maven {
+            url "https://jitpack.io"
+        }
+        maven {
+            url 'https://microsoftmaps.jfrog.io/artifactory/Maven/'
+        }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:8.1.2'

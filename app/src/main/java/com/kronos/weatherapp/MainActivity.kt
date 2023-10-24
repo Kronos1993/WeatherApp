@@ -3,14 +3,13 @@ package com.kronos.weatherapp
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.kronos.core.extensions.binding.activityBinding
 import com.kronos.core.util.validatePermission
 import com.kronos.weatherapp.databinding.ActivityMainBinding
