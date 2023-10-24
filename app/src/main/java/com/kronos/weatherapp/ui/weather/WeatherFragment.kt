@@ -133,7 +133,7 @@ class WeatherFragment : Fragment() {
                         R.string.speed_km,
                         weather.current?.windSpeedKph.toString()
                     ),
-                    requireContext().resources.getDrawable(R.drawable.ic_blowing_climate_forecast)
+                    requireContext().resources.getDrawable(R.drawable.ic_wind)
                 ),
                 Indicator(
                     getString(R.string.humidity),
@@ -143,13 +143,21 @@ class WeatherFragment : Fragment() {
                 Indicator(
                     getString(R.string.uv_index),
                     weather?.current?.uv.toString(),
-                    requireContext().resources.getDrawable(R.drawable.ic_day_forecast_hot)
+                    requireContext().resources.getDrawable(R.drawable.ic_uv_index)
                 ),
-                Indicator(
-                    getString(R.string.rain),
-                    String.format("%.1fmm", weather?.current?.precipitationMm),
-                    requireContext().resources.getDrawable(R.drawable.ic_climate_cloud_forecast)
-                ),
+                if (currentDayForecast!!.day.dailyWillItSnow){
+                    Indicator(
+                        getString(R.string.snow),
+                        String.format("%.1fcm",currentDayForecast!!.day.totalsnowCm),
+                        requireContext().resources.getDrawable(R.drawable.ic_snow)
+                    )
+                }else{
+                    Indicator(
+                        getString(R.string.rain),
+                        String.format("%.1fmm", weather?.current?.precipitationMm),
+                        requireContext().resources.getDrawable(R.drawable.ic_rain)
+                    )
+                },
                 Indicator(
                     getString(R.string.sun),
                     String.format(requireContext().getString(R.string.sunrise_sunset), currentDayForecast!!.astro.sunrise,currentDayForecast!!.astro.sunset),

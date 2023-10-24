@@ -14,7 +14,8 @@ import java.util.*
 
 @BindingAdapter("handle_location_name")
 fun handleLocationName(view: TextView, current: Location?) = view.run {
-    text = "${current?.country}/${current?.name}"
+    if (current!=null)
+        text = context.getString(R.string.location_name, current!!.country, current!!.name)
 }
 
 
@@ -31,13 +32,14 @@ fun handleTemp(view: TextView, temp: Double?) = view.run {
 
 @BindingAdapter("handle_temp_feels_like")
 fun handleTempFeelsLike(view: TextView, current: CurrentWeather?) = view.run {
-    text =
-        String.format(view.context.getString(R.string.feels_like_temp_celsius, current?.feelslikeC.toString()))
+    if (current!=null)
+        text = String.format(view.context.getString(R.string.feels_like_temp_celsius, current!!.feelslikeC.toString()))
 }
 
 @BindingAdapter("handle_speed")
 fun handleSpeed(view: TextView, current: CurrentWeather?) = view.run {
-    text = String.format(view.context.getString(R.string.speed_km, current?.windSpeedKph.toString()))
+    if (current!=null)
+        text = String.format(view.context.getString(R.string.speed_km, current?.windSpeedKph.toString()))
 }
 
 @BindingAdapter("handle_humidity")

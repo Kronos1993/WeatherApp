@@ -25,6 +25,7 @@
     <string name="humidity">Humidity</string>
     <string name="uv_index">UV Index</string>
     <string name="rain">Rain</string>
+    <string name="snow">Snow</string>
     <string name="sun">Sun</string>
     <string name="sunrise_sunset">Rise %s\nSet %s</string>
     <string name="visibility">Visibility</string>
@@ -36,5 +37,6 @@
 
     <string name="notification_title">%s° | %s</string>
     <string name="notification_details">%s. Feels like %s°C</string>
+    <string name="location_name">%1$s/%2$s</string>
 
 </resources>
