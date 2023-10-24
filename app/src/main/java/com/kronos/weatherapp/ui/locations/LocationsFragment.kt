@@ -117,7 +117,7 @@ class LocationsFragment : Fragment() {
 
     private fun handleLocations(list: List<UserCustomLocation>?) {
         viewModel.userLocationAdapter.get()?.submitList(list)
-        viewModel.userLocationAdapter.get()?.notifyItemRangeChanged(0,list!!.size)
+        viewModel.userLocationAdapter.get()?.notifyItemRangeChanged(0,viewModel.userLocationAdapter.get()!!.itemCount)
     }
 
     private fun initViews() {
