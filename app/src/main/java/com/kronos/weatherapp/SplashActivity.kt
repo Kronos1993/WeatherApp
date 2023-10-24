@@ -122,7 +122,6 @@ class SplashActivity : AppCompatActivity() {
 
     private fun init() {
         logger.write(this::class.java.name, LoggerType.INFO,"Splash activity timer run")
-        (application as WeatherApp).scheduleJob(applicationContext, 7200000L)
         Handler(Looper.getMainLooper()).postDelayed({
             navigate(this, MainActivity::class.java)
             finish()

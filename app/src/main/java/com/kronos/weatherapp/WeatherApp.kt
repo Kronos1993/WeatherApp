@@ -33,7 +33,7 @@ class WeatherApp:Application(){
         super.onCreate()
         try {
             createNotificationChanel()
-            //scheduleJob(applicationContext, 3600000L)
+            scheduleJob(applicationContext, 7200000L)
             exceptionHandler.init(this)
             logger.configure()
         }catch (e:Exception){
@@ -54,7 +54,7 @@ class WeatherApp:Application(){
         }
     }
 
-    fun scheduleJob(context: Context, periodic: Long) {
+    private fun scheduleJob(context: Context, periodic: Long) {
         try {
             val componentName = ComponentName(context, WeatherNotificationJob::class.java)
             var jobInfo: JobInfo? = null
