@@ -136,7 +136,7 @@ class LocationsFragment : Fragment() {
         })
 
         val itemTouchHelperCallback: ItemTouchHelper.Callback = object :
-            ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
+            ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT) {
             override fun onMove(
                 recyclerView: RecyclerView,
                 viewHolder: RecyclerView.ViewHolder,
@@ -146,18 +146,9 @@ class LocationsFragment : Fragment() {
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                when (direction) {
-                    ItemTouchHelper.LEFT -> {
-                        viewModel.deleteLocation(
-                            viewModel.userLocationAdapter.get()!!.getItemAt(viewHolder.adapterPosition)
-                        )
-                    }
-                    ItemTouchHelper.RIGHT -> {
-                        viewModel.deleteLocation(
-                            viewModel.userLocationAdapter.get()!!.getItemAt(viewHolder.adapterPosition)
-                        )
-                    }
-                }
+                viewModel.deleteLocation(
+                    viewModel.userLocationAdapter.get()!!.getItemAt(viewHolder.adapterPosition)
+                )
             }
         }
 
@@ -184,7 +175,7 @@ class LocationsFragment : Fragment() {
                     )
                 ),
                 itemTouchHelperCallback,
-                ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
+                ItemTouchHelper.LEFT
             )
         )
         itemTouchHelper.attachToRecyclerView(binding.recyclerViewLocations)

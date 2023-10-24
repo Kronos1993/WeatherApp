@@ -20,7 +20,8 @@ fun handleLocationName(view: TextView, current: Location?) = view.run {
 
 @BindingAdapter("handle_temp")
 fun handleTemp(view: TextView, current: CurrentWeather?) = view.run {
-    text = String.format(view.context.getString(R.string.temp_celsius, current?.tempC.toString()))
+    if (current!=null)
+        text = String.format(view.context.getString(R.string.temp_celsius, current?.tempC.toString()))
 }
 
 @BindingAdapter("handle_temp")
@@ -102,5 +103,12 @@ fun showOnlyHour(view: TextView, time: String?) = view.run {
     if(time!=null){
         var date = Date().of(time,true)?.getHour()
         view.text = date
+    }
+}
+
+@BindingAdapter("handle_text")
+fun handleText(view: TextView, text: String?) = view.run {
+    if(text!=null){
+        view.text = text
     }
 }
