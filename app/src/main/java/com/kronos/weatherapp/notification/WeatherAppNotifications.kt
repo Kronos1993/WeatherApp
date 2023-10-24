@@ -6,6 +6,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -24,7 +25,8 @@ class WeatherAppNotifications @Inject constructor() : INotifications {
         group: String,
         notificationsId: NotificationType,
         iconDrawable: Int,
-        context: Context
+        context: Context,
+        notificationImage:Bitmap?
     ) {
         if (ActivityCompat.checkSelfPermission(context,Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
             var intent = Intent(context, MainActivity::class.java)
@@ -49,6 +51,7 @@ class WeatherAppNotifications @Inject constructor() : INotifications {
                             description.toCharArray().size / 2
                         )
                     )
+                    .setLargeIcon(notificationImage)
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                     .setCategory(NotificationCompat.CATEGORY_MESSAGE)
                     .setGroup(group)

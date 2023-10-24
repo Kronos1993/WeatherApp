@@ -2,6 +2,7 @@ package com.kronos.weatherapp.job
 
 import android.app.job.JobParameters
 import android.app.job.JobService
+import android.graphics.BitmapFactory
 import android.util.Log
 import com.kronos.core.extensions.formatDate
 import com.kronos.core.notification.INotifications
@@ -21,6 +22,7 @@ import com.kronos.weatherapp.widget.WeatherWidgetProvider
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
+import java.net.URL
 import java.util.*
 import javax.inject.Inject
 
@@ -121,7 +123,8 @@ class WeatherNotificationJob : JobService() {
                     NotificationGroup.GENERAL.name,
                     NotificationType.WEATHER_STATUS,
                     R.drawable.ic_weather_app_icon,
-                    applicationContext
+                    applicationContext,
+                    BitmapFactory.decodeStream(URL("https:${response.data!!.current.condition.icon}").openConnection().getInputStream())
                 )
             }
             updateWidget(applicationContext, WeatherWidgetProvider::class.java)
