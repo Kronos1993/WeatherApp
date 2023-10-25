@@ -21,7 +21,8 @@ import javax.inject.Inject
 class WeatherAppNotifications @Inject constructor() : INotifications {
     override fun createNotification(
         title: String,
-        description: String,
+        shortDescription:String,
+        longDescription: String,
         group: String,
         notificationsId: NotificationType,
         iconDrawable: Int,
@@ -42,15 +43,10 @@ class WeatherAppNotifications @Inject constructor() : INotifications {
                     .setContentTitle(title)
                     .setStyle(
                         NotificationCompat.BigTextStyle()
-                            .bigText(description)
+                            .bigText(longDescription)
                             .setBigContentTitle(title)
                     )
-                    .setContentText(
-                        description.substring(
-                            0,
-                            description.toCharArray().size / 2
-                        )
-                    )
+                    .setContentText(shortDescription)
                     .setLargeIcon(notificationImage)
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                     .setCategory(NotificationCompat.CATEGORY_MESSAGE)

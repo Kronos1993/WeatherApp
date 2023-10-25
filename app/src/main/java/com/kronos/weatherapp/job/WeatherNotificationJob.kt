@@ -115,10 +115,18 @@ class WeatherNotificationJob : JobService() {
             if (response.data != null) {
                 notification.createNotification(
                     applicationContext.getString(R.string.notification_title).format(response.data!!.current.tempC,response.data!!.location.region),
-                    applicationContext.getString(R.string.notification_details)
+                    applicationContext.getString(R.string.notification_short_details)
                         .format(
                             response.data!!.current.condition.description,
                             response.data!!.current.feelslikeC
+                        ),
+                    applicationContext.getString(R.string.notification_long_details)
+                        .format(
+                            response.data!!.current.condition.description,
+                            response.data!!.current.feelslikeC,
+                            response.data!!.forecast.forecastDay[0].day.mintempC.toString(),
+                            response.data!!.forecast.forecastDay[0].day.maxtempC.toString(),
+                            response.data!!.forecast.forecastDay[0].day.dailyChanceOfRain.toString()
                         ),
                     NotificationGroup.GENERAL.name,
                     NotificationType.WEATHER_STATUS,
