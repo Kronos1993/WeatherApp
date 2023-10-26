@@ -35,6 +35,8 @@ class WeatherApp:Application(){
     override fun onCreate() {
         super.onCreate()
         try {
+            if (PreferencesUtil.getPreference(applicationContext,getString(R.string.default_lang_key),"").isNullOrEmpty())
+                PreferencesUtil.setPreference(applicationContext,getString(R.string.default_lang_key),Locale.getDefault().language)
             createNotificationChanel()
             scheduleJob(applicationContext, 7200000L)
             exceptionHandler.init(this)
