@@ -92,16 +92,16 @@ class WeatherNotificationJob : JobService() {
                     response = weatherRemoteRepository.getWeatherDataForecast(
                         currentCity!!.lat!!,
                         currentCity!!.lon!!,
-                        applicationContext.resources.getString(R.string.default_language_value),
+                        PreferencesUtil.getPreference(applicationContext,applicationContext.getString(R.string.default_lang_key),applicationContext.getString(R.string.default_language_value))!!,
                         applicationContext.resources.getString(R.string.api_key),
-                        applicationContext.resources.getString(R.string.default_days_values).toInt()
+                        PreferencesUtil.getPreference(applicationContext,application.getString(R.string.default_days_key),applicationContext.resources.getString(R.string.default_days_values))!!.toInt()
                     )
                 }else{
                     response = weatherRemoteRepository.getWeatherDataForecast(
                         currentCity!!.cityName,
-                        applicationContext.resources.getString(R.string.default_language_value),
+                        PreferencesUtil.getPreference(applicationContext,applicationContext.getString(R.string.default_lang_key),applicationContext.getString(R.string.default_language_value))!!,
                         applicationContext.resources.getString(R.string.api_key),
-                        applicationContext.resources.getString(R.string.default_days_values).toInt()
+                        PreferencesUtil.getPreference(applicationContext,application.getString(R.string.default_days_key),applicationContext.resources.getString(R.string.default_days_values))!!.toInt()
                     )
                 }
             }else{

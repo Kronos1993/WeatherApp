@@ -165,7 +165,7 @@ class WeatherWidgetProvider @Inject constructor() : AppWidgetProvider() {
                     remoteViews.setTextViewText(
                         R.id.widget_text_view_location,
                         "${response.data!!.location.name} ${
-                            Date().of(response.data!!.location.localtime,true)!!.formatDate("dd/MM/yy hh:mm aa")
+                            Date().of(response.data!!.location.localtime,true)!!.formatDate("dd-MM hh:mm aa")
                         }"
                     )
                     remoteViews.setTextViewText(
