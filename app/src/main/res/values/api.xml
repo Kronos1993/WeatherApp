@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="api_key">7e068f83abce49b58b2142037230910</string>
-    <string name="default_language">es</string>
-    <integer name="default_days">7</integer>
+    <string name="default_language_value">en</string>
+    <string name="default_days_values">3</string>
+    <string name="default_city_value">Panama</string>
 </resources>

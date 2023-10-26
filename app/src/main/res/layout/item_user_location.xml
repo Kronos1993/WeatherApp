@@ -27,9 +27,22 @@
                 android:layout_height="match_parent"
                 android:text="@{userLocation.cityName}"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/image_view_selected"
+                app:layout_constraintEnd_toStartOf="@+id/text_view_location_gps"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/text_view_location_gps"
+                style="@style/Widget.TextView.TextViewSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="GPS"
+                app:handle_visibility="@{userLocation.current}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/image_view_selected"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/image_view_selected"

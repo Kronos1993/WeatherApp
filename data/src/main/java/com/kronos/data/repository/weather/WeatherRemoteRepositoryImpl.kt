@@ -33,4 +33,20 @@ class WeatherRemoteRepositoryImpl @Inject constructor(
         )
     }
 
+    override suspend fun getWeatherDataForecast(
+        lat: Double,
+        lon: Double,
+        lang: String,
+        apiKey: String,
+        days: Int
+    ): Response<Forecast> {
+        return weatherRemoteDataSource.weatherForecast(
+            lat,
+            lon,
+            lang,
+            apiKey,
+            days
+        )
+    }
+
 }

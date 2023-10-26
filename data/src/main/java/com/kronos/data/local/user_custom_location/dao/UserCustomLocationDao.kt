@@ -17,6 +17,9 @@ interface UserCustomLocationDao {
     @Query("SELECT * FROM USER_CUSTOM_LOCATION WHERE IS_SELECTED = 1")
     suspend fun getSelectedLocation(): UserCustomLocationEntity?
 
+    @Query("UPDATE USER_CUSTOM_LOCATION SET IS_SELECTED = 0 WHERE IS_SELECTED = 1")
+    suspend fun cleanSelectedLocation()
+
     @Delete
     suspend fun deleteEvent(userCustomLocationEntity: UserCustomLocationEntity)
 

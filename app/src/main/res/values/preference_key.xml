@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="default_city_key" translatable="false">default_city</string>
+    <string name="default_lang_key" translatable="false">default_lang</string>
+    <string name="default_days_key" translatable="false">default_days</string>
+</resources>

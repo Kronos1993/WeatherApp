@@ -15,7 +15,26 @@
         android:id="@+id/navigation_location"
         android:name="com.kronos.weatherapp.ui.locations.LocationsFragment"
         android:label="@string/title_location"
-        tools:layout="@layout/fragment_location" />
+        tools:layout="@layout/fragment_location" >
+        <action
+            android:id="@+id/action_navigation_location_to_navigation_add_location"
+            app:destination="@id/navigation_add_location" />
+    </fragment>
+
+    <dialog
+        android:id="@+id/navigation_add_location"
+        android:name="com.kronos.weatherapp.ui.locations.add.AddLocationDialogFragment"
+        android:label="@string/title_add_location"
+        tools:layout="@layout/fragment_add_location_dialog" >
+        <action
+            android:id="@+id/action_navigation_add_location_to_navigation_location"
+            app:destination="@id/navigation_location" />
+    </dialog>
+
+    <fragment
+        android:id="@+id/navigation_settings"
+        android:name="com.kronos.weatherapp.ui.settings.SettingsFragment"
+        android:label="@string/title_settings"/>
 
     <fragment
         android:id="@+id/navigation_about"

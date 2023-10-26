@@ -6,18 +6,23 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.gms.location.LocationServices
+import com.kronos.core.adapters.AdapterItemClickListener
 import com.kronos.core.adapters.SwipeToDelete
 import com.kronos.core.extensions.binding.fragmentBinding
 import com.kronos.core.extensions.isToday
 import com.kronos.core.extensions.of
 import com.kronos.core.util.LoadingDialog
+import com.kronos.core.util.PreferencesUtil
+import com.kronos.core.util.setLanguageForApp
 import com.kronos.core.util.show
 import com.kronos.domian.model.DailyForecast
 import com.kronos.domian.model.Hour
@@ -38,22 +43,32 @@ class LocationsFragment : Fragment() {
 
     private val binding by fragmentBinding<FragmentLocationBinding>(R.layout.fragment_location)
 
-    private val viewModel by viewModels<LocationViewModel>()
+    private val viewModel by activityViewModels<LocationViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ) = binding.run {
+        setLanguageForApp(requireContext(),
+            PreferencesUtil.getPreference(requireContext(),requireContext().getString(R.string.default_lang_key),requireContext().getString(R.string.default_language_value))!!)
         lifecycleOwner = this@LocationsFragment.viewLifecycleOwner
+        viewModel = this@LocationsFragment.viewModel
+        root
+    }
+
+    override fun onResume() {
+        super.onResume()
         initViewModel()
         initViews()
         setListeners()
         observeViewModel()
-        root
     }
 
     private fun setListeners() {
+        binding.addLocations.setOnClickListener{
+            findNavController().navigate(R.id.action_navigation_location_to_navigation_add_location)
+        }
     }
 
     private fun observeViewModel() {
@@ -106,7 +121,7 @@ class LocationsFragment : Fragment() {
 
     private fun handleLocations(list: List<UserCustomLocation>?) {
         viewModel.userLocationAdapter.get()?.submitList(list)
-        viewModel.userLocationAdapter.get()?.notifyDataSetChanged()
+        viewModel.userLocationAdapter.get()?.notifyItemRangeChanged(0,viewModel.userLocationAdapter.get()!!.itemCount)
     }
 
     private fun initViews() {
@@ -116,8 +131,16 @@ class LocationsFragment : Fragment() {
             viewModel.userLocationAdapter = WeakReference(UserLocationAdapter())
         binding.recyclerViewLocations.adapter = viewModel.userLocationAdapter.get()
 
+        viewModel.userLocationAdapter.get()?.setAdapterItemClick(object :
+            AdapterItemClickListener<UserCustomLocation> {
+            override fun onItemClick(t: UserCustomLocation, pos: Int) {
+                viewModel.setLocationSelected(t)
+            }
+
+        })
+
         val itemTouchHelperCallback: ItemTouchHelper.Callback = object :
-            ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
+            ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT) {
             override fun onMove(
                 recyclerView: RecyclerView,
                 viewHolder: RecyclerView.ViewHolder,
@@ -127,18 +150,9 @@ class LocationsFragment : Fragment() {
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                when (direction) {
-                    ItemTouchHelper.LEFT -> {
-                        viewModel.deleteLocation(
-                            viewModel.userLocationAdapter.get()!!.getItemAt(viewHolder.adapterPosition)
-                        )
-                    }
-                    ItemTouchHelper.RIGHT -> {
-                        viewModel.deleteLocation(
-                            viewModel.userLocationAdapter.get()!!.getItemAt(viewHolder.adapterPosition)
-                        )
-                    }
-                }
+                viewModel.deleteLocation(
+                    viewModel.userLocationAdapter.get()!!.getItemAt(viewHolder.adapterPosition)
+                )
             }
         }
 
@@ -165,7 +179,7 @@ class LocationsFragment : Fragment() {
                     )
                 ),
                 itemTouchHelperCallback,
-                ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
+                ItemTouchHelper.LEFT
             )
         )
         itemTouchHelper.attachToRecyclerView(binding.recyclerViewLocations)
@@ -173,17 +187,17 @@ class LocationsFragment : Fragment() {
     }
 
     private fun initViewModel() {
+        viewModel.postDate(Date())
         viewModel.getLocations()
     }
 
     override fun onDestroyView() {
-        viewModel.destroy()
         binding.unbind()
         super.onDestroyView()
     }
 
     override fun onPause() {
-        binding.unbind()
+        viewModel.destroy()
         super.onPause()
     }
 

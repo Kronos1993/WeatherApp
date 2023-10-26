@@ -1,16 +1,18 @@
 package com.kronos.weatherapp
 
 import android.Manifest
+import android.content.pm.PackageManager
 import android.os.Bundle
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.kronos.core.extensions.binding.activityBinding
+import com.kronos.core.util.PreferencesUtil
+import com.kronos.core.util.setLanguageForApp
 import com.kronos.core.util.validatePermission
 import com.kronos.weatherapp.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -26,7 +28,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        setLanguageForApp(baseContext,PreferencesUtil.getPreference(applicationContext,applicationContext.getString(R.string.default_lang_key),applicationContext.getString(R.string.default_language_value))!!)
         binding.run {
             lifecycleOwner = this@MainActivity
             setContentView(root)
@@ -42,12 +44,16 @@ class MainActivity : AppCompatActivity() {
             ) && validatePermission(
                 this,
                 Manifest.permission.ACCESS_COARSE_LOCATION
+            ) && validatePermission(
+                this,
+                Manifest.permission.POST_NOTIFICATIONS
             )
         if (!grantedAll) {
             ActivityCompat.requestPermissions(
                 this, arrayOf(
                     Manifest.permission.ACCESS_FINE_LOCATION,
-                    Manifest.permission.ACCESS_COARSE_LOCATION
+                    Manifest.permission.ACCESS_COARSE_LOCATION,
+                    Manifest.permission.POST_NOTIFICATIONS
                 ),
                 1
             )
@@ -68,6 +74,24 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)*/
         navView.setupWithNavController(navController)
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String?>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        var grantedPermissions = true
+        for (grantResult in grantResults) {
+            grantedPermissions =
+                grantedPermissions and (grantResult == PackageManager.PERMISSION_GRANTED)
+        }
+        if (grantedPermissions) {
+            init()
+        } else {
+            finish()
+        }
     }
 
 }

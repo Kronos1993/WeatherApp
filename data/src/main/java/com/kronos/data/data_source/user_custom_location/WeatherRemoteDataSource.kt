@@ -19,4 +19,12 @@ interface WeatherRemoteDataSource {
         days: Int = 1
     ): Response<Forecast>
 
+    suspend fun weatherForecast(
+        lat: Double,
+        lon: Double,
+        lang: String,
+        apiKey: String,
+        days: Int = 1
+    ): Response<Forecast>
+
 }

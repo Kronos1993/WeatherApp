@@ -10,10 +10,15 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.kronos.core.extensions.binding.activityBinding
+import com.kronos.core.util.PreferencesUtil
 import com.kronos.core.util.navigate
+import com.kronos.core.util.setLanguageForApp
 import com.kronos.core.util.validatePermission
+import com.kronos.logger.LoggerType
+import com.kronos.logger.interfaces.ILogger
 import com.kronos.weatherapp.databinding.ActivitySplashBinding
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class SplashActivity : AppCompatActivity() {
@@ -22,12 +27,17 @@ class SplashActivity : AppCompatActivity() {
     private var grantedAll = false
     private var grantedFullStorage = false
 
+    @Inject
+    lateinit var logger: ILogger
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setLanguageForApp(baseContext,PreferencesUtil.getPreference(applicationContext,applicationContext.getString(R.string.default_lang_key),applicationContext.getString(R.string.default_language_value))!!)
         binding.run {
             lifecycleOwner = this@SplashActivity
             setContentView(root)
             checkFullStorageAccess()
+            logger.write(this::class.java.name, LoggerType.INFO,"Splash activity Initialized")
         }
     }
 
@@ -49,17 +59,20 @@ class SplashActivity : AppCompatActivity() {
                 1
             )
         } else {
+            logger.write(this::class.java.name, LoggerType.INFO,"Permission checked")
             init()
         }
     }
 
     private fun checkFullStorageAccess() {
+        logger.write(this::class.java.name, LoggerType.INFO,"Checking storage permission")
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             grantedFullStorage = Environment.isExternalStorageManager()
             if (!grantedFullStorage) {
-                MaterialAlertDialogBuilder(this)
-                    .setMessage(getString(R.string.permission_dialog_message))
-                    .setTitle(getString(R.string.permission_dialog_title))
+                MaterialAlertDialogBuilder(this,R.style.Widget_AlertDialog_RoundShapeTheme)
+                    .setTitle(R.string.permission_dialog_title)
+                    .setMessage(R.string.permission_dialog_message)
                     .setPositiveButton(R.string.ok) { dialogInterface, _ ->
                         com.kronos.core.util.startActivityForResult(
                             this,
@@ -72,8 +85,7 @@ class SplashActivity : AppCompatActivity() {
                         dialogInterface.dismiss()
                         finish()
                     }
-                    .create()
-                    .show()
+                    .create().show();
             }else{
                 init()
             }
@@ -94,6 +106,7 @@ class SplashActivity : AppCompatActivity() {
                 grantedPermissions and (grantResult == PackageManager.PERMISSION_GRANTED)
         }
         if (grantedPermissions) {
+            logger.write(this::class.java.name, LoggerType.INFO,"Permission granted")
             init()
         } else {
             finish()
@@ -110,10 +123,11 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private fun init() {
+        logger.write(this::class.java.name, LoggerType.INFO,"Splash activity timer run")
         Handler(Looper.getMainLooper()).postDelayed({
             navigate(this, MainActivity::class.java)
             finish()
-        }, 3000)
+        }, 300)
     }
 
 

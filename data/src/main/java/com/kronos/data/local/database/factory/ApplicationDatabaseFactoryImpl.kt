@@ -13,21 +13,24 @@ import javax.inject.Inject
 class ApplicationDatabaseFactoryImpl @Inject constructor(
     @ApplicationContext private val appContext: Context,
     @InternalDbPersistenceOptions private val persistenceOptions: PersistenceOptions
-) :
-    LocalDatabaseFactory {
+) : LocalDatabaseFactory {
 
-    var localDatabase: ApplicationDatabase? = null
+    private var localDatabase: ApplicationDatabase? = null
 
     override fun loadLocalDatabase(): ApplicationDatabase? {
-        return if (localDatabase != null && localDatabase!!.isOpen) {
-            localDatabase
-        } else {
-            localDatabase = RoomDatabaseLoader.createLocalDatabase(
-                appContext,
-                persistenceOptions,
-                "weather_user_location.db"
-            )
-            localDatabase
+        try{
+            if (localDatabase != null && localDatabase!!.isOpen && !localDatabase!!.openHelper.writableDatabase.isOpen) {
+                localDatabase
+            } else {
+                localDatabase = RoomDatabaseLoader.createLocalDatabase(
+                    appContext,
+                    persistenceOptions,
+                    "weather_user_location.db"
+                )
+            }
+        }catch (e:Exception){
+            localDatabase = null
         }
+        return localDatabase
     }
 }

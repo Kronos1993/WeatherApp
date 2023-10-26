@@ -1,5 +1,9 @@
 apply from: "../kronos_base.gradle"
 
+android{
+    namespace 'com.kronos.domain'
+}
+
 dependencies {
 
 }

@@ -5,8 +5,8 @@ import java.io.Serializable
 data class Day(
     val maxtempC: Double,
     val maxtempF: Double,
-    val mempC: Double,
-    val mempF: Double,
+    val mintempC: Double,
+    val mintempF: Double,
     val avgtempC: Double,
     val avgtempF: Double,
     val maxwindMph: Double,
