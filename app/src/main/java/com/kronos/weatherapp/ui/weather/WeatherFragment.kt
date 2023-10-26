@@ -190,7 +190,7 @@ class WeatherFragment : Fragment() {
             viewModel.dailyWeatherAdapter.get()
                 ?.notifyItemRangeChanged(0, viewModel.dailyWeatherAdapter.get()!!.itemCount)
             Glide.with(requireContext())
-                .load(viewModel.urlProvider.getImageUrl(weather.current.condition.icon))
+                .load(viewModel.urlProvider.getImageUrl(weather.current.condition.icon,PreferencesUtil.getPreference(requireContext(),requireContext().getString(R.string.default_image_quality_key),requireContext().getString(R.string.default_image_quality_value))!!))
                 .into(binding.imageCurrentWeather)
 
             viewModel.loading.postValue(false)

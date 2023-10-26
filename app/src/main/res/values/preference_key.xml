@@ -3,4 +3,5 @@
     <string name="default_city_key" translatable="false">default_city</string>
     <string name="default_lang_key" translatable="false">default_lang</string>
     <string name="default_days_key" translatable="false">default_days</string>
+    <string name="default_image_quality_key" translatable="false">default_image_quality</string>
 </resources>

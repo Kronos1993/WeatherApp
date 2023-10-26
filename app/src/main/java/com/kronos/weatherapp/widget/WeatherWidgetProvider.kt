@@ -129,7 +129,7 @@ class WeatherWidgetProvider @Inject constructor() : AppWidgetProvider() {
                                     R.id.widget_text_view_day_1,
                                     getDay(context, list[i-1])
                                 )
-                                var urlCondition1 = URL(urlProvider.getImageUrl(list[i-1].day.condition.icon))
+                                var urlCondition1 = URL(urlProvider.getImageUrl(list[i-1].day.condition.icon,PreferencesUtil.getPreference(context,context.getString(R.string.default_image_quality_key),context.getString(R.string.default_image_quality_value))!!))
                                 val bmp1 =
                                     BitmapFactory.decodeStream(urlCondition1.openConnection().getInputStream())
                                 remoteViews.setImageViewBitmap(R.id.widget_image_view_day_1, bmp1)
@@ -138,7 +138,7 @@ class WeatherWidgetProvider @Inject constructor() : AppWidgetProvider() {
                                     R.id.widget_text_view_day_2,
                                     getDay(context, list[i-1])
                                 )
-                                var urlCondition2 = URL(urlProvider.getImageUrl(list[i-1].day.condition.icon))
+                                var urlCondition2 = URL(urlProvider.getImageUrl(list[i-1].day.condition.icon,PreferencesUtil.getPreference(context,context.getString(R.string.default_image_quality_key),context.getString(R.string.default_image_quality_value))!!))
                                 val bmp2 =
                                     BitmapFactory.decodeStream(urlCondition2.openConnection().getInputStream())
                                 remoteViews.setImageViewBitmap(R.id.widget_image_view_day_2, bmp2)
@@ -147,7 +147,7 @@ class WeatherWidgetProvider @Inject constructor() : AppWidgetProvider() {
                                     R.id.widget_text_view_day_3,
                                     getDay(context, list[i-1])
                                 )
-                                var urlCondition3 = URL(urlProvider.getImageUrl(list[i-1].day.condition.icon))
+                                var urlCondition3 = URL(urlProvider.getImageUrl(list[i-1].day.condition.icon,PreferencesUtil.getPreference(context,context.getString(R.string.default_image_quality_key),context.getString(R.string.default_image_quality_value))!!))
                                 val bmp3 =
                                     BitmapFactory.decodeStream(urlCondition3.openConnection().getInputStream())
                                 remoteViews.setImageViewBitmap(R.id.widget_image_view_day_3, bmp3)
@@ -158,7 +158,7 @@ class WeatherWidgetProvider @Inject constructor() : AppWidgetProvider() {
                     }
 
                     var urlCondition =
-                        URL(urlProvider.getImageUrl(response.data!!.current.condition.icon))
+                        URL(urlProvider.getImageUrl(response.data!!.current.condition.icon,PreferencesUtil.getPreference(context,context.getString(R.string.default_image_quality_key),context.getString(R.string.default_image_quality_value))!!))
                     val bmp = BitmapFactory.decodeStream(urlCondition.openConnection().getInputStream())
                     remoteViews.setImageViewBitmap(R.id.widget_image_view_current, bmp)
 

@@ -4,6 +4,7 @@
     <string name="app_city_header">Select default city</string>
     <string name="app_language_header">Select default language</string>
     <string name="app_days_header">Select default days</string>
+    <string name="app_image_quality_header">Select image quality</string>
 
 
     <string name="setting_city_summary">Select the default city to show when there is no city selected or save</string>
@@ -33,6 +34,23 @@
         <item>3</item>
         <!--<item>7</item>
         <item>14</item>
+        <item>21</item>-->
+    </string-array>
+    <!-- End preferences values days -->
+
+    <!-- Preferences values days -->
+    <string name="setting_image_quality_summary">Select the image quality to show</string>
+    <string-array name="image_quality_entries">
+        <item>Low</item>
+        <item>Medium</item>
+        <!--<item>14 days</item>
+        <item>21 days</item>-->
+    </string-array>
+
+    <string-array name="image_quality_values">
+        <item>low</item>
+        <item>medium</item>
+        <!--<item>14</item>
         <item>21</item>-->
     </string-array>
     <!-- End preferences values days -->

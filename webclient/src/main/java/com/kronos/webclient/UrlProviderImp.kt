@@ -12,8 +12,8 @@ class UrlProviderImp @Inject constructor(
         return UrlConstants.SERVER_URL
     }
 
-    override fun getImageUrl(partUrl: String): String {
-        return "${UrlConstants.HTTP + partUrl}"
+    override fun getImageUrl(partUrl: String,quality:String): String {
+        return "${UrlConstants.HTTP + if (quality == "low") partUrl else partUrl.replace("64x64","128x128")}"
     }
 
     override fun extractIdFromUrl(url: String): Int {
