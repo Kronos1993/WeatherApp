@@ -11,6 +11,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.kronos.core.extensions.binding.fragmentBinding
+import com.kronos.core.util.PreferencesUtil
+import com.kronos.core.util.setLanguageForApp
 import com.kronos.domian.model.UserCustomLocation
 import com.kronos.weatherapp.R
 import com.kronos.weatherapp.databinding.FragmentAddLocationDialogBinding
@@ -30,6 +32,8 @@ class AddLocationDialogFragment : BottomSheetDialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ) = binding.run {
+        setLanguageForApp(requireContext(),
+            PreferencesUtil.getPreference(requireContext(),requireContext().getString(R.string.default_lang_key),requireContext().getString(R.string.default_language_value))!!)
         viewModel = this@AddLocationDialogFragment.locationViewModel
         lifecycleOwner = this@AddLocationDialogFragment.viewLifecycleOwner
         setListeners()

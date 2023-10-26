@@ -11,6 +11,8 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.kronos.core.extensions.binding.activityBinding
+import com.kronos.core.util.PreferencesUtil
+import com.kronos.core.util.setLanguageForApp
 import com.kronos.core.util.validatePermission
 import com.kronos.weatherapp.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -26,7 +28,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        setLanguageForApp(baseContext,PreferencesUtil.getPreference(applicationContext,applicationContext.getString(R.string.default_lang_key),applicationContext.getString(R.string.default_language_value))!!)
         binding.run {
             lifecycleOwner = this@MainActivity
             setContentView(root)

@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.kronos.core.extensions.binding.fragmentBinding
+import com.kronos.core.util.PreferencesUtil
+import com.kronos.core.util.setLanguageForApp
 import com.kronos.weatherapp.R
 import com.kronos.weatherapp.databinding.FragmentAboutBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -24,6 +26,8 @@ class AboutFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        setLanguageForApp(requireContext(),
+            PreferencesUtil.getPreference(requireContext(),requireContext().getString(R.string.default_lang_key),requireContext().getString(R.string.default_language_value))!!)
         return AboutPage(requireContext())
             .isRTL(false)
             .setImage(R.drawable.ic_weather_app_icon)

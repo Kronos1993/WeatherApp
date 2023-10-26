@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Preference Titles -->
+    <string name="app_city_header">Selecione la ciudad</string>
+    <string name="app_language_header">Selecione el idioma</string>
+    <string name="app_days_header">Seleccione los días</string>
+
+
+    <string name="setting_city_summary">Selecciones la ciudad a consultar si no hay ninguna seleccionada o guardada</string>
+    <!-- Preferences values languages -->
+    <string name="setting_language_summary">Seleccione el lenguaje por defecto para mostrar los resultados del api</string>
+    <string-array name="language_entries">
+        <item>Inglés</item>
+        <item>Español</item>
+    </string-array>
+
+    <!-- End preferences values languages -->
+
+    <!-- Preferences values days -->
+    <string name="setting_days_summary">Seleccione la cantidad de días a futuro para mostrar</string>
+    <string-array name="days_entries">
+        <item>3 días</item>
+        <!--<item>7 days</item>
+        <item>14 days</item>
+        <item>21 days</item>-->
+    </string-array>
+    <!-- End preferences values days -->
+
+</resources>

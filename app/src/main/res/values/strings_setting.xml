@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="default_city_key">default_city</string>
-    <string name="default_lang_key">default_lang</string>
-    <string name="default_days_key">default_days</string>
-
     <!-- Preference Titles -->
     <string name="app_city_header">Select default city</string>
     <string name="app_language_header">Select default language</string>

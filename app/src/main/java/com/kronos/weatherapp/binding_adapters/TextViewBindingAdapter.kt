@@ -2,9 +2,11 @@ package com.kronos.weatherapp.binding_adapters
 
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
+import com.kronos.core.extensions.capitalizeFirstLetter
 import com.kronos.core.extensions.getHour
 import com.kronos.core.extensions.isToday
 import com.kronos.core.extensions.of
+import com.kronos.core.util.PreferencesUtil
 import com.kronos.domian.model.CurrentWeather
 import com.kronos.domian.model.DailyForecast
 import com.kronos.domian.model.Location
@@ -61,7 +63,10 @@ fun handleUV(view: TextView, uv: Int?) = view.run {
 fun showOnlyHour(view: TextView, current: Location?) = view.run {
     if(current!=null){
         val date = Date().of(current.localtime,true)
-        val dateFormat = SimpleDateFormat("EEE MMM d | h:mm aa", Locale.US)
+        val dateFormat = if (PreferencesUtil.getPreference(context,context.getString(R.string.default_lang_key),context.getString(R.string.default_language_value))!! == "en")
+            SimpleDateFormat("EEE MMM d | h:mm aa", Locale.US)
+        else
+            SimpleDateFormat("EEE MMM d | h:mm aa")
         var stringDate = ""
         try{
             stringDate = dateFormat.format(date)
@@ -84,17 +89,21 @@ fun handleDay(view: TextView, current: DailyForecast?) = view.run {
         if (calendar.get(Calendar.YEAR) == today.get(Calendar.YEAR) &&
             calendar.get(Calendar.DAY_OF_YEAR) == today.get(Calendar.DAY_OF_YEAR)
         ) {
-            view.text = "Today"
+            view.text = context.getString(R.string.today)
         } else {
             today.add(Calendar.DAY_OF_YEAR, 1)
             if (calendar.get(Calendar.YEAR) == today.get(Calendar.YEAR) &&
                 calendar.get(Calendar.DAY_OF_YEAR) == today.get(Calendar.DAY_OF_YEAR)
             ) {
-                view.text = "Tomorrow"
+                view.text = context.getString(R.string.tomorrow)
             } else {
                 //val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
-                val dayOfWeekString = SimpleDateFormat("EEEE", Locale.US).format(calendar.time)
-                view.text = dayOfWeekString
+                val dayOfWeekString = if (PreferencesUtil.getPreference(context,context.getString(R.string.default_lang_key),context.getString(R.string.default_language_value))!! == "en")
+                 SimpleDateFormat("EEEE",Locale.US).format(calendar.time)
+                else
+                    SimpleDateFormat("EEEE").format(calendar.time)
+
+                view.text = dayOfWeekString.capitalizeFirstLetter()
             }
         }
     }

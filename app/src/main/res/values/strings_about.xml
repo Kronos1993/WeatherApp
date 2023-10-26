@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_description">WeatherApp es una aplicación de pronóstico del tiempo que utiliza WeatherAPI para proporcionar información sobre el clima actual y pronósticos de la semana. Se almacenan los datos de las ubicaciones definidas por el usuario y utiliza el GPS del dispositivo para determinar la ubicación actual y mostrar el clima correspondiente.</string>
+    <string name="app_description">WeatherApp is a weather forecasting application that uses WeatherAPI to provide current weather information and weekly forecasts. It stores data from user-defined locations and uses the device\'s GPS to determine the current location and display the corresponding weather.</string>
     <string name="programmer_group">Programmer Info</string>
     <string name="menu_about">About</string>
     <string name="app_data_group">App Version</string>

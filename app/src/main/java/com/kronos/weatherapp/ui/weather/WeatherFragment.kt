@@ -14,6 +14,8 @@ import com.kronos.core.adapters.AdapterItemClickListener
 import com.kronos.core.extensions.binding.fragmentBinding
 import com.kronos.core.extensions.isToday
 import com.kronos.core.extensions.of
+import com.kronos.core.util.PreferencesUtil
+import com.kronos.core.util.setLanguageForApp
 import com.kronos.core.util.show
 import com.kronos.core.util.updateWidget
 import com.kronos.domian.model.DailyForecast
@@ -45,6 +47,8 @@ class WeatherFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ) = binding.run {
+        setLanguageForApp(requireContext(),
+            PreferencesUtil.getPreference(requireContext(),requireContext().getString(R.string.default_lang_key),requireContext().getString(R.string.default_language_value))!!)
         viewModel = this@WeatherFragment.viewModel
         lifecycleOwner = this@WeatherFragment.viewLifecycleOwner
         root

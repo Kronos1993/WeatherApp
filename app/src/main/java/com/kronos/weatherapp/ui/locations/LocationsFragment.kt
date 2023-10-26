@@ -21,6 +21,8 @@ import com.kronos.core.extensions.binding.fragmentBinding
 import com.kronos.core.extensions.isToday
 import com.kronos.core.extensions.of
 import com.kronos.core.util.LoadingDialog
+import com.kronos.core.util.PreferencesUtil
+import com.kronos.core.util.setLanguageForApp
 import com.kronos.core.util.show
 import com.kronos.domian.model.DailyForecast
 import com.kronos.domian.model.Hour
@@ -48,6 +50,8 @@ class LocationsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ) = binding.run {
+        setLanguageForApp(requireContext(),
+            PreferencesUtil.getPreference(requireContext(),requireContext().getString(R.string.default_lang_key),requireContext().getString(R.string.default_language_value))!!)
         lifecycleOwner = this@LocationsFragment.viewLifecycleOwner
         viewModel = this@LocationsFragment.viewModel
         root

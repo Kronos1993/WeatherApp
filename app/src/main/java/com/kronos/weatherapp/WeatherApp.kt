@@ -8,16 +8,19 @@ import android.app.job.JobScheduler
 import android.app.job.JobService
 import android.content.ComponentName
 import android.content.Context
+import android.content.res.Configuration
 import android.os.Build
 import android.util.Log
+import com.kronos.core.util.PreferencesUtil
 import com.kronos.logger.LoggerType
 import com.kronos.logger.exception.ExceptionHandler
 import com.kronos.logger.interfaces.ILogger
 import com.kronos.weatherapp.job.WeatherNotificationJob
 import com.kronos.weatherapp.job.notificationJobId
-import com.kronos.weatherapp.notification.WeatherAppNotifications
 import dagger.hilt.android.HiltAndroidApp
+import java.util.Locale
 import javax.inject.Inject
+
 
 const val TAG = "WeatherApp"
 const val NOTIFICATION_CHANNEL = "WEATHER_APP_NOTIFICATION_CHANNEL"

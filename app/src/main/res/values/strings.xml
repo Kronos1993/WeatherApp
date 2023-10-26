@@ -39,5 +39,7 @@
     <string name="notification_short_details">%s. Feels like %s°C</string>
     <string name="notification_long_details">%s\nFeels like %s°C\nTemp min %s°C - max %s°C\nRain possibility %s%%</string>
     <string name="location_name">%1$s/%2$s</string>
+    <string name="tomorrow">Tomorrow</string>
+    <string name="today">Today</string>
 
 </resources>
