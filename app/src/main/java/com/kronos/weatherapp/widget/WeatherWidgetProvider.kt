@@ -10,6 +10,8 @@ import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.view.View
 import android.widget.RemoteViews
+import com.kronos.core.extensions.capitalizeFirstLetter
+import com.kronos.core.extensions.formatDate
 import com.kronos.core.extensions.isToday
 import com.kronos.core.extensions.of
 import com.kronos.core.extensions.transformDateToTodayOrYesterday
@@ -31,8 +33,6 @@ import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
 import kotlin.collections.ArrayList
-
-
 @AndroidEntryPoint
 class WeatherWidgetProvider @Inject constructor() : AppWidgetProvider() {
 
@@ -127,7 +127,7 @@ class WeatherWidgetProvider @Inject constructor() : AppWidgetProvider() {
                             if(i==1){
                                 remoteViews.setTextViewText(
                                     R.id.widget_text_view_day_1,
-                                    getDay(list[i-1])
+                                    getDay(context, list[i-1])
                                 )
                                 var urlCondition1 = URL(urlProvider.getImageUrl(list[i-1].day.condition.icon))
                                 val bmp1 =
@@ -136,7 +136,7 @@ class WeatherWidgetProvider @Inject constructor() : AppWidgetProvider() {
                             }else if (i==2){
                                 remoteViews.setTextViewText(
                                     R.id.widget_text_view_day_2,
-                                    getDay(list[i-1])
+                                    getDay(context, list[i-1])
                                 )
                                 var urlCondition2 = URL(urlProvider.getImageUrl(list[i-1].day.condition.icon))
                                 val bmp2 =
@@ -145,7 +145,7 @@ class WeatherWidgetProvider @Inject constructor() : AppWidgetProvider() {
                             }else if (i==3){
                                 remoteViews.setTextViewText(
                                     R.id.widget_text_view_day_3,
-                                    getDay(list[i-1])
+                                    getDay(context, list[i-1])
                                 )
                                 var urlCondition3 = URL(urlProvider.getImageUrl(list[i-1].day.condition.icon))
                                 val bmp3 =
@@ -165,9 +165,7 @@ class WeatherWidgetProvider @Inject constructor() : AppWidgetProvider() {
                     remoteViews.setTextViewText(
                         R.id.widget_text_view_location,
                         "${response.data!!.location.name} ${
-                            Date().transformDateToTodayOrYesterday(
-                                response.data!!.location.localtime
-                            )
+                            Date().of(response.data!!.location.localtime,true)!!.formatDate("dd/MM/yy hh:mm aa")
                         }"
                     )
                     remoteViews.setTextViewText(
@@ -213,7 +211,7 @@ class WeatherWidgetProvider @Inject constructor() : AppWidgetProvider() {
         appWidgetManager.updateAppWidget(appWidgetId, views)
     }
 
-    private fun getDay(current: DailyForecast?): String {
+    private fun getDay(context:Context,current: DailyForecast?): String {
         var day = ""
         if (current != null) {
             val date = Date().of(current.date)
@@ -225,21 +223,24 @@ class WeatherWidgetProvider @Inject constructor() : AppWidgetProvider() {
             if (calendar.get(Calendar.YEAR) == today.get(Calendar.YEAR) &&
                 calendar.get(Calendar.DAY_OF_YEAR) == today.get(Calendar.DAY_OF_YEAR)
             ) {
-                day = "Today"
+                day = context.getString(R.string.today)
             } else {
                 today.add(Calendar.DAY_OF_YEAR, 1)
                 day = if (calendar.get(Calendar.YEAR) == today.get(Calendar.YEAR) &&
                     calendar.get(Calendar.DAY_OF_YEAR) == today.get(Calendar.DAY_OF_YEAR)
                 ) {
-                    "Tomorrow"
+                    context.getString(R.string.tomorrow)
                 } else {
                     //val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
-                    val dayOfWeekString = SimpleDateFormat("EEEE", Locale.US).format(calendar.time)
+                    val dayOfWeekString = if (PreferencesUtil.getPreference(context,context.getString(R.string.default_lang_key),context.getString(R.string.default_language_value))!! == "en")
+                        SimpleDateFormat("EEEE",Locale.US).format(calendar.time)
+                    else
+                        SimpleDateFormat("EEEE").format(calendar.time)
                     dayOfWeekString
                 }
             }
         }
-        return day
+        return day.capitalizeFirstLetter()
     }
 
 }
