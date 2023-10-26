@@ -24,6 +24,15 @@
         <item name="android:activityCloseExitAnimation">@anim/slide_out_right</item>
     </style>
 
+    <style name="Widget.AlertDialog.RoundShapeTheme" parent="Theme.MaterialComponents.Dialog.Alert">
+        <item name="shapeAppearanceMediumComponent">@style/Widget.AlertDialog.RoundShapeAppearance</item>
+    </style>
+
+    <style name="Widget.AlertDialog.RoundShapeAppearance" parent="ShapeAppearance.MaterialComponents.MediumComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">16dp</item>
+    </style>
+
     <style name="SpinnerSolid" parent="Widget.AppCompat.Spinner">
         <!--<item name="android:background">@drawable/rounded_text_view_stroke</item>-->
         <item name="android:layout_marginStart">@dimen/margin_8</item>

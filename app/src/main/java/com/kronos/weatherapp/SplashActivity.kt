@@ -70,9 +70,9 @@ class SplashActivity : AppCompatActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             grantedFullStorage = Environment.isExternalStorageManager()
             if (!grantedFullStorage) {
-                MaterialAlertDialogBuilder(this)
-                    .setMessage(getString(R.string.permission_dialog_message))
-                    .setTitle(getString(R.string.permission_dialog_title))
+                MaterialAlertDialogBuilder(this,R.style.Widget_AlertDialog_RoundShapeTheme)
+                    .setTitle(R.string.permission_dialog_title)
+                    .setMessage(R.string.permission_dialog_message)
                     .setPositiveButton(R.string.ok) { dialogInterface, _ ->
                         com.kronos.core.util.startActivityForResult(
                             this,
@@ -85,8 +85,7 @@ class SplashActivity : AppCompatActivity() {
                         dialogInterface.dismiss()
                         finish()
                     }
-                    .create()
-                    .show()
+                    .create().show();
             }else{
                 init()
             }

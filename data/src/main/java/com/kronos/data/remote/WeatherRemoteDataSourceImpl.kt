@@ -34,7 +34,7 @@ class WeatherRemoteDataSourceImpl @Inject constructor(
                 e.printStackTrace()
                 Response<CurrentForecast>(null, e, listOf(e.message.toString()), code = 500)
             }
-        Log.e(this::javaClass.name, "response: $result")
+        Log.i(this::javaClass.name, "response: $result")
         return result
     }
 
@@ -59,7 +59,7 @@ class WeatherRemoteDataSourceImpl @Inject constructor(
                 e.printStackTrace()
                 Response<Forecast>(null, e, listOf(e.message.toString()), code = 500)
             }
-        Log.e(this::javaClass.name, "response: $result")
+        Log.i(this::javaClass.name, "response: $result")
         return result
     }
 
@@ -85,7 +85,7 @@ class WeatherRemoteDataSourceImpl @Inject constructor(
                 e.printStackTrace()
                 Response<Forecast>(null, e, listOf(e.message.toString()), code = 500)
             }
-        Log.e(this::javaClass.name, "response: $result")
+        Log.i(this::javaClass.name, "response: $result")
         return result
     }
 
