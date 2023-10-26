@@ -95,16 +95,16 @@ class WeatherWidgetProvider @Inject constructor() : AppWidgetProvider() {
                         response = weatherRemoteRepository.getWeatherDataForecast(
                             currentCity.lat!!,
                             currentCity.lon!!,
-                            context.resources.getString(R.string.default_language_value),
+                            PreferencesUtil.getPreference(context,context.getString(R.string.default_lang_key),context.getString(R.string.default_language_value))!!,
                             context.resources.getString(R.string.api_key),
-                            context.resources.getString(R.string.default_days_values).toInt()
+                            PreferencesUtil.getPreference(context,context.getString(R.string.default_days_key),context.resources.getString(R.string.default_days_values))!!.toInt()
                         )
                     }else{
                         response = weatherRemoteRepository.getWeatherDataForecast(
                             currentCity.cityName,
-                            context.resources.getString(R.string.default_language_value),
+                            PreferencesUtil.getPreference(context,context.getString(R.string.default_lang_key),context.getString(R.string.default_language_value))!!,
                             context.resources.getString(R.string.api_key),
-                            context.resources.getString(R.string.default_days_values).toInt()
+                            PreferencesUtil.getPreference(context,context.getString(R.string.default_days_key),context.resources.getString(R.string.default_days_values))!!.toInt()
                         )
                     }
                 }else{
