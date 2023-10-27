@@ -49,7 +49,7 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:adjustViewBounds="true"
-                android:src="@drawable/ic_locations"
+                android:src="@drawable/ic_location"
                 app:handle_visibility="@{userLocation.selected}"
                 app:layout_constraintBottom_toBottomOf="@+id/text_view_location"
                 app:layout_constraintEnd_toEndOf="parent"

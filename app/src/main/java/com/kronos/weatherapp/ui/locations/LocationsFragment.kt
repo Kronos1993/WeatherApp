@@ -84,15 +84,15 @@ class LocationsFragment : Fragment() {
                 show(
                     binding.recyclerViewLocations,
                     hashtable["error"].orEmpty(),
-                    R.color.white,
-                    R.color.primary_dark
+                    com.kronos.resources.R.color.white,
+                    com.kronos.resources.R.color.primary_dark
                 )
             } else {
                 show(
                     binding.recyclerViewLocations,
                     hashtable["error"].orEmpty(),
-                    R.color.white,
-                    R.color.primary_dark
+                    com.kronos.resources.R.color.white,
+                    com.kronos.resources.R.color.primary_dark
                 )
             }
         }
@@ -104,13 +104,13 @@ class LocationsFragment : Fragment() {
                 LoadingDialog.getProgressDialog(
                     requireContext(),
                     R.string.loading_dialog_text,
-                    R.color.primary_dark
+                    com.kronos.resources.R.color.primary_dark
                 )!!.show()
             } else {
                 LoadingDialog.getProgressDialog(
                     requireContext(),
                     R.string.loading_dialog_text,
-                    R.color.primary_dark
+                    com.kronos.resources.R.color.primary_dark
                 )!!.dismiss()
             }
         }catch (e:IllegalArgumentException){
@@ -160,22 +160,22 @@ class LocationsFragment : Fragment() {
             SwipeToDelete(
                 ContextCompat.getDrawable(
                     requireContext(),
-                    R.drawable.ic_delete
+                    com.kronos.resources.R.drawable.ic_delete
                 )!!,
                 ColorDrawable(
                     ContextCompat.getColor(
                         requireContext(),
-                        R.color.delete_color
+                        com.kronos.resources.R.color.delete_color
                     )
                 ),
                 ContextCompat.getDrawable(
                     requireContext(),
-                    R.drawable.ic_delete
+                    com.kronos.resources.R.drawable.ic_delete
                 )!!,
                 ColorDrawable(
                     ContextCompat.getColor(
                         requireContext(),
-                        R.color.delete_color
+                        com.kronos.resources.R.color.delete_color
                     )
                 ),
                 itemTouchHelperCallback,

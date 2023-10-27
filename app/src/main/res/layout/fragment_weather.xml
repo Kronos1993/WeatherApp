@@ -77,7 +77,7 @@
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/text_view_temp"
-                        style="@style/Widget.TextView.TextViewHeader"
+                        style="@style/Widget.TextView.TextViewDisplay1"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:gravity="center"
@@ -106,7 +106,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        app:drawableRightCompat="@drawable/ic_locations"
+                        app:drawableRightCompat="@drawable/ic_location"
                         app:drawableTint="@color/selected_location_color"
                         app:handle_location_name="@{viewModel.weather.location}"
                         app:layout_constraintEnd_toEndOf="parent"

@@ -16,12 +16,19 @@
         <item name="cardViewStyle">@style/Widget.CardView</item>
         <item name="android:windowAnimationStyle">@style/Theme.ActivityAnimation</item>
     </style>
+<!--
 
-    <style name="Theme.ActivityAnimation" parent="@android:style/Animation.Activity">
-        <item name="android:activityOpenEnterAnimation">@anim/slide_in_right</item>
-        <item name="android:activityOpenExitAnimation">@anim/slide_out_left</item>
-        <item name="android:activityCloseEnterAnimation">@anim/slide_in_left</item>
-        <item name="android:activityCloseExitAnimation">@anim/slide_out_right</item>
+    <style name="Widget.FloatingActionButton" parent="Widget.MaterialComponents.FloatingActionButton">
+        <item name="tint">@color/icon</item>
+        <item name="android:backgroundTint">@color/primary</item>
+    </style>
+
+    <style name="Widget.ButtonRound" parent="Widget.MaterialComponents.Button">
+        <item name="cornerRadius">@dimen/radius_24</item>
+        <item name="iconTint">@color/white</item>
+        <item name="android:textColor">@color/whiteText</item>
+        <item name="android:layout_marginStart">@dimen/margin_5</item>
+        <item name="android:layout_marginEnd">@dimen/margin_5</item>
     </style>
 
     <style name="Widget.AlertDialog.RoundShapeTheme" parent="Theme.MaterialComponents.Dialog.Alert">
@@ -34,7 +41,7 @@
     </style>
 
     <style name="SpinnerSolid" parent="Widget.AppCompat.Spinner">
-        <!--<item name="android:background">@drawable/rounded_text_view_stroke</item>-->
+        &lt;!&ndash;<item name="android:background">@drawable/rounded_text_view_stroke</item>&ndash;&gt;
         <item name="android:layout_marginStart">@dimen/margin_8</item>
         <item name="android:layout_marginEnd">@dimen/margin_8</item>
         <item name="android:layout_marginTop">@dimen/margin_10</item>
@@ -93,7 +100,7 @@
         <item name="contentPadding">@dimen/margin_5</item>
     </style>
 
-    <style name="Widget.TextView.TextViewRound" parent="Theme.WeatherApp">
+    <style name="Widget.TextView.TextViewRound" parent="Widget.MaterialComponents.TextView">
         <item name="android:textColor">@color/white</item>
         <item name="android:layout_marginStart">@dimen/margin_10</item>
         <item name="android:layout_marginEnd">@dimen/margin_10</item>
@@ -104,11 +111,12 @@
         <item name="android:singleLine">true</item>
     </style>
 
-    <style name="Widget.TextView.TextViewNormal" parent="Widget.MaterialComponents.TextView">
+    <style name="Widget.TextView.TextViewDisplay1" parent="Widget.MaterialComponents.TextView">
         <item name="android:textColor">@color/whiteText</item>
         <item name="android:layout_marginStart">@dimen/margin_8</item>
         <item name="android:layout_marginEnd">@dimen/margin_8</item>
-        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Body1</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Display1</item>
+        <item name="fontFamily">@font/noto_sans_symbols_medium</item>
     </style>
 
     <style name="Widget.TextView.TextViewHeader" parent="Widget.MaterialComponents.TextView">
@@ -116,13 +124,15 @@
         <item name="android:layout_marginStart">@dimen/margin_8</item>
         <item name="android:layout_marginEnd">@dimen/margin_8</item>
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Headline</item>
+        <item name="fontFamily">@font/noto_sans_symbols_bold</item>
     </style>
 
-    <style name="Widget.TextView.TextViewSubHeader" parent="Widget.TextView.TextViewNormal">
+    <style name="Widget.TextView.TextViewSubHeader" parent="Widget.MaterialComponents.TextView">
         <item name="android:textColor">@color/whiteText</item>
         <item name="android:layout_marginStart">@dimen/margin_8</item>
         <item name="android:layout_marginEnd">@dimen/margin_8</item>
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Subhead</item>
+        <item name="fontFamily">@font/noto_sans_symbols_semi_bold</item>
     </style>
 
     <style name="Widget.TextView.TextViewSmall" parent="Widget.MaterialComponents.TextView">
@@ -130,19 +140,15 @@
         <item name="android:layout_marginStart">@dimen/margin_8</item>
         <item name="android:layout_marginEnd">@dimen/margin_8</item>
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Caption</item>
+        <item name="fontFamily">@font/noto_sans_symbols_light</item>
     </style>
 
-    <style name="Widget.FloatingActionButton" parent="Theme.WeatherApp">
-        <item name="tint">@color/icon</item>
-        <item name="android:backgroundTint">@color/primary</item>
-    </style>
-
-    <style name="Widget.ButtonRound" parent="Theme.WeatherApp">
-        <item name="cornerRadius">@dimen/radius_24</item>
-        <item name="iconTint">@color/white</item>
+    <style name="Widget.TextView.TextViewNormal" parent="Widget.MaterialComponents.TextView">
         <item name="android:textColor">@color/whiteText</item>
-        <item name="android:layout_marginStart">@dimen/margin_5</item>
-        <item name="android:layout_marginEnd">@dimen/margin_5</item>
+        <item name="android:layout_marginStart">@dimen/margin_8</item>
+        <item name="android:layout_marginEnd">@dimen/margin_8</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Body1</item>
+        <item name="fontFamily">@font/noto_sans_symbols_medium</item>
     </style>
 
     <style name="TextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
@@ -157,5 +163,6 @@
     <style name="TextInputEditText" parent="Widget.AppCompat.EditText">
         <item name="android:textColor">@color/primary_text</item>
     </style>
+-->
 
 </resources>

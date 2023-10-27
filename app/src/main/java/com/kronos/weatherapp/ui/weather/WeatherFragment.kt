@@ -86,15 +86,15 @@ class WeatherFragment : Fragment() {
                 show(
                     binding.recyclerViewWeatherByDay,
                     hashtable["error"].orEmpty(),
-                    R.color.white,
-                    R.color.primary_dark
+                    com.kronos.resources.R.color.white,
+                    com.kronos.resources.R.color.primary_dark
                 )
             } else {
                 show(
                     binding.recyclerViewWeatherByDay,
                     hashtable["error"].orEmpty(),
-                    R.color.white,
-                    R.color.primary_dark
+                    com.kronos.resources.R.color.white,
+                    com.kronos.resources.R.color.primary_dark
                 )
             }
         }
