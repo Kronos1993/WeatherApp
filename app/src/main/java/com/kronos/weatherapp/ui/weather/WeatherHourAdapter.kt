@@ -35,9 +35,10 @@ class WeatherHourAdapter : ListAdapter<Hour, WeatherHourAdapter.WeatherHourViewH
         val current = getItemAt(position)
         holder.bind(current,position)
         var context = holder.binding.imageViewCurrentWeather.context
-        Glide.with(holder.binding.imageViewCurrentWeather).load(urlProvider.getImageUrl(current.condition.icon,
-            PreferencesUtil.getPreference(context,context.getString(R.string.default_image_quality_key),context.getString(
-                R.string.default_image_quality_value))!!)).into(holder.binding.imageViewCurrentWeather)
+        Glide.with(holder.binding.imageViewCurrentWeather)
+            .load(urlProvider.getImageUrl(current.condition.icon,PreferencesUtil.getPreference(context,context.getString(R.string.default_image_quality_key),context.getString(R.string.default_image_quality_value))!!))
+            .placeholder(R.drawable.ic_weather_app_icon)
+            .into(holder.binding.imageViewCurrentWeather)
     }
 
     private fun getItemAt(adapterPosition: Int): Hour = getItem(adapterPosition)

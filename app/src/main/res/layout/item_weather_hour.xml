@@ -34,14 +34,13 @@
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/image_view_current_weather"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
                 android:gravity="center"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text_view_time"
-                app:srcCompat="@drawable/ic_info" />
+                app:layout_constraintTop_toBottomOf="@+id/text_view_time"/>
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/text_view_temp"
@@ -54,19 +53,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/image_view_current_weather" />
-
-            <!--<com.google.android.material.textview.MaterialTextView
-                android:id="@+id/text_view_rain_possibility"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                style="@style/Widget.TextView.TextViewNormal"
-                android:gravity="center"
-                android:drawableStart="@drawable/ic_climate_cloud_forecast"
-                app:handle_rain_possibility="@{hour.chanceOfRain}"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text_view_temp" />-->
-
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

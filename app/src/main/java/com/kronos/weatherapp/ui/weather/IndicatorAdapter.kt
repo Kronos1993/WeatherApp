@@ -8,6 +8,7 @@ import com.bumptech.glide.Glide
 import com.kronos.core.adapters.AdapterItemClickListener
 import com.kronos.core.adapters.diff.GeneralDiffCallback
 import com.kronos.domian.model.Hour
+import com.kronos.weatherapp.R
 import com.kronos.weatherapp.databinding.ItemIndicatorBinding
 import com.kronos.weatherapp.databinding.ItemWeatherHourBinding
 import com.kronos.weatherapp.ui.weather.model.Indicator
@@ -34,7 +35,10 @@ class IndicatorAdapter : ListAdapter<Indicator, IndicatorAdapter.IndicatorViewHo
     override fun onBindViewHolder(holder: IndicatorViewHolder, position: Int) {
         val current = getItemAt(position)
         holder.bind(current,position)
-        Glide.with(holder.binding.appCompatImageView).load(current.image).into(holder.binding.appCompatImageView)
+        Glide.with(holder.binding.appCompatImageView)
+            .load(current.image)
+            .placeholder(R.drawable.ic_weather_app_icon)
+            .into(holder.binding.appCompatImageView)
     }
 
     private fun getItemAt(adapterPosition: Int): Indicator = getItem(adapterPosition)
