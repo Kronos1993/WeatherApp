@@ -28,6 +28,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 app:handle_day="@{dailyForecast}"
+                android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/text_view_rain_possibility"
                 app:layout_constraintStart_toStartOf="parent"
@@ -40,6 +41,7 @@
                 android:layout_height="wrap_content"
                 android:drawableStart="@drawable/ic_humidity"
                 android:gravity="center"
+                android:textStyle="bold"
                 app:handle_rain_possibility="@{dailyForecast.day.dailyChanceOfRain}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/image_view_condition"
@@ -47,8 +49,8 @@
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/image_view_condition"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
+                android:layout_width="@dimen/margin_36"
+                android:layout_height="@dimen/margin_36"
                 android:adjustViewBounds="true"
                 android:layout_marginTop="@dimen/margin_5"
                 android:layout_marginBottom="@dimen/margin_5"

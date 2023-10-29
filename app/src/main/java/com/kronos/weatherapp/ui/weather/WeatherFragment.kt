@@ -253,6 +253,7 @@ class WeatherFragment : Fragment() {
 
     override fun onPause() {
         viewModel.destroy()
+        viewModel.sendNotification()
         super.onPause()
     }
 }

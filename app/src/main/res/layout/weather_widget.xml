@@ -32,7 +32,6 @@
             <TextView
                 android:id="@+id/widget_text_view_location"
                 style="@style/Widget.TextView.TextViewNormal"
-                android:fontFamily="@font/noto_sans_symbols_medium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|center_horizontal|center_vertical"
@@ -69,7 +68,6 @@
             <TextView
                 android:id="@+id/widget_text_view_temp"
                 style="@style/Widget.TextView.TextViewDisplay1"
-                android:fontFamily="@font/noto_sans_symbols_medium"
                 android:textStyle="bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -95,7 +93,6 @@
                     <TextView
                         android:id="@+id/widget_text_view_day_1"
                         style="@style/Widget.TextView.TextViewSmall"
-                        android:fontFamily="@font/noto_sans_symbols_light"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textStyle="bold"
@@ -120,7 +117,6 @@
                     <TextView
                         android:id="@+id/widget_text_view_day_2"
                         style="@style/Widget.TextView.TextViewSmall"
-                        android:fontFamily="@font/noto_sans_symbols_light"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textStyle="bold"
@@ -147,7 +143,6 @@
                     <TextView
                         android:id="@+id/widget_text_view_day_3"
                         style="@style/Widget.TextView.TextViewSmall"
-                        android:fontFamily="@font/noto_sans_symbols_light"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textStyle="bold"

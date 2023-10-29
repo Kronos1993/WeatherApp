@@ -1,6 +1,7 @@
 package com.kronos.weatherapp.ui.weather
 
 import android.content.Context
+import android.graphics.BitmapFactory
 import android.location.Geocoder
 import android.location.Location
 import android.location.LocationManager
@@ -9,6 +10,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.location.*
 import com.kronos.core.extensions.asLiveData
+import com.kronos.core.extensions.formatDate
+import com.kronos.core.notification.INotifications
+import com.kronos.core.notification.NotificationGroup
+import com.kronos.core.notification.NotificationType
 import com.kronos.core.util.PreferencesUtil
 import com.kronos.core.view_model.ParentViewModel
 import com.kronos.domian.model.Response
@@ -26,16 +31,18 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.IOException
 import java.lang.ref.WeakReference
+import java.net.URL
 import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
 class WeatherViewModel @Inject constructor(
     @ApplicationContext val context: Context,
-    private var weatherRemoteRepository: WeatherRemoteRepository,
-    private var userCustomLocationLocalRepository: UserCustomLocationLocalRepository,
-    var urlProvider: UrlProvider,
-    var logger: ILogger,
+    private val weatherRemoteRepository: WeatherRemoteRepository,
+    private val userCustomLocationLocalRepository: UserCustomLocationLocalRepository,
+    private val notification: INotifications,
+    val urlProvider: UrlProvider,
+    val logger: ILogger,
 ) : ParentViewModel() {
 
     private val _weather = MutableLiveData<Forecast?>()
@@ -290,6 +297,69 @@ class WeatherViewModel @Inject constructor(
         dailyWeatherAdapter = WeakReference(WeatherDayAdapter())
         indicatorAdapter = WeakReference(IndicatorAdapter())
         locationManager = WeakReference(null)
+    }
+
+    fun sendNotification() {
+        viewModelScope.launch(Dispatchers.IO) {
+            logger.write(
+                this::class.java.name,
+                LoggerType.INFO,
+                "Updating notification at exit on ${Date().formatDate("dd-MM-yyyy")}"
+            )
+            var currentCity = userCustomLocationLocalRepository.getSelectedLocation()
+            if (currentCity == null)
+                currentCity = userCustomLocationLocalRepository.getCurrentLocation()
+
+            var response = Response<Forecast>()
+            if (currentCity!=null){
+                if (currentCity!!.isCurrent){
+                    response = weatherRemoteRepository.getWeatherDataForecast(
+                        currentCity!!.lat!!,
+                        currentCity!!.lon!!,
+                        PreferencesUtil.getPreference(context,context.getString(R.string.default_lang_key),context.getString(R.string.default_language_value))!!,
+                        context.resources.getString(R.string.api_key),
+                        PreferencesUtil.getPreference(context,context.getString(R.string.default_days_key),context.resources.getString(R.string.default_days_values))!!.toInt()
+                    )
+                }else{
+                    response = weatherRemoteRepository.getWeatherDataForecast(
+                        currentCity!!.cityName,
+                        PreferencesUtil.getPreference(context,context.getString(R.string.default_lang_key),context.getString(R.string.default_language_value))!!,
+                        context.resources.getString(R.string.api_key),
+                        PreferencesUtil.getPreference(context,context.getString(R.string.default_days_key),context.resources.getString(R.string.default_days_values))!!.toInt()
+                    )
+                }
+            }else{
+                response = weatherRemoteRepository.getWeatherDataForecast(
+                    PreferencesUtil.getPreference(context,context.getString(R.string.default_city_key),context.getString(R.string.default_city_value))!!,
+                    PreferencesUtil.getPreference(context,context.getString(R.string.default_lang_key),context.getString(R.string.default_language_value))!!,
+                    context.resources.getString(R.string.api_key),
+                    PreferencesUtil.getPreference(context,context.getString(R.string.default_days_key),context.resources.getString(R.string.default_days_values))!!.toInt()
+                )
+            }
+            if (response.data != null) {
+                notification.createNotification(
+                    context.getString(R.string.notification_title).format(response.data!!.current.tempC,response.data!!.location.region),
+                    context.getString(R.string.notification_short_details)
+                        .format(
+                            response.data!!.current.condition.description,
+                            response.data!!.current.feelslikeC
+                        ),
+                    context.getString(R.string.notification_long_details)
+                        .format(
+                            response.data!!.current.condition.description,
+                            response.data!!.current.feelslikeC,
+                            response.data!!.forecast.forecastDay[0].day.mintempC.toString(),
+                            response.data!!.forecast.forecastDay[0].day.maxtempC.toString(),
+                            response.data!!.forecast.forecastDay[0].day.dailyChanceOfRain.toString()
+                        ),
+                    NotificationGroup.GENERAL.name,
+                    NotificationType.WEATHER_STATUS,
+                    R.drawable.ic_weather_app_icon,
+                    context,
+                    BitmapFactory.decodeStream(URL("https:${response.data!!.current.condition.icon}").openConnection().getInputStream())
+                )
+            }
+        }
     }
 
 }

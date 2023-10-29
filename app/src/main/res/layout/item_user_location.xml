@@ -46,8 +46,8 @@
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/image_view_selected"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="@dimen/margin_24"
+                android:layout_height="@dimen/margin_24"
                 android:adjustViewBounds="true"
                 android:src="@drawable/ic_location"
                 app:handle_visibility="@{userLocation.selected}"
