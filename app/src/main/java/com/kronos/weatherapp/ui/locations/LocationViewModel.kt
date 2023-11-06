@@ -152,6 +152,7 @@ class LocationViewModel @Inject constructor(
     fun destroy() {
         postLocations(listOf())
         userLocationAdapter = WeakReference(UserLocationAdapter())
+        error.postValue(Hashtable<String, String>())
     }
 
     fun deleteLocation(itemAt: UserCustomLocation) {

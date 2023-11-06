@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
@@ -69,7 +68,7 @@
                 style="@style/Widget.TextView.TextViewSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="GPS"
+                android:text="@string/gps"
                 app:handle_visibility_invisible="@{userLocation.current}"
                 app:layout_constraintBottom_toBottomOf="@+id/text_view_location"
                 app:layout_constraintEnd_toStartOf="@+id/image_view_selected"

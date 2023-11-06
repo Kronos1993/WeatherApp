@@ -4,7 +4,7 @@
     <string name="required_field">This field is required</string>
     <string name="permission_dialog_message">Access storage permission is required to save user locations</string>
     <string name="permission_dialog_title">Permissions required</string>
-    <string name="ok">Ok</string>
+    <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
 
     <string name="title_activity_main">Weather</string>
@@ -33,7 +33,7 @@
     <string name="title_add_location">Add Location</string>
     <string name="city_name">City name</string>
     <string name="add_location">Add</string>
-    <string name="cant_delete_current_location">You cant delete this location</string>
+    <string name="cant_delete_current_location">You can\'t delete this location</string>
 
     <string name="notification_title">%s° | %s</string>
     <string name="notification_short_details">%s. Feels like %s°C</string>
@@ -41,5 +41,6 @@
     <string name="location_name">%1$s/%2$s</string>
     <string name="tomorrow">Tomorrow</string>
     <string name="today">Today</string>
+    <string name="gps">GPS</string>
 
 </resources>
