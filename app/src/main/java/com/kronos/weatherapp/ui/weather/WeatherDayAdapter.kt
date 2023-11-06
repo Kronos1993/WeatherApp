@@ -35,7 +35,7 @@ class WeatherDayAdapter : ListAdapter<DailyForecast, WeatherDayAdapter.WeatherDa
     override fun onBindViewHolder(holder: WeatherDayViewHolder, position: Int) {
         val current = getItemAt(position)
         holder.bind(current,position)
-        var context = holder.binding.imageViewCondition.context
+        val context = holder.binding.imageViewCondition.context
         Glide.with(holder.binding.imageViewCondition)
             .load(urlProvider.getImageUrl(current.day.condition.icon,PreferencesUtil.getPreference(context,context.getString(R.string.default_image_quality_key),context.getString(R.string.default_image_quality_value))!!))
             .placeholder(R.drawable.ic_weather_app_icon)

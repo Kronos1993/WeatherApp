@@ -172,7 +172,7 @@ class WeatherViewModel @Inject constructor(
         val geocoder = Geocoder(context, Locale.getDefault())
         try {
             val addresses = geocoder.getFromLocation(location.latitude, location.longitude, 1)
-            if (addresses?.isNotEmpty() == true) city = addresses[0].locality
+            if (addresses?.isNotEmpty() == true) city = "${addresses[0].thoroughfare}(${addresses[0].countryCode})"
         } catch (e: IOException) {
             e.printStackTrace()
             log(e.message.toString(), LoggerType.ERROR)
@@ -284,9 +284,7 @@ class WeatherViewModel @Inject constructor(
             )
             if (selectedUserLocation.value?.id != null) {
                 userLocation.id = selectedUserLocation.value?.id!!
-                userLocation.isCurrent = selectedUserLocation.value?.isCurrent == true
             }
-
             userCustomLocationLocalRepository.saveLocation(userLocation)
         }
     }

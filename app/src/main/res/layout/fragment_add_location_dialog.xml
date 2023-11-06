@@ -19,7 +19,7 @@
             android:layout_height="match_parent"
             android:minHeight="100dp">
 
-            <ImageView
+            <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/imageView"
                 android:layout_width="24dp"
                 android:layout_height="24dp"

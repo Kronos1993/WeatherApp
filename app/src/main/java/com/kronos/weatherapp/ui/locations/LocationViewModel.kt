@@ -6,12 +6,15 @@ import androidx.databinding.Observable
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.kronos.core.extensions.asLiveData
+import com.kronos.core.util.PreferencesUtil
 import com.kronos.core.view_model.ParentViewModel
 import com.kronos.domian.model.UserCustomLocation
 import com.kronos.domian.repository.UserCustomLocationLocalRepository
+import com.kronos.domian.repository.WeatherRemoteRepository
 import com.kronos.logger.LoggerType
 import com.kronos.logger.interfaces.ILogger
 import com.kronos.weatherapp.R
+import com.kronos.webclient.UrlProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
@@ -25,6 +28,8 @@ import javax.inject.Inject
 class LocationViewModel @Inject constructor(
     @ApplicationContext val context: Context,
     private var userCustomLocationLocalRepository: UserCustomLocationLocalRepository,
+    private val weatherRemoteRepository: WeatherRemoteRepository,
+    val urlProvider: UrlProvider,
     var logger: ILogger,
 ): ParentViewModel() {
 
@@ -51,6 +56,44 @@ class LocationViewModel @Inject constructor(
             try {
                 val response = userCustomLocationLocalRepository.listAll()
                 log("Custom location: ${response.size} ", LoggerType.INFO)
+                for (location in response){
+                    var weather = if (location.isCurrent){
+                            weatherRemoteRepository.getWeatherDataForecast(
+                                location.lat!!,
+                                location.lon!!,
+                                PreferencesUtil.getPreference(
+                                    context,
+                                    context.getString(R.string.default_lang_key),
+                                    context.getString(R.string.default_language_value)
+                                )!!,
+                                context.resources.getString(R.string.api_key),
+                                PreferencesUtil.getPreference(
+                                    context,
+                                    context.getString(R.string.default_days_key),
+                                    context.getString(R.string.default_days_values)
+                                )!!.toInt()
+                            )
+                        }else{
+                        weatherRemoteRepository.getWeatherDataForecast(
+                                location.cityName,
+                                PreferencesUtil.getPreference(
+                                    context,
+                                    context.getString(R.string.default_lang_key),
+                                    context.getString(R.string.default_language_value)
+                                )!!,
+                                context.resources.getString(R.string.api_key),
+                                PreferencesUtil.getPreference(
+                                    context,
+                                    context.getString(R.string.default_days_key),
+                                    context.getString(R.string.default_days_values)
+                                )!!.toInt()
+                            )
+                        }
+                        if (weather.ex==null){
+                            location.icon = weather.data!!.current.condition.icon
+                            location.tempC = weather.data!!.current.tempC
+                        }
+                    }
                 postLocations(response)
             } catch (e: Exception) {
                 var err = Hashtable<String, String>()

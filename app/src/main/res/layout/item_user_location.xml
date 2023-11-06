@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
@@ -20,16 +21,48 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/image_view_current_forecast"
+                android:layout_width="@dimen/margin_48"
+                android:layout_height="@dimen/margin_48"
+                android:layout_margin="@dimen/margin_5"
+                android:src="@drawable/ic_weather_app_icon"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
             <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/text_view_location"
+                android:id="@+id/text_view_current_temp"
                 style="@style/Widget.TextView.TextViewHeader"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                app:handle_temp="@{userLocation.tempC}"
+                app:layout_constraintBottom_toBottomOf="@+id/image_view_current_forecast"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/image_view_current_forecast"
+                app:layout_constraintTop_toTopOf="@+id/image_view_current_forecast" />
+
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent=".6" />
+
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/text_view_location"
+                style="@style/Widget.TextView.TextViewSubHeader"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/margin_5"
+                android:ellipsize="end"
+                android:maxLines="1"
                 android:text="@{userLocation.cityName}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/text_view_location_gps"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="@+id/guideline3" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/text_view_location_gps"
@@ -37,12 +70,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:text="GPS"
-                app:handle_visibility="@{userLocation.current}"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:handle_visibility_invisible="@{userLocation.current}"
+                app:layout_constraintBottom_toBottomOf="@+id/text_view_location"
                 app:layout_constraintEnd_toStartOf="@+id/image_view_selected"
-                app:layout_constraintTop_toTopOf="parent" />
-
-
+                app:layout_constraintTop_toTopOf="@+id/text_view_location" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/image_view_selected"
