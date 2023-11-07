@@ -111,7 +111,7 @@ class WeatherFragment : Fragment() {
             val hours = mutableListOf<Hour>()
             if (weather.forecast.forecastDay.isNotEmpty()) {
                 for (item in weather.forecast.forecastDay) {
-                    val date = Date().of(item.date)
+                    val date = Date().of(item.date,false,weather.location.tzId)
                     if (date != null) {
                         if (date.isToday()) {
                             currentDayForecast = item
@@ -123,7 +123,7 @@ class WeatherFragment : Fragment() {
                     currentDayForecast = weather.forecast.forecastDay[0]
                 }
                 for (item in currentDayForecast.hours) {
-                    val date = Date().of(item.time, true)
+                    val date = Date().of(item.time, true,weather.location.tzId)
                     if (date!!.after(Date())) {
                         hours.add(item)
                     }
