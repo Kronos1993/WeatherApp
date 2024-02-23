@@ -7,7 +7,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.kronos.core.adapters.AdapterItemClickListener
 import com.kronos.core.adapters.diff.GeneralDiffCallback
+import com.kronos.core.util.PreferencesUtil
 import com.kronos.domian.model.Hour
+import com.kronos.weatherapp.R
 import com.kronos.weatherapp.databinding.ItemWeatherHourBinding
 import com.kronos.webclient.UrlProvider
 
@@ -32,7 +34,11 @@ class WeatherHourAdapter : ListAdapter<Hour, WeatherHourAdapter.WeatherHourViewH
     override fun onBindViewHolder(holder: WeatherHourViewHolder, position: Int) {
         val current = getItemAt(position)
         holder.bind(current,position)
-        Glide.with(holder.binding.imageViewCurrentWeather).load(urlProvider.getImageUrl(current.condition.icon)).into(holder.binding.imageViewCurrentWeather)
+        var context = holder.binding.imageViewCurrentWeather.context
+        Glide.with(holder.binding.imageViewCurrentWeather)
+            .load(urlProvider.getImageUrl(current.condition.icon,PreferencesUtil.getPreference(context,context.getString(R.string.default_image_quality_key),context.getString(R.string.default_image_quality_value))!!))
+            .placeholder(R.drawable.ic_weather_app_icon)
+            .into(holder.binding.imageViewCurrentWeather)
     }
 
     private fun getItemAt(adapterPosition: Int): Hour = getItem(adapterPosition)

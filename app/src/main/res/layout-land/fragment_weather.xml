@@ -114,7 +114,7 @@
                         style="@style/Widget.TextView.TextViewNormal"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        app:drawableStartCompat="@drawable/ic_locations"
+                        app:drawableStartCompat="@drawable/ic_location"
                         app:drawableTint="@color/selected_location_color"
                         app:handle_location_name="@{viewModel.weather.location}"
                         app:layout_constraintBottom_toTopOf="@+id/guideline2"

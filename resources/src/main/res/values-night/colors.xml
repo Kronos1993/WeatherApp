@@ -28,5 +28,6 @@
     <color name="backgroundCardColor">#331866</color>
     <color name="backgroundColor">#212121</color>
     <color name="my_location_icon_color">#EF9A9A</color>
+    <color name="text_input_box_stroke_color">#757575</color>
 
 </resources>

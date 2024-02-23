@@ -86,15 +86,15 @@ class WeatherFragment : Fragment() {
                 show(
                     binding.recyclerViewWeatherByDay,
                     hashtable["error"].orEmpty(),
-                    R.color.white,
-                    R.color.primary_dark
+                    com.kronos.resources.R.color.white,
+                    com.kronos.resources.R.color.primary_dark
                 )
             } else {
                 show(
                     binding.recyclerViewWeatherByDay,
                     hashtable["error"].orEmpty(),
-                    R.color.white,
-                    R.color.primary_dark
+                    com.kronos.resources.R.color.white,
+                    com.kronos.resources.R.color.primary_dark
                 )
             }
         }
@@ -111,7 +111,7 @@ class WeatherFragment : Fragment() {
             val hours = mutableListOf<Hour>()
             if (weather.forecast.forecastDay.isNotEmpty()) {
                 for (item in weather.forecast.forecastDay) {
-                    val date = Date().of(item.date)
+                    val date = Date().of(item.date,false,weather.location.tzId)
                     if (date != null) {
                         if (date.isToday()) {
                             currentDayForecast = item
@@ -123,7 +123,7 @@ class WeatherFragment : Fragment() {
                     currentDayForecast = weather.forecast.forecastDay[0]
                 }
                 for (item in currentDayForecast.hours) {
-                    val date = Date().of(item.time, true)
+                    val date = Date().of(item.time, true,weather.location.tzId)
                     if (date!!.after(Date())) {
                         hours.add(item)
                     }
@@ -190,7 +190,8 @@ class WeatherFragment : Fragment() {
             viewModel.dailyWeatherAdapter.get()
                 ?.notifyItemRangeChanged(0, viewModel.dailyWeatherAdapter.get()!!.itemCount)
             Glide.with(requireContext())
-                .load(viewModel.urlProvider.getImageUrl(weather.current.condition.icon))
+                .load(viewModel.urlProvider.getImageUrl(weather.current.condition.icon,PreferencesUtil.getPreference(requireContext(),requireContext().getString(R.string.default_image_quality_key),requireContext().getString(R.string.default_image_quality_value))!!))
+                .placeholder(R.drawable.ic_weather_app_icon)
                 .into(binding.imageCurrentWeather)
 
             viewModel.loading.postValue(false)
@@ -252,6 +253,7 @@ class WeatherFragment : Fragment() {
 
     override fun onPause() {
         viewModel.destroy()
+        viewModel.sendNotification()
         super.onPause()
     }
 }

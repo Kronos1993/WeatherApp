@@ -3,7 +3,11 @@ package com.kronos.weatherapp
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.os.*
+import android.os.Build
+import android.os.Bundle
+import android.os.Environment
+import android.os.Handler
+import android.os.Looper
 import android.provider.Settings
 import androidx.annotation.Nullable
 import androidx.appcompat.app.AppCompatActivity
@@ -70,7 +74,7 @@ class SplashActivity : AppCompatActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             grantedFullStorage = Environment.isExternalStorageManager()
             if (!grantedFullStorage) {
-                MaterialAlertDialogBuilder(this,R.style.Widget_AlertDialog_RoundShapeTheme)
+                MaterialAlertDialogBuilder(this, com.kronos.resources.R.style.Widget_AlertDialog_RoundShapeTheme)
                     .setTitle(R.string.permission_dialog_title)
                     .setMessage(R.string.permission_dialog_message)
                     .setPositiveButton(R.string.ok) { dialogInterface, _ ->

@@ -7,7 +7,7 @@
         app:summary="@string/setting_city_summary">
 
         <EditTextPreference
-            app:defaultValue="Panama"
+            app:defaultValue="@string/default_city_value"
             app:key="@string/default_city_key"
             app:title="@string/app_city_header"
             app:useSimpleSummaryProvider="true" />
@@ -20,7 +20,7 @@
         app:icon="@drawable/ic_language"
         app:summary="@string/setting_language_summary">
         <ListPreference
-            app:defaultValue="en"
+            app:defaultValue="@string/default_language_value"
             app:entries="@array/language_entries"
             app:entryValues="@array/language_values"
             app:key="@string/default_lang_key"
@@ -34,11 +34,25 @@
         app:icon="@drawable/ic_day"
         app:summary="@string/setting_days_summary">
         <ListPreference
-            app:defaultValue="7"
+            app:defaultValue="@string/default_days_values"
             app:entries="@array/days_entries"
             app:entryValues="@array/days_values"
             app:key="@string/default_days_key"
             app:title="@string/app_days_header"
+            app:useSimpleSummaryProvider="true" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:title="@string/app_image_quality_header"
+        app:iconSpaceReserved="false"
+        app:icon="@drawable/ic_image"
+        app:summary="@string/setting_image_quality_summary">
+        <ListPreference
+            app:defaultValue="@string/default_image_quality_value"
+            app:entries="@array/image_quality_entries"
+            app:entryValues="@array/image_quality_values"
+            app:key="@string/default_image_quality_key"
+            app:title="@string/app_image_quality_header"
             app:useSimpleSummaryProvider="true" />
     </PreferenceCategory>
 

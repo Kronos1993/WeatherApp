@@ -36,8 +36,8 @@ class AboutFragment : Fragment() {
             .addEmail("mguerral1993@gmail.com", "Email")
             .addGitHub("Kronos1993","GitHub")
             .addGroup(getString(R.string.app_data_group))
-            .addItem(Element(getAppVersion(), R.drawable.ic_info))
-            .addItem(Element(getCopyRight(), R.drawable.ic_copyright))
+            .addItem(Element(getAppVersion(), com.kronos.resources.R.drawable.ic_info))
+            .addItem(Element(getCopyRight(), com.kronos.resources.R.drawable.ic_copyright))
             .create()
     }
 

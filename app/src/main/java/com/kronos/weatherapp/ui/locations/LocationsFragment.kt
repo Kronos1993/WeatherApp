@@ -84,15 +84,15 @@ class LocationsFragment : Fragment() {
                 show(
                     binding.recyclerViewLocations,
                     hashtable["error"].orEmpty(),
-                    R.color.white,
-                    R.color.primary_dark
+                    com.kronos.resources.R.color.white,
+                    com.kronos.resources.R.color.primary_dark
                 )
             } else {
                 show(
                     binding.recyclerViewLocations,
                     hashtable["error"].orEmpty(),
-                    R.color.white,
-                    R.color.primary_dark
+                    com.kronos.resources.R.color.white,
+                    com.kronos.resources.R.color.primary_dark
                 )
             }
         }
@@ -104,13 +104,13 @@ class LocationsFragment : Fragment() {
                 LoadingDialog.getProgressDialog(
                     requireContext(),
                     R.string.loading_dialog_text,
-                    R.color.primary_dark
+                    com.kronos.resources.R.color.primary_dark
                 )!!.show()
             } else {
                 LoadingDialog.getProgressDialog(
                     requireContext(),
                     R.string.loading_dialog_text,
-                    R.color.primary_dark
+                    com.kronos.resources.R.color.primary_dark
                 )!!.dismiss()
             }
         }catch (e:IllegalArgumentException){
@@ -125,12 +125,12 @@ class LocationsFragment : Fragment() {
     }
 
     private fun initViews() {
-        binding.recyclerViewLocations.layoutManager = LinearLayoutManager(context)
+        binding.recyclerViewLocations.layoutManager = GridLayoutManager(context,2)
         binding.recyclerViewLocations.setHasFixedSize(false)
         if (viewModel.userLocationAdapter.get() == null)
             viewModel.userLocationAdapter = WeakReference(UserLocationAdapter())
         binding.recyclerViewLocations.adapter = viewModel.userLocationAdapter.get()
-
+        viewModel.userLocationAdapter.get()?.setUrlProvider(viewModel.urlProvider)
         viewModel.userLocationAdapter.get()?.setAdapterItemClick(object :
             AdapterItemClickListener<UserCustomLocation> {
             override fun onItemClick(t: UserCustomLocation, pos: Int) {
@@ -140,7 +140,7 @@ class LocationsFragment : Fragment() {
         })
 
         val itemTouchHelperCallback: ItemTouchHelper.Callback = object :
-            ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT) {
+            ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.RIGHT) {
             override fun onMove(
                 recyclerView: RecyclerView,
                 viewHolder: RecyclerView.ViewHolder,
@@ -160,26 +160,26 @@ class LocationsFragment : Fragment() {
             SwipeToDelete(
                 ContextCompat.getDrawable(
                     requireContext(),
-                    R.drawable.ic_delete
+                    com.kronos.resources.R.drawable.ic_delete
                 )!!,
                 ColorDrawable(
                     ContextCompat.getColor(
                         requireContext(),
-                        R.color.delete_color
+                        com.kronos.resources.R.color.delete_color
                     )
                 ),
                 ContextCompat.getDrawable(
                     requireContext(),
-                    R.drawable.ic_delete
+                    com.kronos.resources.R.drawable.ic_delete
                 )!!,
                 ColorDrawable(
                     ContextCompat.getColor(
                         requireContext(),
-                        R.color.delete_color
+                        com.kronos.resources.R.color.delete_color
                     )
                 ),
                 itemTouchHelperCallback,
-                ItemTouchHelper.LEFT
+                ItemTouchHelper.RIGHT
             )
         )
         itemTouchHelper.attachToRecyclerView(binding.recyclerViewLocations)

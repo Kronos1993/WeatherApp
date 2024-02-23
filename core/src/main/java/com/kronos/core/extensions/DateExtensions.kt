@@ -33,7 +33,7 @@ fun Date.isToday(): Boolean {
 
 }
 
-fun Date.of(value: String, includeHours: Boolean = false): Date? {
+fun Date.of(value: String,includeHours: Boolean = false,timezone:String? = null): Date? {
     var date: Date? = null
     val dateFormat = if (!includeHours) {
         SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
@@ -42,8 +42,10 @@ fun Date.of(value: String, includeHours: Boolean = false): Date? {
     }
 
     try {
+        if (timezone != null) {
+            dateFormat.timeZone = TimeZone.getTimeZone(timezone!!)
+        }
         val currentDate = dateFormat.parse(value)
-
         if (currentDate != null) {
             date = currentDate
         }

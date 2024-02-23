@@ -13,7 +13,6 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.kronos.core.extensions.binding.fragmentBinding
 import com.kronos.core.util.PreferencesUtil
 import com.kronos.core.util.setLanguageForApp
-import com.kronos.domian.model.UserCustomLocation
 import com.kronos.weatherapp.R
 import com.kronos.weatherapp.databinding.FragmentAddLocationDialogBinding
 import com.kronos.weatherapp.ui.locations.LocationViewModel
@@ -72,7 +71,7 @@ class AddLocationDialogFragment : BottomSheetDialogFragment() {
     private fun hideDialog() {
         lifecycleScope.launch {
             withContext(Dispatchers.Main) {
-                findNavController().navigate(R.id.action_navigation_add_location_to_navigation_location)
+                findNavController().navigateUp()
             }
         }
     }

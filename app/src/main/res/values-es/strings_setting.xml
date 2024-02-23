@@ -4,6 +4,7 @@
     <string name="app_city_header">Selecione la ciudad</string>
     <string name="app_language_header">Selecione el idioma</string>
     <string name="app_days_header">Seleccione los días</string>
+    <string name="app_image_quality_header">Selecione la calidad de imagen</string>
 
 
     <string name="setting_city_summary">Selecciones la ciudad a consultar si no hay ninguna seleccionada o guardada</string>
@@ -25,5 +26,13 @@
         <item>21 days</item>-->
     </string-array>
     <!-- End preferences values days -->
+
+    <string name="setting_image_quality_summary">Selecione la calidad de imagen a cargar</string>
+    <string-array name="image_quality_entries">
+        <item>Baja</item>
+        <item>Media</item>
+        <!--<item>14 days</item>
+        <item>21 days</item>-->
+    </string-array>
 
 </resources>

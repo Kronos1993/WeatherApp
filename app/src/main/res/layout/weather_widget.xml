@@ -23,15 +23,15 @@
             android:weightSum="7">
 
             <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center|center_horizontal|center_vertical"
-                android:src="@drawable/ic_locations"
+                android:src="@drawable/ic_locations_widget"
                 app:tint="@color/icon" />
 
             <TextView
                 android:id="@+id/widget_text_view_location"
-                style="@style/Widget.TextView.TextViewSubHeader"
+                style="@style/Widget.TextView.TextViewNormal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|center_horizontal|center_vertical"
@@ -39,8 +39,8 @@
 
             <ImageView
                 android:id="@+id/widget_image_view_refresh"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:src="@drawable/ic_refresh"
                 app:tint="@color/icon" />
@@ -67,7 +67,7 @@
 
             <TextView
                 android:id="@+id/widget_text_view_temp"
-                style="@style/Widget.TextView.TextViewHeader"
+                style="@style/Widget.TextView.TextViewDisplay1"
                 android:textStyle="bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
