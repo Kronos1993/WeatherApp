@@ -1,9 +1,12 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- Base application theme. -->
 
     <style name="Widget.FloatingActionButton" parent="Widget.MaterialComponents.FloatingActionButton">
-        <item name="tint">@color/icon</item>
-        <item name="android:backgroundTint">@color/primary</item>
+        <item name="backgroundTint">@color/primary_dark</item>
+        <item name="colorSecondary">@color/primary_dark</item>
+        <item name="colorOnSecondary">@color/primary_dark</item>
+        <item name="colorOnSurface">@color/primary_dark</item>
+        <item name="icon">@color/white</item>
     </style>
 
     <style name="Widget.ButtonRound" parent="Widget.MaterialComponents.Button">
@@ -22,7 +25,8 @@
     </style>
 
     <style name="Widget.AlertDialog.RoundShapeTheme" parent="Theme.MaterialComponents.Dialog.Alert">
-        <item name="shapeAppearanceMediumComponent">@style/Widget.AlertDialog.RoundShapeAppearance</item>
+        <item name="shapeAppearanceMediumComponent">@style/Widget.AlertDialog.RoundShapeAppearance
+        </item>
     </style>
 
     <style name="Widget.AlertDialog.RoundShapeAppearance" parent="ShapeAppearance.MaterialComponents.MediumComponent">
@@ -137,7 +141,7 @@
 
     <style name="TextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
         <item name="boxStrokeWidth">2dp</item>
-        <item name="boxStrokeColor">@color/mtrl_textinput_default_box_stroke_color</item>
+        <item name="boxStrokeColor">@color/text_input_box_stroke_color</item>
         <item name="errorTextAppearance">@color/error_color</item>
         <item name="android:layout_marginStart">@dimen/margin_10</item>
         <item name="android:layout_marginEnd">@dimen/margin_10</item>

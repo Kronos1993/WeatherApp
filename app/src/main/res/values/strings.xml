@@ -43,4 +43,6 @@
     <string name="today">Today</string>
     <string name="gps">GPS</string>
 
+    <string name="add_location_button_content_description">Add location</string>
+
 </resources>

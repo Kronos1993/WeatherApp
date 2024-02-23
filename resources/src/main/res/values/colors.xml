@@ -27,4 +27,5 @@
     <color name="my_location_icon_color">#FD5E5E</color>
 
     <color name="black_shade_1">#292D36</color>
+    <color name="text_input_box_stroke_color">#6B000000</color>
 </resources>

@@ -43,4 +43,5 @@
     <string name="tomorrow">Mañana</string>
     <string name="gps">GPS</string>
 
+    <string name="add_location_button_content_description">Añadir ubicación</string>
 </resources>
