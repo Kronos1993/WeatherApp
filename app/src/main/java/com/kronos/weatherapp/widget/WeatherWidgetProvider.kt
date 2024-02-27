@@ -1,6 +1,5 @@
 package com.kronos.weatherapp.widget
 
-import android.app.Activity
 import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
@@ -9,7 +8,6 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.Bundle
-import android.view.View
 import android.widget.RemoteViews
 import com.kronos.core.extensions.capitalizeFirstLetter
 import com.kronos.core.extensions.formatDate
@@ -25,14 +23,15 @@ import com.kronos.logger.LoggerType
 import com.kronos.logger.interfaces.ILogger
 import com.kronos.weatherapp.MainActivity
 import com.kronos.weatherapp.R
-import com.kronos.weatherapp.SplashActivity
 import com.kronos.webclient.UrlProvider
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import java.net.URL
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Calendar
+import java.util.Date
+import java.util.Locale
 import javax.inject.Inject
 
 
@@ -57,7 +56,7 @@ class WeatherWidgetProvider @Inject constructor() : AppWidgetProvider() {
         appWidgetManager: AppWidgetManager,
         appWidgetIds: IntArray
     ) {
-        logger.write(this::class.java.name, LoggerType.INFO,"Widget on update")
+        logger.write(this::class.java.name, LoggerType.INFO, "Widget on update")
         for (appWidgetId in appWidgetIds) {
             updateAppWidget(context, appWidgetManager, appWidgetId)
         }
@@ -68,103 +67,176 @@ class WeatherWidgetProvider @Inject constructor() : AppWidgetProvider() {
         appWidgetManager: AppWidgetManager,
         appWidgetId: Int
     ) {
-        logger.write(this::class.java.name, LoggerType.INFO,"Widget on update app widget")
+        logger.write(this::class.java.name, LoggerType.INFO, "Widget on update app widget")
         val remoteViews = RemoteViews(context.packageName, R.layout.weather_widget)
         println("loading weather from on update widget")
 
         val configIntent = Intent(context, MainActivity::class.java)
-        val configPendingIntent = PendingIntent.getActivity(context, 0, configIntent, PendingIntent.FLAG_IMMUTABLE)
+        val configPendingIntent =
+            PendingIntent.getActivity(context, 0, configIntent, PendingIntent.FLAG_IMMUTABLE)
         remoteViews.setOnClickPendingIntent(R.id.widget_layout, configPendingIntent)
 
         appWidgetManager.updateAppWidget(appWidgetId, remoteViews)
     }
 
     private fun getWeather(remoteViews: RemoteViews, context: Context) {
-        logger.write(this::class.java.name, LoggerType.INFO,"Get weather widget")
+        logger.write(this::class.java.name, LoggerType.INFO, "Get weather widget")
 
         runBlocking(Dispatchers.IO) {
-            try{
+            try {
                 var currentCity = customUserCustomLocationLocalRepository.getSelectedLocation()
                 if (currentCity == null)
                     currentCity = customUserCustomLocationLocalRepository.getCurrentLocation()
 
-                var response = Response<Forecast>()
-                if (currentCity!=null){
-                    if (currentCity.isCurrent){
+                val response: Response<Forecast>
+                if (currentCity != null) {
+                    if (currentCity.isCurrent) {
                         response = weatherRemoteRepository.getWeatherDataForecast(
                             currentCity.lat!!,
                             currentCity.lon!!,
-                            PreferencesUtil.getPreference(context,context.getString(R.string.default_lang_key),context.getString(R.string.default_language_value))!!,
+                            PreferencesUtil.getPreference(
+                                context,
+                                context.getString(R.string.default_lang_key),
+                                context.getString(R.string.default_language_value)
+                            )!!,
                             context.resources.getString(R.string.api_key),
-                            PreferencesUtil.getPreference(context,context.getString(R.string.default_days_key),context.resources.getString(R.string.default_days_values))!!.toInt()
+                            PreferencesUtil.getPreference(
+                                context,
+                                context.getString(R.string.default_days_key),
+                                context.resources.getString(R.string.default_days_values)
+                            )!!.toInt()
                         )
-                    }else{
+                    } else {
                         response = weatherRemoteRepository.getWeatherDataForecast(
                             currentCity.cityName,
-                            PreferencesUtil.getPreference(context,context.getString(R.string.default_lang_key),context.getString(R.string.default_language_value))!!,
+                            PreferencesUtil.getPreference(
+                                context,
+                                context.getString(R.string.default_lang_key),
+                                context.getString(R.string.default_language_value)
+                            )!!,
                             context.resources.getString(R.string.api_key),
-                            PreferencesUtil.getPreference(context,context.getString(R.string.default_days_key),context.resources.getString(R.string.default_days_values))!!.toInt()
+                            PreferencesUtil.getPreference(
+                                context,
+                                context.getString(R.string.default_days_key),
+                                context.resources.getString(R.string.default_days_values)
+                            )!!.toInt()
                         )
                     }
-                }else{
+                } else {
                     response = weatherRemoteRepository.getWeatherDataForecast(
-                        PreferencesUtil.getPreference(context,context.getString(R.string.default_city_key),context.getString(R.string.default_city_value))!!,
-                        PreferencesUtil.getPreference(context,context.getString(R.string.default_lang_key),context.getString(R.string.default_language_value))!!,
+                        PreferencesUtil.getPreference(
+                            context,
+                            context.getString(R.string.default_city_key),
+                            context.getString(R.string.default_city_value)
+                        )!!,
+                        PreferencesUtil.getPreference(
+                            context,
+                            context.getString(R.string.default_lang_key),
+                            context.getString(R.string.default_language_value)
+                        )!!,
                         context.resources.getString(R.string.api_key),
-                        PreferencesUtil.getPreference(context,context.getString(R.string.default_days_key),context.resources.getString(R.string.default_days_values))!!.toInt()
+                        PreferencesUtil.getPreference(
+                            context,
+                            context.getString(R.string.default_days_key),
+                            context.resources.getString(R.string.default_days_values)
+                        )!!.toInt()
                     )
                 }
 
                 if (response.data != null) {
-                    var list = arrayListOf<DailyForecast>()
+                    val list = arrayListOf<DailyForecast>()
                     list.addAll(response.data!!.forecast.forecastDay.filter {
                         !Date().of(it.date)!!.isToday()
                     })
 
-                    if (list.size>=2){
+                    if (list.size >= 2) {
                         for (i in 1..list.size) {
-                            if(i==1){
+                            if (i == 1) {
                                 remoteViews.setTextViewText(
                                     R.id.widget_text_view_day_1,
-                                    getDay(context, list[i-1])
+                                    getDay(context, list[0])
                                 )
-                                var urlCondition1 = URL(urlProvider.getImageUrl(list[i-1].day.condition.icon,PreferencesUtil.getPreference(context,context.getString(R.string.default_image_quality_key),context.getString(R.string.default_image_quality_value))!!))
+                                val urlCondition1 = URL(
+                                    urlProvider.getImageUrl(
+                                        list[0].day.condition.icon,
+                                        PreferencesUtil.getPreference(
+                                            context,
+                                            context.getString(R.string.default_image_quality_key),
+                                            context.getString(R.string.default_image_quality_value)
+                                        )!!
+                                    )
+                                )
                                 val bmp1 =
-                                    BitmapFactory.decodeStream(urlCondition1.openConnection().getInputStream())
+                                    BitmapFactory.decodeStream(
+                                        urlCondition1.openConnection().getInputStream()
+                                    )
                                 remoteViews.setImageViewBitmap(R.id.widget_image_view_day_1, bmp1)
-                            }else if (i==2){
+                            } else if (i == 2) {
                                 remoteViews.setTextViewText(
                                     R.id.widget_text_view_day_2,
-                                    getDay(context, list[i-1])
+                                    getDay(context, list[i - 1])
                                 )
-                                var urlCondition2 = URL(urlProvider.getImageUrl(list[i-1].day.condition.icon,PreferencesUtil.getPreference(context,context.getString(R.string.default_image_quality_key),context.getString(R.string.default_image_quality_value))!!))
+                                val urlCondition2 = URL(
+                                    urlProvider.getImageUrl(
+                                        list[i - 1].day.condition.icon,
+                                        PreferencesUtil.getPreference(
+                                            context,
+                                            context.getString(R.string.default_image_quality_key),
+                                            context.getString(R.string.default_image_quality_value)
+                                        )!!
+                                    )
+                                )
                                 val bmp2 =
-                                    BitmapFactory.decodeStream(urlCondition2.openConnection().getInputStream())
+                                    BitmapFactory.decodeStream(
+                                        urlCondition2.openConnection().getInputStream()
+                                    )
                                 remoteViews.setImageViewBitmap(R.id.widget_image_view_day_2, bmp2)
-                            }else if (i==3){
+                            } else if (i == 3) {
                                 remoteViews.setTextViewText(
                                     R.id.widget_text_view_day_3,
-                                    getDay(context, list[i-1])
+                                    getDay(context, list[i - 1])
                                 )
-                                var urlCondition3 = URL(urlProvider.getImageUrl(list[i-1].day.condition.icon,PreferencesUtil.getPreference(context,context.getString(R.string.default_image_quality_key),context.getString(R.string.default_image_quality_value))!!))
+                                val urlCondition3 = URL(
+                                    urlProvider.getImageUrl(
+                                        list[i - 1].day.condition.icon,
+                                        PreferencesUtil.getPreference(
+                                            context,
+                                            context.getString(R.string.default_image_quality_key),
+                                            context.getString(R.string.default_image_quality_value)
+                                        )!!
+                                    )
+                                )
                                 val bmp3 =
-                                    BitmapFactory.decodeStream(urlCondition3.openConnection().getInputStream())
+                                    BitmapFactory.decodeStream(
+                                        urlCondition3.openConnection().getInputStream()
+                                    )
                                 remoteViews.setImageViewBitmap(R.id.widget_image_view_day_3, bmp3)
-                            }else{
-                                break;
+                            } else {
+                                break
                             }
                         }
                     }
 
-                    var urlCondition =
-                        URL(urlProvider.getImageUrl(response.data!!.current.condition.icon,PreferencesUtil.getPreference(context,context.getString(R.string.default_image_quality_key),context.getString(R.string.default_image_quality_value))!!))
-                    val bmp = BitmapFactory.decodeStream(urlCondition.openConnection().getInputStream())
+                    val urlCondition =
+                        URL(
+                            urlProvider.getImageUrl(
+                                response.data!!.current.condition.icon,
+                                PreferencesUtil.getPreference(
+                                    context,
+                                    context.getString(R.string.default_image_quality_key),
+                                    context.getString(R.string.default_image_quality_value)
+                                )!!
+                            )
+                        )
+                    val bmp =
+                        BitmapFactory.decodeStream(urlCondition.openConnection().getInputStream())
                     remoteViews.setImageViewBitmap(R.id.widget_image_view_current, bmp)
 
                     remoteViews.setTextViewText(
                         R.id.widget_text_view_location,
                         "${response.data!!.location.name} ${
-                            Date().of(response.data!!.location.localtime,true)!!.formatDate("dd-MM hh:mm aa")
+                            Date().of(response.data!!.location.localtime, true)!!
+                                .formatDate("dd-MM hh:mm aa")
                         }"
                     )
                     remoteViews.setTextViewText(
@@ -177,23 +249,31 @@ class WeatherWidgetProvider @Inject constructor() : AppWidgetProvider() {
                         )
                     )
                 }
-            }catch (e:Exception){
-                logger.write(this::class.java.name, LoggerType.ERROR,"Widget on update error ${e.message.toString()}")
+            } catch (e: Exception) {
+                logger.write(
+                    this::class.java.name,
+                    LoggerType.ERROR,
+                    "Widget on update error ${e.message.toString()}"
+                )
             }
         }
     }
 
     override fun onReceive(context: Context, intent: Intent) {
         super.onReceive(context, intent)
-        logger.write(this::class.java.name, LoggerType.INFO,"Widget on received")
+        logger.write(this::class.java.name, LoggerType.INFO, "Widget on received")
         try {
             val appWidgetManager = AppWidgetManager.getInstance(context)
             val remoteViews = RemoteViews(context.packageName, R.layout.weather_widget)
             val widget = ComponentName(context, WeatherWidgetProvider::class.java)
             getWeather(remoteViews, context)
             appWidgetManager.updateAppWidget(widget, remoteViews)
-        }catch (e:Exception){
-            logger.write(this::class.java.name, LoggerType.ERROR,"Widget on received error ${e.message.toString()}")
+        } catch (e: Exception) {
+            logger.write(
+                this::class.java.name,
+                LoggerType.ERROR,
+                "Widget on received error ${e.message.toString()}"
+            )
         }
 
     }
@@ -208,13 +288,15 @@ class WeatherWidgetProvider @Inject constructor() : AppWidgetProvider() {
         appWidgetManager.updateAppWidget(appWidgetId, views)
     }
 
-    private fun getDay(context:Context,current: DailyForecast?): String {
+    private fun getDay(context: Context, current: DailyForecast?): String {
         var day = ""
         if (current != null) {
             val date = Date().of(current.date)
 
             val calendar = Calendar.getInstance()
-            calendar.time = date
+            if (date != null) {
+                calendar.time = date
+            }
 
             val today = Calendar.getInstance()
             if (calendar.get(Calendar.YEAR) == today.get(Calendar.YEAR) &&
@@ -229,10 +311,15 @@ class WeatherWidgetProvider @Inject constructor() : AppWidgetProvider() {
                     context.getString(R.string.tomorrow)
                 } else {
                     //val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
-                    val dayOfWeekString = if (PreferencesUtil.getPreference(context,context.getString(R.string.default_lang_key),context.getString(R.string.default_language_value))!! == "en")
-                        SimpleDateFormat("EEEE",Locale.US).format(calendar.time)
+                    val dayOfWeekString = if (PreferencesUtil.getPreference(
+                            context,
+                            context.getString(R.string.default_lang_key),
+                            context.getString(R.string.default_language_value)
+                        )!! == "en"
+                    )
+                        SimpleDateFormat("EEEE", Locale.US).format(calendar.time)
                     else
-                        SimpleDateFormat("EEEE").format(calendar.time)
+                        SimpleDateFormat("EEEE",Locale.getDefault()).format(calendar.time)
                     dayOfWeekString
                 }
             }
