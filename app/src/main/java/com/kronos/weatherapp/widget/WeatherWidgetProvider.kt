@@ -1,5 +1,6 @@
 package com.kronos.weatherapp.widget
 
+import android.app.Activity
 import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
@@ -14,7 +15,6 @@ import com.kronos.core.extensions.capitalizeFirstLetter
 import com.kronos.core.extensions.formatDate
 import com.kronos.core.extensions.isToday
 import com.kronos.core.extensions.of
-import com.kronos.core.extensions.transformDateToTodayOrYesterday
 import com.kronos.core.util.PreferencesUtil
 import com.kronos.domian.model.DailyForecast
 import com.kronos.domian.model.Response
@@ -23,7 +23,9 @@ import com.kronos.domian.repository.UserCustomLocationLocalRepository
 import com.kronos.domian.repository.WeatherRemoteRepository
 import com.kronos.logger.LoggerType
 import com.kronos.logger.interfaces.ILogger
+import com.kronos.weatherapp.MainActivity
 import com.kronos.weatherapp.R
+import com.kronos.weatherapp.SplashActivity
 import com.kronos.webclient.UrlProvider
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
@@ -32,7 +34,8 @@ import java.net.URL
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
-import kotlin.collections.ArrayList
+
+
 @AndroidEntryPoint
 class WeatherWidgetProvider @Inject constructor() : AppWidgetProvider() {
 
@@ -68,12 +71,11 @@ class WeatherWidgetProvider @Inject constructor() : AppWidgetProvider() {
         logger.write(this::class.java.name, LoggerType.INFO,"Widget on update app widget")
         val remoteViews = RemoteViews(context.packageName, R.layout.weather_widget)
         println("loading weather from on update widget")
-        val intent = Intent(context, WeatherWidgetProvider::class.java)
-        intent.action = "REFRESH"
-        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetId)
-        val pendingIntent =
-            PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_IMMUTABLE)
-        remoteViews.setOnClickPendingIntent(R.id.widget_image_view_refresh, pendingIntent)
+
+        val configIntent = Intent(context, MainActivity::class.java)
+        val configPendingIntent = PendingIntent.getActivity(context, 0, configIntent, PendingIntent.FLAG_IMMUTABLE)
+        remoteViews.setOnClickPendingIntent(R.id.widget_layout, configPendingIntent)
+
         appWidgetManager.updateAppWidget(appWidgetId, remoteViews)
     }
 
@@ -82,9 +84,6 @@ class WeatherWidgetProvider @Inject constructor() : AppWidgetProvider() {
 
         runBlocking(Dispatchers.IO) {
             try{
-                remoteViews.setViewVisibility(R.id.widget_progress_bar, View.VISIBLE)
-                remoteViews.setViewVisibility(R.id.widget_image_view_refresh, View.GONE)
-
                 var currentCity = customUserCustomLocationLocalRepository.getSelectedLocation()
                 if (currentCity == null)
                     currentCity = customUserCustomLocationLocalRepository.getCurrentLocation()
@@ -178,8 +177,6 @@ class WeatherWidgetProvider @Inject constructor() : AppWidgetProvider() {
                         )
                     )
                 }
-                remoteViews.setViewVisibility(R.id.widget_progress_bar, View.GONE)
-                remoteViews.setViewVisibility(R.id.widget_image_view_refresh, View.VISIBLE)
             }catch (e:Exception){
                 logger.write(this::class.java.name, LoggerType.ERROR,"Widget on update error ${e.message.toString()}")
             }
