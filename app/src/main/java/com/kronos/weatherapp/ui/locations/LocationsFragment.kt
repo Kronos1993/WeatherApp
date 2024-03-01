@@ -7,36 +7,24 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.google.android.gms.location.LocationServices
 import com.kronos.core.adapters.AdapterItemClickListener
 import com.kronos.core.adapters.SwipeToDelete
 import com.kronos.core.extensions.binding.fragmentBinding
-import com.kronos.core.extensions.isToday
-import com.kronos.core.extensions.of
 import com.kronos.core.util.LoadingDialog
 import com.kronos.core.util.PreferencesUtil
 import com.kronos.core.util.setLanguageForApp
 import com.kronos.core.util.show
-import com.kronos.domian.model.DailyForecast
-import com.kronos.domian.model.Hour
 import com.kronos.domian.model.UserCustomLocation
-import com.kronos.domian.model.forecast.Forecast
 import com.kronos.weatherapp.R
 import com.kronos.weatherapp.databinding.FragmentLocationBinding
-import com.kronos.weatherapp.ui.weather.IndicatorAdapter
-import com.kronos.weatherapp.ui.weather.WeatherDayAdapter
-import com.kronos.weatherapp.ui.weather.WeatherHourAdapter
-import com.kronos.weatherapp.ui.weather.model.Indicator
 import dagger.hilt.android.AndroidEntryPoint
 import java.lang.ref.WeakReference
-import java.util.*
+import java.util.Date
+import java.util.Hashtable
 
 @AndroidEntryPoint
 class LocationsFragment : Fragment() {

@@ -33,8 +33,8 @@ class UserLocationAdapter : ListAdapter<UserCustomLocation, UserLocationAdapter.
 
     override fun onBindViewHolder(holder: UserLocationViewHolder, position: Int) {
         val current = getItemAt(position)
-        holder.bind(current,position)
-        var context = holder.itemView.context
+        holder.bind(current)
+        val context = holder.itemView.context
         Glide.with(context)
             .load(urlProvider.getImageUrl(current.icon,PreferencesUtil.getPreference(context,context.getString(
                 R.string.default_image_quality_key),context.getString(R.string.default_image_quality_value))!!))
@@ -44,8 +44,8 @@ class UserLocationAdapter : ListAdapter<UserCustomLocation, UserLocationAdapter.
 
     fun getItemAt(adapterPosition: Int): UserCustomLocation = getItem(adapterPosition)
 
-    class UserLocationViewHolder(var binding:ItemUserLocationBinding, var clickListener:AdapterItemClickListener<UserCustomLocation>?) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(d: UserCustomLocation,position: Int){
+    class UserLocationViewHolder(var binding:ItemUserLocationBinding, private var clickListener:AdapterItemClickListener<UserCustomLocation>?) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(d: UserCustomLocation){
             binding.run {
                 userLocation = d
                 root.setOnClickListener {

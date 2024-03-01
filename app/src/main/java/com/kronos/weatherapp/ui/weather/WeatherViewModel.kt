@@ -172,7 +172,7 @@ class WeatherViewModel @Inject constructor(
         val geocoder = Geocoder(context, Locale.getDefault())
         try {
             val addresses = geocoder.getFromLocation(location.latitude, location.longitude, 1)
-            if (addresses?.isNotEmpty() == true) city = "${addresses[0].locality}"
+            if (addresses?.isNotEmpty() == true) city = addresses[0].locality
         } catch (e: IOException) {
             e.printStackTrace()
             log(e.message.toString(), LoggerType.ERROR)
@@ -189,11 +189,11 @@ class WeatherViewModel @Inject constructor(
                     response = userCustomLocationLocalRepository.getCurrentLocation()
                 }
                 if (response != null) {
-                    postUserLocation(response!!)
-                    if (response!!.isCurrent && response!!.isSelected)
+                    postUserLocation(response)
+                    if (response.isCurrent && response.isSelected)
                         getGpsLocation(response)
                     else {
-                        getWeather(response!!.cityName)
+                        getWeather(response.cityName)
                     }
                 } else {
                     getGpsLocation(null)
@@ -227,7 +227,7 @@ class WeatherViewModel @Inject constructor(
                     locationCallback = object : LocationCallback() {
                         override fun onLocationResult(p0: LocationResult) {
                             super.onLocationResult(p0)
-                            var city = getCityName(context, p0.lastLocation!!)
+                            //var city = getCityName(context, p0.lastLocation!!)
                             /*getWeather(city)
                             saveCurrentLocation(city,p0.lastLocation!!)*/
                         }
@@ -240,7 +240,7 @@ class WeatherViewModel @Inject constructor(
                     )
                     locationManager.get()?.lastLocation?.addOnSuccessListener {
                         if (it != null) {
-                            var city = getCityName(context, it)
+                            val city = getCityName(context, it)
                             getWeather(it.latitude, it.longitude)
                             saveCurrentLocation(city, it)
                         }
@@ -308,19 +308,19 @@ class WeatherViewModel @Inject constructor(
             if (currentCity == null)
                 currentCity = userCustomLocationLocalRepository.getCurrentLocation()
 
-            var response = Response<Forecast>()
+            val response: Response<Forecast>
             if (currentCity!=null){
-                if (currentCity!!.isCurrent){
+                if (currentCity.isCurrent){
                     response = weatherRemoteRepository.getWeatherDataForecast(
-                        currentCity!!.lat!!,
-                        currentCity!!.lon!!,
+                        currentCity.lat!!,
+                        currentCity.lon!!,
                         PreferencesUtil.getPreference(context,context.getString(R.string.default_lang_key),context.getString(R.string.default_language_value))!!,
                         context.resources.getString(R.string.api_key),
                         PreferencesUtil.getPreference(context,context.getString(R.string.default_days_key),context.resources.getString(R.string.default_days_values))!!.toInt()
                     )
                 }else{
                     response = weatherRemoteRepository.getWeatherDataForecast(
-                        currentCity!!.cityName,
+                        currentCity.cityName,
                         PreferencesUtil.getPreference(context,context.getString(R.string.default_lang_key),context.getString(R.string.default_language_value))!!,
                         context.resources.getString(R.string.api_key),
                         PreferencesUtil.getPreference(context,context.getString(R.string.default_days_key),context.resources.getString(R.string.default_days_values))!!.toInt()

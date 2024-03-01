@@ -9,7 +9,6 @@ import com.kronos.core.adapters.AdapterItemClickListener
 import com.kronos.core.adapters.diff.GeneralDiffCallback
 import com.kronos.core.util.PreferencesUtil
 import com.kronos.domian.model.DailyForecast
-import com.kronos.domian.model.Hour
 import com.kronos.weatherapp.R
 import com.kronos.weatherapp.databinding.ItemWeatherDailyBinding
 import com.kronos.webclient.UrlProvider
@@ -34,7 +33,7 @@ class WeatherDayAdapter : ListAdapter<DailyForecast, WeatherDayAdapter.WeatherDa
 
     override fun onBindViewHolder(holder: WeatherDayViewHolder, position: Int) {
         val current = getItemAt(position)
-        holder.bind(current,position)
+        holder.bind(current)
         val context = holder.binding.imageViewCondition.context
         Glide.with(holder.binding.imageViewCondition)
             .load(urlProvider.getImageUrl(current.day.condition.icon,PreferencesUtil.getPreference(context,context.getString(R.string.default_image_quality_key),context.getString(R.string.default_image_quality_value))!!))
@@ -44,8 +43,8 @@ class WeatherDayAdapter : ListAdapter<DailyForecast, WeatherDayAdapter.WeatherDa
 
     private fun getItemAt(adapterPosition: Int): DailyForecast = getItem(adapterPosition)
 
-    class WeatherDayViewHolder(var binding:ItemWeatherDailyBinding, var clickListener:AdapterItemClickListener<DailyForecast>?) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(d: DailyForecast,position: Int){
+    class WeatherDayViewHolder(var binding:ItemWeatherDailyBinding, private var clickListener:AdapterItemClickListener<DailyForecast>?) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(d: DailyForecast){
             binding.run {
                 dailyForecast = d
                 root.setOnClickListener {
