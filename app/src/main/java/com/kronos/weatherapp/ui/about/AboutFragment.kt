@@ -6,21 +6,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.kronos.core.extensions.binding.fragmentBinding
 import com.kronos.core.util.PreferencesUtil
 import com.kronos.core.util.setLanguageForApp
 import com.kronos.weatherapp.R
-import com.kronos.weatherapp.databinding.FragmentAboutBinding
 import dagger.hilt.android.AndroidEntryPoint
 import mehdi.sakout.aboutpage.AboutPage
 import mehdi.sakout.aboutpage.Element
-import java.util.Calendar
 
 @AndroidEntryPoint
 class AboutFragment : Fragment() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

@@ -11,7 +11,6 @@ import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.kronos.core.notification.INotifications
-import com.kronos.core.notification.NotificationGroup
 import com.kronos.core.notification.NotificationType
 import com.kronos.weatherapp.MainActivity
 import com.kronos.weatherapp.NOTIFICATION_CHANNEL
@@ -30,7 +29,7 @@ class WeatherAppNotifications @Inject constructor() : INotifications {
         notificationImage:Bitmap?
     ) {
         if (ActivityCompat.checkSelfPermission(context,Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
-            var intent = Intent(context, MainActivity::class.java)
+            val intent = Intent(context, MainActivity::class.java)
 
             val pendingIntent: PendingIntent? =
                 PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_MUTABLE)

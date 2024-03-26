@@ -9,14 +9,13 @@ import android.graphics.drawable.Drawable
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 
-
 class SwipeToDelete(
-    var leftIcon: Drawable,
+    private var leftIcon: Drawable,
     private val backgroundLeft: ColorDrawable,
-    var rightIcon: Drawable,
+    private var rightIcon: Drawable,
     private val backgroundRight: ColorDrawable,
-    var itemTouchHelper: ItemTouchHelper.Callback,
-    var direction: Int
+    private var itemTouchHelper: ItemTouchHelper.Callback,
+    private var direction: Int
 ) : ItemTouchHelper.SimpleCallback(0, direction) {
 
     private var mClearPaint: Paint? = null
@@ -40,7 +39,7 @@ class SwipeToDelete(
     ): Boolean = false
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-        itemTouchHelper.onSwiped(viewHolder, direction);
+        itemTouchHelper.onSwiped(viewHolder, direction)
     }
 
     override fun onChildDraw(
@@ -54,7 +53,7 @@ class SwipeToDelete(
     ) {
         val itemView = viewHolder.itemView
 
-        val backgroundCornerOffset = 20 //so background is behind the rounded corners of itemView
+        //val backgroundCornerOffset = 20 //so background is behind the rounded corners of itemView
 
         val isCancelled = dX == 0f && !isCurrentlyActive
         if (isCancelled) {

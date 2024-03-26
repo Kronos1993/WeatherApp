@@ -1,8 +1,8 @@
 package com.kronos.weatherapp.ui.locations
 
 import android.content.Context
-import androidx.databinding.ObservableField
 import androidx.databinding.Observable
+import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.kronos.core.extensions.asLiveData
@@ -18,10 +18,10 @@ import com.kronos.webclient.UrlProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import java.lang.ref.WeakReference
-import java.util.*
+import java.util.Date
+import java.util.Hashtable
 import javax.inject.Inject
 
 @HiltViewModel
@@ -57,7 +57,7 @@ class LocationViewModel @Inject constructor(
                 val response = userCustomLocationLocalRepository.listAll()
                 log("Custom location: ${response.size} ", LoggerType.INFO)
                 for (location in response){
-                    var weather = if (location.isCurrent){
+                    val weather = if (location.isCurrent){
                             weatherRemoteRepository.getWeatherDataForecast(
                                 location.lat!!,
                                 location.lon!!,
@@ -96,7 +96,7 @@ class LocationViewModel @Inject constructor(
                     }
                 postLocations(response)
             } catch (e: Exception) {
-                var err = Hashtable<String, String>()
+                val err = Hashtable<String, String>()
                 err["error"] = e.message
                 error.postValue(err)
                 loading.postValue(false)
@@ -109,13 +109,13 @@ class LocationViewModel @Inject constructor(
         loading.postValue(true)
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                var location = UserCustomLocation(cityName = cityName.get()!!, isSelected = true)
+                val location = UserCustomLocation(cityName = cityName.get()!!, isSelected = true)
                 userCustomLocationLocalRepository.saveLocation(location)
                 log("Custom location: ${cityName.get()} added.", LoggerType.INFO)
                 getLocations()
                 cityName.set("")
             } catch (e: Exception) {
-                var err = Hashtable<String, String>()
+                val err = Hashtable<String, String>()
                 err["error"] = e.message
                 error.postValue(err)
                 loading.postValue(false)
@@ -133,7 +133,7 @@ class LocationViewModel @Inject constructor(
                 log("Custom location: ${cityName.get()} selected.", LoggerType.INFO)
                 getLocations()
             } catch (e: Exception) {
-                var err = Hashtable<String, String>()
+                val err = Hashtable<String, String>()
                 err["error"] = e.message
                 error.postValue(err)
                 loading.postValue(false)
@@ -163,14 +163,14 @@ class LocationViewModel @Inject constructor(
                     log("Custom location deleted: ${itemAt.cityName} ", LoggerType.INFO)
                     getLocations()
                 } catch (e: Exception) {
-                    var err = Hashtable<String, String>()
+                    val err = Hashtable<String, String>()
                     err["error"] = e.message
                     error.postValue(err)
                     loading.postValue(false)
                     log("Delete location error : ${e.message}", LoggerType.ERROR)
                 }
             }else{
-                var err = Hashtable<String, String>()
+                val err = Hashtable<String, String>()
                 err["error"] = context.getString(R.string.cant_delete_current_location)
                 error.postValue(err)
                 log("Delete location error : current location", LoggerType.ERROR)
@@ -197,7 +197,7 @@ class LocationViewModel @Inject constructor(
                     sender: Observable?,
                     propertyId: Int
                 ) {
-                    if (cityName.get()?.orEmpty()?.isNotEmpty() == true){
+                    if (cityName.get().orEmpty().isNotEmpty()){
                         cityNameError.set(null)
                     }
                 }

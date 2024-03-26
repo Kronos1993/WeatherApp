@@ -7,10 +7,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.kronos.core.adapters.AdapterItemClickListener
 import com.kronos.core.adapters.diff.GeneralDiffCallback
-import com.kronos.domian.model.Hour
 import com.kronos.weatherapp.R
 import com.kronos.weatherapp.databinding.ItemIndicatorBinding
-import com.kronos.weatherapp.databinding.ItemWeatherHourBinding
 import com.kronos.weatherapp.ui.weather.model.Indicator
 import com.kronos.webclient.UrlProvider
 
@@ -34,7 +32,7 @@ class IndicatorAdapter : ListAdapter<Indicator, IndicatorAdapter.IndicatorViewHo
 
     override fun onBindViewHolder(holder: IndicatorViewHolder, position: Int) {
         val current = getItemAt(position)
-        holder.bind(current,position)
+        holder.bind(current)
         Glide.with(holder.binding.appCompatImageView)
             .load(current.image)
             .placeholder(R.drawable.ic_weather_app_icon)
@@ -43,8 +41,8 @@ class IndicatorAdapter : ListAdapter<Indicator, IndicatorAdapter.IndicatorViewHo
 
     private fun getItemAt(adapterPosition: Int): Indicator = getItem(adapterPosition)
 
-    class IndicatorViewHolder(var binding:ItemIndicatorBinding, var clickListener:AdapterItemClickListener<Indicator>?) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(h: Indicator,position: Int){
+    class IndicatorViewHolder(var binding:ItemIndicatorBinding, private var clickListener:AdapterItemClickListener<Indicator>?) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(h: Indicator){
             binding.run {
                 indicator = h
                 root.setOnClickListener {

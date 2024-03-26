@@ -115,7 +115,7 @@ class WeatherFragment : Fragment() {
                     if (date != null) {
                         if (date.isToday()) {
                             currentDayForecast = item
-                            break;
+                            break
                         }
                     }
                 }
@@ -135,41 +135,41 @@ class WeatherFragment : Fragment() {
                     getString(R.string.wind),
                     requireContext().getString(
                         R.string.speed_km,
-                        weather.current?.windSpeedKph.toString()
+                        weather.current.windSpeedKph.toString()
                     ),
                     requireContext().resources.getDrawable(R.drawable.ic_wind)
                 ),
                 Indicator(
                     getString(R.string.humidity),
-                    String.format("%.1f%%", weather?.current?.windSpeedKph),
+                    String.format("%.1f%%", weather.current.windSpeedKph),
                     requireContext().resources.getDrawable(R.drawable.ic_humidity)
                 ),
                 Indicator(
                     getString(R.string.uv_index),
-                    weather?.current?.uv.toString(),
+                    weather.current.uv.toString(),
                     requireContext().resources.getDrawable(R.drawable.ic_uv_index)
                 ),
                 if (currentDayForecast!!.day.dailyWillItSnow){
                     Indicator(
                         getString(R.string.snow),
-                        String.format("%.1fcm",currentDayForecast!!.day.totalsnowCm),
+                        String.format("%.1fcm",currentDayForecast.day.totalsnowCm),
                         requireContext().resources.getDrawable(R.drawable.ic_snow)
                     )
                 }else{
                     Indicator(
                         getString(R.string.rain),
-                        String.format("%.1fmm", weather?.current?.precipitationMm),
+                        String.format("%.1fmm", weather.current.precipitationMm),
                         requireContext().resources.getDrawable(R.drawable.ic_rain)
                     )
                 },
                 Indicator(
                     getString(R.string.sun),
-                    String.format(requireContext().getString(R.string.sunrise_sunset), currentDayForecast!!.astro.sunrise,currentDayForecast!!.astro.sunset),
+                    String.format(requireContext().getString(R.string.sunrise_sunset), currentDayForecast.astro.sunrise,currentDayForecast.astro.sunset),
                     requireContext().resources.getDrawable(R.drawable.ic_sun_sunrise)
                 ),
                 Indicator(
                     getString(R.string.visibility),
-                    String.format(requireContext().getString(R.string.visibility_km), currentDayForecast!!.day.avgvisKm.toString()),
+                    String.format(requireContext().getString(R.string.visibility_km), currentDayForecast.day.avgvisKm.toString()),
                     requireContext().resources.getDrawable(R.drawable.ic_visibility)
                 )
             )
@@ -177,7 +177,7 @@ class WeatherFragment : Fragment() {
             viewModel.indicatorAdapter.get()
                 ?.notifyItemRangeChanged(0, viewModel.indicatorAdapter.get()!!.itemCount)
 
-            var list = arrayListOf<DailyForecast>()
+            val list = arrayListOf<DailyForecast>()
             list.addAll(weather.forecast.forecastDay.filter {
                 !Date().of(it.date)!!.isToday()
             })

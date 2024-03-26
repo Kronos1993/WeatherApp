@@ -5,10 +5,10 @@ import java.util.*
 
 fun Date.formatDate(format: String): String {
     var dateFormatted = ""
-    var sdf = SimpleDateFormat(format)
+    val sdf = SimpleDateFormat(format,Locale.getDefault())
     try {
         dateFormatted = sdf.format(this)
-    } catch (e: Exception) {
+    } catch (_: Exception) {
     }
     return dateFormatted
 }
@@ -43,7 +43,7 @@ fun Date.of(value: String,includeHours: Boolean = false,timezone:String? = null)
 
     try {
         if (timezone != null) {
-            dateFormat.timeZone = TimeZone.getTimeZone(timezone!!)
+            dateFormat.timeZone = TimeZone.getTimeZone(timezone)
         }
         val currentDate = dateFormat.parse(value)
         if (currentDate != null) {

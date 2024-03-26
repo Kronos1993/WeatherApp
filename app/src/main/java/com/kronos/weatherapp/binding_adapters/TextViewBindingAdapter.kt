@@ -4,7 +4,6 @@ import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.kronos.core.extensions.capitalizeFirstLetter
 import com.kronos.core.extensions.getHour
-import com.kronos.core.extensions.isToday
 import com.kronos.core.extensions.of
 import com.kronos.core.util.PreferencesUtil
 import com.kronos.domian.model.CurrentWeather
@@ -12,19 +11,21 @@ import com.kronos.domian.model.DailyForecast
 import com.kronos.domian.model.Location
 import com.kronos.weatherapp.R
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Calendar
+import java.util.Date
+import java.util.Locale
 
 @BindingAdapter("handle_location_name")
 fun handleLocationName(view: TextView, current: Location?) = view.run {
     if (current!=null)
-        text = context.getString(R.string.location_name, current!!.country, current!!.name)
+        text = context.getString(R.string.location_name, current.country, current.name)
 }
 
 
 @BindingAdapter("handle_temp")
 fun handleTemp(view: TextView, current: CurrentWeather?) = view.run {
     if (current!=null)
-        text = String.format(view.context.getString(R.string.temp_celsius, current?.tempC.toString()))
+        text = String.format(view.context.getString(R.string.temp_celsius, current.tempC.toString()))
 }
 
 @BindingAdapter("handle_temp")
@@ -35,13 +36,13 @@ fun handleTemp(view: TextView, temp: Double?) = view.run {
 @BindingAdapter("handle_temp_feels_like")
 fun handleTempFeelsLike(view: TextView, current: CurrentWeather?) = view.run {
     if (current!=null)
-        text = String.format(view.context.getString(R.string.feels_like_temp_celsius, current!!.feelslikeC.toString()))
+        text = String.format(view.context.getString(R.string.feels_like_temp_celsius, current.feelslikeC.toString()))
 }
 
 @BindingAdapter("handle_speed")
 fun handleSpeed(view: TextView, current: CurrentWeather?) = view.run {
     if (current!=null)
-        text = String.format(view.context.getString(R.string.speed_km, current?.windSpeedKph.toString()))
+        text = String.format(view.context.getString(R.string.speed_km, current.windSpeedKph.toString()))
 }
 
 @BindingAdapter("handle_humidity")
@@ -66,11 +67,11 @@ fun showOnlyHour(view: TextView, current: Location?) = view.run {
         val dateFormat = if (PreferencesUtil.getPreference(context,context.getString(R.string.default_lang_key),context.getString(R.string.default_language_value))!! == "en")
             SimpleDateFormat("EEE MMM d | h:mm aa", Locale.US)
         else
-            SimpleDateFormat("EEE MMM d | h:mm aa")
+            SimpleDateFormat("EEE MMM d | h:mm aa", Locale.getDefault())
         var stringDate = ""
         try{
-            stringDate = dateFormat.format(date)
-        }catch (e:Exception){
+            stringDate = date?.let { dateFormat.format(it) }.toString()
+        }catch (_:Exception){
 
         }
         view.text = stringDate
@@ -80,10 +81,12 @@ fun showOnlyHour(view: TextView, current: Location?) = view.run {
 @BindingAdapter("handle_day")
 fun handleDay(view: TextView, current: DailyForecast?) = view.run {
     if(current!=null){
-        var date = Date().of(current.date)
+        val date = Date().of(current.date)
 
         val calendar = Calendar.getInstance()
-        calendar.time = date
+        if (date != null) {
+            calendar.time = date
+        }
 
         val today = Calendar.getInstance()
         if (calendar.get(Calendar.YEAR) == today.get(Calendar.YEAR) &&
@@ -101,7 +104,7 @@ fun handleDay(view: TextView, current: DailyForecast?) = view.run {
                 val dayOfWeekString = if (PreferencesUtil.getPreference(context,context.getString(R.string.default_lang_key),context.getString(R.string.default_language_value))!! == "en")
                  SimpleDateFormat("EEEE",Locale.US).format(calendar.time)
                 else
-                    SimpleDateFormat("EEEE").format(calendar.time)
+                    SimpleDateFormat("EEEE",Locale.getDefault()).format(calendar.time)
 
                 view.text = dayOfWeekString.capitalizeFirstLetter()
             }
@@ -112,7 +115,7 @@ fun handleDay(view: TextView, current: DailyForecast?) = view.run {
 @BindingAdapter("show_only_hour")
 fun showOnlyHour(view: TextView, time: String?) = view.run {
     if(time!=null){
-        var date = Date().of(time,true)?.getHour()
+        val date = Date().of(time,true)?.getHour()
         view.text = date
     }
 }

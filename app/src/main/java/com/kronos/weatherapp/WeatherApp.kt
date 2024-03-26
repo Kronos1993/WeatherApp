@@ -8,7 +8,6 @@ import android.app.job.JobScheduler
 import android.app.job.JobService
 import android.content.ComponentName
 import android.content.Context
-import android.content.res.Configuration
 import android.os.Build
 import android.util.Log
 import com.kronos.core.util.PreferencesUtil
@@ -62,9 +61,8 @@ class WeatherApp:Application(){
     private fun scheduleJob(context: Context, periodic: Long) {
         try {
             val componentName = ComponentName(context, WeatherNotificationJob::class.java)
-            var jobInfo: JobInfo? = null
 
-            jobInfo = JobInfo.Builder(notificationJobId, componentName)
+            val jobInfo: JobInfo? = JobInfo.Builder(notificationJobId, componentName)
                 .setPersisted(true)
                 .setPeriodic(periodic)
                 .build()

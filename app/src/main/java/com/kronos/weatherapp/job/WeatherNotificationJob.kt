@@ -9,6 +9,7 @@ import com.kronos.core.notification.INotifications
 import com.kronos.core.notification.NotificationGroup
 import com.kronos.core.notification.NotificationType
 import com.kronos.core.util.PreferencesUtil
+import com.kronos.core.util.setLanguageForApp
 import com.kronos.core.util.updateWidget
 import com.kronos.domian.model.Response
 import com.kronos.domian.model.forecast.Forecast
@@ -70,13 +71,14 @@ class WeatherNotificationJob : JobService() {
             LoggerType.INFO,
             "Current Do Work Params: ${params.jobId} on ${Date().formatDate("dd-MM-yyyy")}"
         )
-        if (params != null && params.jobId == notificationJobId) {
+        if (params.jobId == notificationJobId) {
             refreshWeather(params)
         }
     }
 
     private fun refreshWeather(params: JobParameters) {
         runBlocking(Dispatchers.IO) {
+            setLanguageForApp(baseContext,PreferencesUtil.getPreference(applicationContext,applicationContext.getString(R.string.default_lang_key),applicationContext.getString(R.string.default_language_value))!!)
             logger.write(
                 this::class.java.name,
                 LoggerType.INFO,
@@ -86,19 +88,19 @@ class WeatherNotificationJob : JobService() {
             if (currentCity == null)
                 currentCity = userCustomLocationLocalRepository.getCurrentLocation()
 
-            var response = Response<Forecast>()
+            val response: Response<Forecast>
             if (currentCity!=null){
-                if (currentCity!!.isCurrent){
+                if (currentCity.isCurrent){
                     response = weatherRemoteRepository.getWeatherDataForecast(
-                        currentCity!!.lat!!,
-                        currentCity!!.lon!!,
+                        currentCity.lat!!,
+                        currentCity.lon!!,
                         PreferencesUtil.getPreference(applicationContext,applicationContext.getString(R.string.default_lang_key),applicationContext.getString(R.string.default_language_value))!!,
                         applicationContext.resources.getString(R.string.api_key),
                         PreferencesUtil.getPreference(applicationContext,application.getString(R.string.default_days_key),applicationContext.resources.getString(R.string.default_days_values))!!.toInt()
                     )
                 }else{
                     response = weatherRemoteRepository.getWeatherDataForecast(
-                        currentCity!!.cityName,
+                        currentCity.cityName,
                         PreferencesUtil.getPreference(applicationContext,applicationContext.getString(R.string.default_lang_key),applicationContext.getString(R.string.default_language_value))!!,
                         applicationContext.resources.getString(R.string.api_key),
                         PreferencesUtil.getPreference(applicationContext,application.getString(R.string.default_days_key),applicationContext.resources.getString(R.string.default_days_values))!!.toInt()

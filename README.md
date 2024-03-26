@@ -1,3 +1,5 @@
+<img alt="App Logo" height="96" src="weather-app-icon.png" width="96"/>
+
 # WeatherApp
 
 WeatherApp es una aplicación de pronóstico del tiempo que utiliza la API de clima de [WeatherAPI](https://www.weatherapi.com/) para proporcionar información sobre el clima actual y pronósticos para la ubicación del usuario. La aplicación está desarrollada siguiendo los principios de arquitectura MVVM, utilizando Retrofit para realizar solicitudes a la API, implementando Clean Architecture y siguiendo los principios de SOLID. Además, la aplicación almacena los datos en una base de datos local utilizando Room y utiliza el GPS del dispositivo para determinar la ubicación del usuario y mostrar el clima correspondiente.
