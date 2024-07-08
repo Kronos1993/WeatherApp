@@ -243,9 +243,9 @@ class WeatherWidgetProvider @Inject constructor() : AppWidgetProvider() {
                         R.id.widget_text_view_temp,
                         String.format(
                             context.getString(
-                                R.string.temp_celsius_widget,
-                                response.data!!.current.tempC.toString()
-                            )
+                                R.string.temp_celsius_widget
+                            ),
+                            response.data!!.current.tempC.toString()
                         )
                     )
                 }
@@ -319,7 +319,7 @@ class WeatherWidgetProvider @Inject constructor() : AppWidgetProvider() {
                     )
                         SimpleDateFormat("EEEE", Locale.US).format(calendar.time)
                     else
-                        SimpleDateFormat("EEEE",Locale.getDefault()).format(calendar.time)
+                        SimpleDateFormat("EEEE", Locale.getDefault()).format(calendar.time)
                     dayOfWeekString
                 }
             }
