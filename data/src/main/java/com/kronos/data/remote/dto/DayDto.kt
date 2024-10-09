@@ -22,5 +22,5 @@ data class DayDto(
     val daily_will_it_snow: Int,
     val daily_chance_of_snow: Double,
     val condition: ConditionDto,
-    val uv: Int,
+    val uv: Double,
 ) : Serializable

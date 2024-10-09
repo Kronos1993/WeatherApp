@@ -25,24 +25,24 @@ fun handleLocationName(view: TextView, current: Location?) = view.run {
 @BindingAdapter("handle_temp")
 fun handleTemp(view: TextView, current: CurrentWeather?) = view.run {
     if (current!=null)
-        text = String.format(view.context.getString(R.string.temp_celsius, current.tempC.toString()))
+        text = String.format(view.context.getString(R.string.temp_celsius), current.tempC.toString())
 }
 
 @BindingAdapter("handle_temp")
 fun handleTemp(view: TextView, temp: Double?) = view.run {
-    text = String.format(view.context.getString(R.string.temp_celsius, temp.toString()))
+    text = String.format(view.context.getString(R.string.temp_celsius), temp.toString())
 }
 
 @BindingAdapter("handle_temp_feels_like")
 fun handleTempFeelsLike(view: TextView, current: CurrentWeather?) = view.run {
     if (current!=null)
-        text = String.format(view.context.getString(R.string.feels_like_temp_celsius, current.feelslikeC.toString()))
+        text = String.format(view.context.getString(R.string.feels_like_temp_celsius), current.feelslikeC.toString())
 }
 
 @BindingAdapter("handle_speed")
 fun handleSpeed(view: TextView, current: CurrentWeather?) = view.run {
     if (current!=null)
-        text = String.format(view.context.getString(R.string.speed_km, current.windSpeedKph.toString()))
+        text = String.format(view.context.getString(R.string.speed_km), current.windSpeedKph.toString())
 }
 
 @BindingAdapter("handle_humidity")
@@ -56,7 +56,7 @@ fun handleRainPossibility(view: TextView, rainPossibility: Double?) = view.run {
 }
 
 @BindingAdapter("handle_uv")
-fun handleUV(view: TextView, uv: Int?) = view.run {
+fun handleUV(view: TextView, uv: Double?) = view.run {
     text = uv.toString()
 }
 

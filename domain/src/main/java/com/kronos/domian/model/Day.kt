@@ -22,5 +22,5 @@ data class Day(
     val dailyWillItSnow: Boolean,
     val dailyChanceOfSnow: Double,
     val condition: Condition,
-    val uv: Int,
+    val uv: Double,
 ) : Serializable

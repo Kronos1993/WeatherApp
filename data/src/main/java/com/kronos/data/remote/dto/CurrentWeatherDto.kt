@@ -23,7 +23,7 @@ class CurrentWeatherDto(
     val feelslike_f: Double,
     val vis_km: Double,
     val vis_miles: Double,
-    val uv: Int,
+    val uv: Double,
     val gust_mph: Double,
     val gust_kph: Double,
 ) : Serializable

@@ -19,7 +19,7 @@ class CurrentWeather(
     val feelslikeF: Double = 0.0,
     val visionKM: Double = -1.0,
     val visionMiles: Double = -1.0,
-    val uv: Int = -1,
+    val uv: Double = -1.0,
     val gustMph: Double = 0.0,
     val gustKph: Double = 0.0,
 ) : Serializable
