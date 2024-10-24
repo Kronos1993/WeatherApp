@@ -12,7 +12,7 @@ dependencies {
 
     kapt "androidx.room:room-compiler:$room_version_mx"
     implementation "androidx.room:room-ktx:$room_version_mx"
-    implementation 'com.google.guava:guava:27.0.1-android'
+    implementation 'com.google.guava:guava:33.3.1-android'
 
     testImplementation "androidx.room:room-testing:$room_version_mx"
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"

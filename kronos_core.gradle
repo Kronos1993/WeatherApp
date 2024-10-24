@@ -37,7 +37,7 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines"
 
     implementation "com.google.dagger:hilt-android:$dagger_hilt"
-    kapt "com.google.dagger:hilt-android-compiler:$dagger_hilt"
+    kapt "com.google.dagger:hilt-android-compiler:2.52"
 
     implementation('org.simpleframework:simple-xml:2.7.1') {
         exclude group: 'xpp3', module: 'xpp3'
@@ -45,5 +45,5 @@ dependencies {
         exclude group: 'stax', module: 'stax'
     }
 
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
+    implementation('org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3')
 }
