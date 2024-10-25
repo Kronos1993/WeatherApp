@@ -99,12 +99,13 @@ class WeatherViewModel @Inject constructor(
                     "Weather from city: ${response.data?.location?.name} acquired",
                     LoggerType.INFO
                 )
-                if (response.ex == null) {
+                if (response.ex == null && response.data!=null) {
                     postWeather(response)
                 } else {
                     val err = Hashtable<String, String>()
                     err["error"] = response.ex!!.message
                     error.postValue(err)
+                    loading.postValue(false)
                     log("Weather error : ${response.ex!!.message}", LoggerType.ERROR)
                 }
             } catch (e: Exception) {
@@ -140,7 +141,7 @@ class WeatherViewModel @Inject constructor(
                     "Weather from city: ${response.data?.location?.name} acquired",
                     LoggerType.INFO
                 )
-                if (response.ex == null) {
+                if (response.ex == null && response.data!=null) {
                     postWeather(response)
                 } else {
                     val err = Hashtable<String, String>()
@@ -358,6 +359,12 @@ class WeatherViewModel @Inject constructor(
                 )
             }
         }
+    }
+
+    fun clean(){
+        error.postValue(
+            Hashtable<String, String>()
+        )
     }
 
 }
