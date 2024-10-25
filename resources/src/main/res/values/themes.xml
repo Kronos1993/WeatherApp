@@ -149,7 +149,7 @@
     </style>
 
     <style name="TextInputEditText" parent="Widget.Material3.TextInputEditText.OutlinedBox.Dense">
-        <item name="android:textColor">@color/primary_text</item>
+        <item name="android:textColor">@color/blackText</item>
     </style>
 
 </resources>
