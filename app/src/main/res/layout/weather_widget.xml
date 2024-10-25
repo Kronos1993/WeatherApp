@@ -32,11 +32,10 @@
 
             <TextView
                 android:id="@+id/widget_text_view_location"
-                style="@style/Widget.TextView.TextViewNormal"
+                style="@style/Widget.TextView.TextViewWidgetNormal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center|center_horizontal|center_vertical"
-                android:textStyle="bold"/>
+                android:layout_gravity="center|center_horizontal|center_vertical" />
         </LinearLayout>
 
         <LinearLayout
@@ -54,7 +53,6 @@
             <TextView
                 android:id="@+id/widget_text_view_temp"
                 style="@style/Widget.TextView.TextViewDisplay1"
-                android:textStyle="bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -78,7 +76,7 @@
 
                     <TextView
                         android:id="@+id/widget_text_view_day_1"
-                        style="@style/Widget.TextView.TextViewSmall"
+                        style="@style/Widget.TextView.TextViewNormal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textStyle="bold"
@@ -102,7 +100,7 @@
 
                     <TextView
                         android:id="@+id/widget_text_view_day_2"
-                        style="@style/Widget.TextView.TextViewSmall"
+                        style="@style/Widget.TextView.TextViewNormal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textStyle="bold"
@@ -128,7 +126,7 @@
 
                     <TextView
                         android:id="@+id/widget_text_view_day_3"
-                        style="@style/Widget.TextView.TextViewSmall"
+                        style="@style/Widget.TextView.TextViewNormal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textStyle="bold"

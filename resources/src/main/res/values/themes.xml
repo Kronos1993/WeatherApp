@@ -139,6 +139,15 @@
         <item name="fontFamily">@font/roboto_regular</item>
     </style>
 
+    <style name="Widget.TextView.TextViewWidgetNormal" parent="Widget.MaterialComponents.TextView">
+        <item name="android:textColor">@color/whiteText</item>
+        <item name="android:layout_marginStart">@dimen/margin_8</item>
+        <item name="android:layout_marginEnd">@dimen/margin_8</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Large</item>
+        <item name="fontFamily">@font/roboto_regular</item>
+    </style>
+
+
     <style name="TextInputLayoutStyle" parent="Widget.Material3.TextInputLayout.OutlinedBox.Dense">
         <item name="boxStrokeWidth">2dp</item>
         <item name="boxStrokeColor">@color/text_input_box_stroke_color</item>
