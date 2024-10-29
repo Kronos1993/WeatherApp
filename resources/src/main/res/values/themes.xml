@@ -9,12 +9,14 @@
         <item name="icon">@color/white</item>
     </style>
 
-    <style name="Widget.ButtonRound" parent="Widget.Material3.Button">
-        <item name="cornerRadius">@dimen/radius_24</item>
+    <style name="Widget.ButtonRound" parent="Widget.Material3.Button.IconButton.Filled">
         <item name="iconTint">@color/white</item>
+        <item name="backgroundColor">@color/primary_dark</item>
         <item name="android:textColor">@color/whiteText</item>
+        <item name="cornerRadius">@dimen/margin_10</item>
         <item name="android:layout_marginStart">@dimen/margin_5</item>
         <item name="android:layout_marginEnd">@dimen/margin_5</item>
+        <item name="iconGravity">textEnd</item>
     </style>
 
     <style name="Theme.ActivityAnimation" parent="@android:style/Animation.Activity">
