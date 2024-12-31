@@ -412,10 +412,25 @@ class WeatherWidgetProvider @Inject constructor() : AppWidgetProvider() {
         }
 
         val remoteViews = RemoteViews(context.packageName, layoutId)
+
+        // Set up the default click behavior
+        val configIntent = Intent(context, MainActivity::class.java)
+        val configPendingIntent =
+            PendingIntent.getActivity(context, 0, configIntent, PendingIntent.FLAG_IMMUTABLE)
+
         when (layoutId) {
-            R.layout.weather_widget -> getWeather(remoteViews, context)
-            R.layout.weather_widget_small -> getWeatherSmall(remoteViews, context)
-            R.layout.weather_widget_large -> getWeather(remoteViews, context)
+            R.layout.weather_widget -> {
+                getWeather(remoteViews, context)
+                remoteViews.setOnClickPendingIntent(R.id.widget_layout, configPendingIntent)
+            }
+            R.layout.weather_widget_small -> {
+                remoteViews.setOnClickPendingIntent(R.id.widget_layout_small, configPendingIntent)
+                getWeatherSmall(remoteViews, context)
+            }
+            R.layout.weather_widget_large -> {
+                remoteViews.setOnClickPendingIntent(R.id.widget_layout_large, configPendingIntent)
+                getWeather(remoteViews, context)
+            }
         }
         appWidgetManager.updateAppWidget(appWidgetId, remoteViews)
     }
