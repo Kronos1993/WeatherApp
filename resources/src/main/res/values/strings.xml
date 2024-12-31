@@ -3,4 +3,16 @@
 
     <string name="required_field">This field is required</string>
 
+    <string name="unknown">Unknown</string>
+    <string name="n_a">N/A</string>
+    <string name="button_text_ok">OK</string>
+    <string name="button_text_add">Add</string>
+    <string name="button_text_update">Update</string>
+    <string name="button_text_create">Create</string>
+    <string name="button_text_dismiss">Dismiss</string>
+    <string name="button_text_cancel">Cancel</string>
+    <string name="button_text_clear_all">Clear all</string>
+
+    <string name="general_error">Ups, an error occur</string>
+
 </resources>

@@ -33,5 +33,5 @@ data class HourDto(
     val vis_miles: Double,
     val gust_mph: Double,
     val gust_kph: Double,
-    val uv: Int,
+    val uv: Double,
 )

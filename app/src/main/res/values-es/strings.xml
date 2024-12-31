@@ -2,8 +2,8 @@
     <string name="app_name">Weather App</string>
 
     <string name="required_field">Este campo es obligatorio</string>
-    <string name="permission_dialog_message">Es necesario el acceso al almacenamiento para guardar las localizaciones del usuario</string>
-    <string name="permission_dialog_title">Permisos requeridos</string>
+    <string name="storage_permission_dialog_message">Es necesario el acceso al almacenamiento para guardar las localizaciones del usuario</string>
+    <string name="storage_permission_dialog_title">Permisos requeridos</string>
     <string name="ok">Ok</string>
     <string name="cancel">Cancelar</string>
 

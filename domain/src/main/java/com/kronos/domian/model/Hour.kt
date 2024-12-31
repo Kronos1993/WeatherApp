@@ -33,5 +33,5 @@ data class Hour(
     val visMiles: Double,
     val gustMph: Double,
     val gustKph: Double,
-    val uv: Int,
+    val uv: Double,
 )

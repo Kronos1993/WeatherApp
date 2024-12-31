@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
@@ -12,12 +11,19 @@
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:minHeight="100dp">
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline4"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.5" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/imageView"
@@ -43,6 +49,7 @@
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/editTextTrackingNumber"
+                    style="@style/TextInputEditText"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:inputType="text"
@@ -53,13 +60,13 @@
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/buttonAddParcel"
                 style="@style/Widget.ButtonRound"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:text="@string/add_location"
                 app:icon="@drawable/ic_add_location"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/guideline4"
                 app:layout_constraintTop_toBottomOf="@+id/textInputLayoutTrackingNumber" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

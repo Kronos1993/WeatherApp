@@ -11,11 +11,12 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import cn.pedant.SweetAlert.SweetAlertDialog
 import com.kronos.core.adapters.AdapterItemClickListener
 import com.kronos.core.adapters.SwipeToDelete
 import com.kronos.core.extensions.binding.fragmentBinding
-import com.kronos.core.util.LoadingDialog
 import com.kronos.core.util.PreferencesUtil
+import com.kronos.core.util.getProgressDialog
 import com.kronos.core.util.setLanguageForApp
 import com.kronos.core.util.show
 import com.kronos.domian.model.UserCustomLocation
@@ -32,16 +33,28 @@ class LocationsFragment : Fragment() {
     private val binding by fragmentBinding<FragmentLocationBinding>(R.layout.fragment_location)
 
     private val viewModel by activityViewModels<LocationViewModel>()
+    private var progressDialog: SweetAlertDialog? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ) = binding.run {
-        setLanguageForApp(requireContext(),
-            PreferencesUtil.getPreference(requireContext(),requireContext().getString(R.string.default_lang_key),requireContext().getString(R.string.default_language_value))!!)
+        setLanguageForApp(
+            requireContext(),
+            PreferencesUtil.getPreference(
+                requireContext(),
+                requireContext().getString(R.string.default_lang_key),
+                requireContext().getString(R.string.default_language_value)
+            )!!
+        )
         lifecycleOwner = this@LocationsFragment.viewLifecycleOwner
         viewModel = this@LocationsFragment.viewModel
+        progressDialog = getProgressDialog(
+            requireContext(),
+            com.kronos.resources.R.string.loading_dialog_text,
+            com.kronos.resources.R.color.primary
+        )
         root
     }
 
@@ -54,7 +67,7 @@ class LocationsFragment : Fragment() {
     }
 
     private fun setListeners() {
-        binding.addLocations.setOnClickListener{
+        binding.addLocations.setOnClickListener {
             findNavController().navigate(R.id.action_navigation_location_to_navigation_add_location)
         }
     }
@@ -89,19 +102,11 @@ class LocationsFragment : Fragment() {
     private fun handleLoading(b: Boolean) {
         try {
             if (b) {
-                LoadingDialog.getProgressDialog(
-                    requireContext(),
-                    R.string.loading_dialog_text,
-                    com.kronos.resources.R.color.primary_dark
-                )!!.show()
+                progressDialog?.show()
             } else {
-                LoadingDialog.getProgressDialog(
-                    requireContext(),
-                    R.string.loading_dialog_text,
-                    com.kronos.resources.R.color.primary_dark
-                )!!.dismiss()
+                progressDialog?.dismiss()
             }
-        }catch (e:IllegalArgumentException){
+        } catch (e: IllegalArgumentException) {
             e.printStackTrace()
         }
 
@@ -109,11 +114,12 @@ class LocationsFragment : Fragment() {
 
     private fun handleLocations(list: List<UserCustomLocation>?) {
         viewModel.userLocationAdapter.get()?.submitList(list)
-        viewModel.userLocationAdapter.get()?.notifyItemRangeChanged(0,viewModel.userLocationAdapter.get()!!.itemCount)
+        viewModel.userLocationAdapter.get()
+            ?.notifyItemRangeChanged(0, viewModel.userLocationAdapter.get()!!.itemCount)
     }
 
     private fun initViews() {
-        binding.recyclerViewLocations.layoutManager = GridLayoutManager(context,2)
+        binding.recyclerViewLocations.layoutManager = GridLayoutManager(context, 2)
         binding.recyclerViewLocations.setHasFixedSize(false)
         if (viewModel.userLocationAdapter.get() == null)
             viewModel.userLocationAdapter = WeakReference(UserLocationAdapter())
@@ -128,7 +134,7 @@ class LocationsFragment : Fragment() {
         })
 
         val itemTouchHelperCallback: ItemTouchHelper.Callback = object :
-            ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.RIGHT) {
+            ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
             override fun onMove(
                 recyclerView: RecyclerView,
                 viewHolder: RecyclerView.ViewHolder,

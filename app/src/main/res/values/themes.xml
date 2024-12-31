@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.WeatherApp" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Theme.WeatherApp" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryVariant">@color/primary_dark</item>
@@ -17,7 +17,7 @@
         <item name="android:windowAnimationStyle">@style/Theme.ActivityAnimation</item>
     </style>
 
-    <style name="Widget.CardViewMaps" parent="Widget.MaterialComponents.CardView">
+    <style name="Widget.CardViewMaps" parent="Widget.Material3.CardView.Elevated">
         <item name="cardBackgroundColor">@color/transparent</item>
         <item name="cardElevation">@dimen/cardview_default_elevation</item>
         <item name="cardCornerRadius">@dimen/card_radius_6</item>

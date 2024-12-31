@@ -5,9 +5,7 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import androidx.navigation.NavController
 import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.kronos.core.extensions.binding.activityBinding
@@ -15,16 +13,25 @@ import com.kronos.core.util.PreferencesUtil
 import com.kronos.core.util.setLanguageForApp
 import com.kronos.core.util.validatePermission
 import com.kronos.weatherapp.databinding.ActivityMainBinding
+import com.kronos.weatherapp.ui.settings.OnSettingChangeObserver
+import com.kronos.weatherapp.ui.settings.OnSettingChangePublisher
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private val binding by activityBinding<ActivityMainBinding>(R.layout.activity_main)
     private var grantedAll = false
-    private var isBackPressedOnce = false
-    private var navController:NavController? = null
-    private lateinit var appBarConfiguration: AppBarConfiguration
+
+    @Inject
+    lateinit var onSettingChangePublisher: OnSettingChangePublisher
+
+    private var onSettingChangeObserver = object : OnSettingChangeObserver {
+        override fun onSettingChange(oldValue: String, newValue: String) {
+            this@MainActivity.recreate()
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +39,7 @@ class MainActivity : AppCompatActivity() {
             lifecycleOwner = this@MainActivity
             setContentView(root)
             checkPermission()
+            onSettingChangePublisher.subscribe(onSettingChangeObserver)
         }
     }
 
@@ -62,16 +70,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun init(){
+        setLanguageForApp(this,
+            PreferencesUtil.getPreference(this,this.getString(R.string.default_lang_key),this.getString(R.string.default_language_value))!!)
         val navView: BottomNavigationView = binding.navView
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-        /*val appBarConfiguration = AppBarConfiguration(
-            setOf(
-                R.id.navigation_weather, R.id.navigation_location, R.id.navigation_about
-            )
-        )
-        setupActionBarWithNavController(navController, appBarConfiguration)*/
         navView.setupWithNavController(navController)
     }
 
@@ -91,6 +93,11 @@ class MainActivity : AppCompatActivity() {
         } else {
             finish()
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        onSettingChangePublisher.unSubscribe(onSettingChangeObserver)
     }
 
 }

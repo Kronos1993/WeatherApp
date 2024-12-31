@@ -6,11 +6,13 @@
     android:background="@color/transparent"
     android:layout_gravity="center|center_horizontal|center_vertical"
     android:gravity="center"
-    android:id="@+id/widget_layout"
+    android:id="@+id/widget_layout_small"
     android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/widget_layout_main"
+        android:layout_gravity="center|center_horizontal|center_vertical"
+        android:gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@color/transparent"
@@ -55,7 +57,6 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_gravity="center"
-                android:scaleType="fitCenter"
                 android:src="@drawable/ic_weather_app_icon"/>
 
             <TextView
@@ -66,65 +67,6 @@
                 android:layout_gravity="center"
                 android:textAlignment="center"
                 app:textAllCaps="true" />
-
-            <LinearLayout
-                android:id="@+id/widget_recycler_view_days"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="5"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/widget_text_view_day_1"
-                        style="@style/Widget.TextView.TextViewNormal"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textStyle="bold"
-                        android:layout_gravity="center"
-                        android:textAlignment="center" />
-
-                    <ImageView
-                        android:id="@+id/widget_image_view_day_1"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:scaleType="fitCenter"
-                        android:layout_gravity="center" />
-                </LinearLayout>
-
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/widget_text_view_day_2"
-                        style="@style/Widget.TextView.TextViewNormal"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textStyle="bold"
-                        android:layout_gravity="center"
-                        android:textAlignment="center" />
-
-                    <ImageView
-                        android:id="@+id/widget_image_view_day_2"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:scaleType="fitCenter"
-                        android:layout_gravity="center" />
-
-                </LinearLayout>
-
-            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 
