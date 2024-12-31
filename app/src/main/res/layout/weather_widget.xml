@@ -31,8 +31,15 @@
                 app:tint="@color/icon" />
 
             <TextView
+                android:id="@+id/widget_text_view_time"
+                style="@style/Widget.TextView.TextViewHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|center_horizontal|center_vertical" />
+
+            <TextView
                 android:id="@+id/widget_text_view_location"
-                style="@style/Widget.TextView.TextViewWidgetNormal"
+                style="@style/Widget.TextView.TextViewHeader"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|center_horizontal|center_vertical" />
@@ -45,9 +52,10 @@
 
             <ImageView
                 android:id="@+id/widget_image_view_current"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:layout_gravity="center"
+                android:scaleType="fitCenter"
                 android:src="@drawable/ic_weather_app_icon"/>
 
             <TextView
@@ -64,8 +72,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="5"
-                android:orientation="horizontal"
-                android:weightSum="3">
+                android:orientation="horizontal">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -85,8 +92,9 @@
 
                     <ImageView
                         android:id="@+id/widget_image_view_day_1"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:scaleType="fitCenter"
                         android:layout_gravity="center" />
                 </LinearLayout>
 
@@ -109,37 +117,13 @@
 
                     <ImageView
                         android:id="@+id/widget_image_view_day_2"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:scaleType="fitCenter"
                         android:layout_gravity="center" />
 
                 </LinearLayout>
 
-
-                <LinearLayout
-                    android:id="@+id/widget_check_internet"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/widget_text_view_day_3"
-                        style="@style/Widget.TextView.TextViewNormal"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textStyle="bold"
-                        android:layout_gravity="center"
-                        android:textAlignment="center" />
-
-                    <ImageView
-                        android:id="@+id/widget_image_view_day_3"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_gravity="center" />
-
-                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
