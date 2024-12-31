@@ -6,9 +6,12 @@ import android.appwidget.AppWidgetProvider
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import android.graphics.BitmapFactory
+import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.widget.RemoteViews
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.CustomTarget
 import com.kronos.core.extensions.capitalizeFirstLetter
 import com.kronos.core.extensions.formatDate
 import com.kronos.core.extensions.isToday
@@ -27,7 +30,6 @@ import com.kronos.webclient.UrlProvider
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
-import java.net.URL
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -89,9 +91,20 @@ class WeatherWidgetProvider @Inject constructor() : AppWidgetProvider() {
         remoteViews.setOnClickPendingIntent(R.id.widget_layout, configPendingIntent)
 
         when (layoutId) {
-            R.layout.weather_widget -> getWeather(remoteViews, context)
-            R.layout.weather_widget_small -> getWeatherSmall(remoteViews, context)
-            R.layout.weather_widget_large -> getWeather(remoteViews, context)
+            R.layout.weather_widget -> {
+                getWeather(remoteViews, context)
+                remoteViews.setOnClickPendingIntent(R.id.widget_layout, configPendingIntent)
+            }
+
+            R.layout.weather_widget_small -> {
+                getWeatherSmall(remoteViews, context)
+                remoteViews.setOnClickPendingIntent(R.id.widget_layout_small, configPendingIntent)
+            }
+
+            R.layout.weather_widget_large -> {
+                getWeather(remoteViews, context)
+                remoteViews.setOnClickPendingIntent(R.id.widget_layout_large, configPendingIntent)
+            }
         }
         appWidgetManager.updateAppWidget(appWidgetId, remoteViews)
     }
@@ -173,7 +186,7 @@ class WeatherWidgetProvider @Inject constructor() : AppWidgetProvider() {
                                     R.id.widget_text_view_day_1,
                                     getDay(context, list[0])
                                 )
-                                val urlCondition1 = URL(
+                                loadBitmapFromUrl(
                                     urlProvider.getImageUrl(
                                         list[0].day.condition.icon,
                                         PreferencesUtil.getPreference(
@@ -181,19 +194,21 @@ class WeatherWidgetProvider @Inject constructor() : AppWidgetProvider() {
                                             context.getString(R.string.default_image_quality_key),
                                             context.getString(R.string.default_image_quality_value)
                                         )!!
-                                    )
-                                )
-                                val bmp1 =
-                                    BitmapFactory.decodeStream(
-                                        urlCondition1.openConnection().getInputStream()
-                                    )
-                                remoteViews.setImageViewBitmap(R.id.widget_image_view_day_1, bmp1)
+                                    ),
+                                    context, callback = {
+                                        remoteViews.setImageViewBitmap(
+                                            R.id.widget_image_view_day_1,
+                                            it
+                                        )
+                                    })
+
                             } else if (i == 2) {
                                 remoteViews.setTextViewText(
                                     R.id.widget_text_view_day_2,
                                     getDay(context, list[i - 1])
                                 )
-                                val urlCondition2 = URL(
+
+                                loadBitmapFromUrl(
                                     urlProvider.getImageUrl(
                                         list[i - 1].day.condition.icon,
                                         PreferencesUtil.getPreference(
@@ -201,33 +216,30 @@ class WeatherWidgetProvider @Inject constructor() : AppWidgetProvider() {
                                             context.getString(R.string.default_image_quality_key),
                                             context.getString(R.string.default_image_quality_value)
                                         )!!
-                                    )
-                                )
-                                val bmp2 =
-                                    BitmapFactory.decodeStream(
-                                        urlCondition2.openConnection().getInputStream()
-                                    )
-                                remoteViews.setImageViewBitmap(R.id.widget_image_view_day_2, bmp2)
+                                    ),
+                                    context, callback = {
+                                        remoteViews.setImageViewBitmap(
+                                            R.id.widget_image_view_day_2,
+                                            it
+                                        )
+                                    })
+
                             } else {
                                 break
                             }
                         }
                     }
 
-                    val urlCondition =
-                        URL(
-                            urlProvider.getImageUrl(
-                                response.data!!.current.condition.icon,
-                                PreferencesUtil.getPreference(
-                                    context,
-                                    context.getString(R.string.default_image_quality_key),
-                                    context.getString(R.string.default_image_quality_value)
-                                )!!
-                            )
-                        )
-                    val bmp =
-                        BitmapFactory.decodeStream(urlCondition.openConnection().getInputStream())
-                    remoteViews.setImageViewBitmap(R.id.widget_image_view_current, bmp)
+                    loadBitmapFromUrl(urlProvider.getImageUrl(
+                        response.data!!.current.condition.icon,
+                        PreferencesUtil.getPreference(
+                            context,
+                            context.getString(R.string.default_image_quality_key),
+                            context.getString(R.string.default_image_quality_value)
+                        )!!
+                    ), context, callback = {
+                        remoteViews.setImageViewBitmap(R.id.widget_image_view_current, it)
+                    })
 
                     remoteViews.setTextViewText(
                         R.id.widget_text_view_time,
@@ -325,26 +337,17 @@ class WeatherWidgetProvider @Inject constructor() : AppWidgetProvider() {
                 }
 
                 if (response.data != null) {
-                    val urlCondition =
-                        URL(
-                            urlProvider.getImageUrl(
-                                response.data!!.current.condition.icon,
-                                PreferencesUtil.getPreference(
-                                    context,
-                                    context.getString(R.string.default_image_quality_key),
-                                    context.getString(R.string.default_image_quality_value)
-                                )!!
-                            )
-                        )
-                    val bmp =
-                        BitmapFactory.decodeStream(urlCondition.openConnection().getInputStream())
-                    remoteViews.setImageViewBitmap(R.id.widget_image_view_current, bmp)
 
-                    remoteViews.setTextViewText(
-                        R.id.widget_text_view_time,
-                        Date().of(response.data!!.location.localtime, true)!!
-                            .formatDate("hh:mm aa dd-MM")
-                    )
+                    loadBitmapFromUrl(urlProvider.getImageUrl(
+                        response.data!!.current.condition.icon,
+                        PreferencesUtil.getPreference(
+                            context,
+                            context.getString(R.string.default_image_quality_key),
+                            context.getString(R.string.default_image_quality_value)
+                        )!!
+                    ), context, callback = {
+                        remoteViews.setImageViewBitmap(R.id.widget_image_view_current, it)
+                    })
 
                     remoteViews.setTextViewText(
                         R.id.widget_text_view_location,
@@ -377,9 +380,9 @@ class WeatherWidgetProvider @Inject constructor() : AppWidgetProvider() {
         try {
             val appWidgetManager = AppWidgetManager.getInstance(context)
             val appWidgetId = intent.extras?.getInt("appWidgetId")
-            if (appWidgetId!=null){
+            if (appWidgetId != null) {
                 updateAppWidget(context, appWidgetManager, appWidgetId)
-            }else{
+            } else {
                 val remoteViews = RemoteViews(context.packageName, R.layout.weather_widget)
                 val widget = ComponentName(context, WeatherWidgetProvider::class.java)
                 appWidgetManager.updateAppWidget(widget, remoteViews)
@@ -423,13 +426,15 @@ class WeatherWidgetProvider @Inject constructor() : AppWidgetProvider() {
                 getWeather(remoteViews, context)
                 remoteViews.setOnClickPendingIntent(R.id.widget_layout, configPendingIntent)
             }
+
             R.layout.weather_widget_small -> {
-                remoteViews.setOnClickPendingIntent(R.id.widget_layout_small, configPendingIntent)
                 getWeatherSmall(remoteViews, context)
+                remoteViews.setOnClickPendingIntent(R.id.widget_layout_small, configPendingIntent)
             }
+
             R.layout.weather_widget_large -> {
-                remoteViews.setOnClickPendingIntent(R.id.widget_layout_large, configPendingIntent)
                 getWeather(remoteViews, context)
+                remoteViews.setOnClickPendingIntent(R.id.widget_layout_large, configPendingIntent)
             }
         }
         appWidgetManager.updateAppWidget(appWidgetId, remoteViews)
@@ -472,6 +477,24 @@ class WeatherWidgetProvider @Inject constructor() : AppWidgetProvider() {
             }
         }
         return day.capitalizeFirstLetter()
+    }
+
+    private fun loadBitmapFromUrl(url: String, context: Context, callback: (Bitmap?) -> Unit) {
+        Glide.with(context)
+            .asBitmap()
+            .load(url)
+            .into(object : CustomTarget<Bitmap>() {
+                override fun onResourceReady(
+                    resource: Bitmap,
+                    transition: com.bumptech.glide.request.transition.Transition<in Bitmap>?
+                ) {
+                    callback(resource)
+                }
+
+                override fun onLoadCleared(placeholder: Drawable?) {
+                    callback(null)
+                }
+            })
     }
 
 }

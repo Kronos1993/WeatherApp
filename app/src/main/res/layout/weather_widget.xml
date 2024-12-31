@@ -32,14 +32,14 @@
 
             <TextView
                 android:id="@+id/widget_text_view_time"
-                style="@style/Widget.TextView.TextViewHeader"
+                style="@style/Widget.TextView.TextViewWidgetNormal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|center_horizontal|center_vertical" />
 
             <TextView
                 android:id="@+id/widget_text_view_location"
-                style="@style/Widget.TextView.TextViewHeader"
+                style="@style/Widget.TextView.TextViewWidgetNormal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|center_horizontal|center_vertical" />
