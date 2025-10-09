@@ -1,164 +1,249 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/widget_layout_large"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_gravity="center"
     android:background="@color/transparent"
-    android:layout_gravity="center|center_horizontal|center_vertical"
     android:gravity="center"
-    android:id="@+id/widget_layout_large"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="16dp">
 
     <LinearLayout
         android:id="@+id/widget_layout_main"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center|center_horizontal|center_vertical"
-        android:gravity="center"
+        android:layout_gravity="center"
         android:background="@color/transparent"
+        android:gravity="center"
         android:orientation="vertical">
 
+        <!-- Header mejorado -->
         <LinearLayout
             android:id="@+id/widget_layout_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingBottom="12dp">
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center|center_horizontal|center_vertical"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="8dp"
+                android:contentDescription="@string/location_name"
                 android:src="@drawable/ic_locations_widget"
                 app:tint="@color/icon" />
 
             <TextView
-                android:id="@+id/widget_text_view_time"
-                style="@style/Widget.TextView.TextViewHeader"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center|center_horizontal|center_vertical" />
-
-            <TextView
                 android:id="@+id/widget_text_view_location"
                 style="@style/Widget.TextView.TextViewHeader"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center|center_horizontal|center_vertical" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/transparent"
-            android:layout_gravity="center|center_horizontal|center_vertical"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:id="@+id/widget_image_view_current"
-                android:layout_width="72dp"
-                android:layout_height="72dp"
-                android:layout_gravity="center"
-                android:scaleType="fitCenter"
-                android:src="@drawable/ic_weather_app_icon"/>
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:maxLines="1" />
 
             <TextView
-                android:id="@+id/widget_text_view_temp"
-                style="@style/Widget.TextView.TextViewDisplay1"
+                android:id="@+id/widget_text_view_time"
+                style="@style/Widget.TextView.TextViewSubHeader"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:textAlignment="center"
-                app:textAllCaps="true" />
+                android:layout_gravity="center_vertical"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="4dp" />
+
         </LinearLayout>
 
+        <!-- Sección principal del clima - Reorganizada -->
         <LinearLayout
-            android:id="@+id/widget_recycler_view_days"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/transparent"
-            android:layout_gravity="center|center_horizontal|center_vertical"
+            android:baselineAligned="false"
             android:gravity="center"
-            android:layout_weight="5"
             android:orientation="horizontal">
 
+            <!-- Columna izquierda: Icono y temperatura -->
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:background="@color/transparent"
+                android:gravity="center"
                 android:orientation="vertical">
 
+                <ImageView
+                    android:id="@+id/widget_image_view_current"
+                    android:layout_width="96dp"
+                    android:layout_height="96dp"
+                    android:contentDescription="@string/sun"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_weather_app_icon" />
+
                 <TextView
-                    android:id="@+id/widget_text_view_day_1"
-                    style="@style/Widget.TextView.TextViewSubHeader"
+                    android:id="@+id/widget_text_view_temp"
+                    style="@style/Widget.TextView.TextViewDisplay1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textStyle="bold"
-                    android:layout_gravity="center"
-                    android:textAlignment="center" />
+                    android:textAlignment="center"
+                    app:textAllCaps="true" />
 
-                <ImageView
-                    android:id="@+id/widget_image_view_day_1"
-                    android:layout_width="72dp"
-                    android:layout_height="72dp"
-                    android:scaleType="fitCenter"
-                    android:layout_gravity="center" />
             </LinearLayout>
 
+            <!-- Columna derecha: Información adicional -->
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:background="@color/transparent"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/widget_text_view_day_2"
-                    style="@style/Widget.TextView.TextViewSubHeader"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textStyle="bold"
-                    android:layout_gravity="center"
-                    android:textAlignment="center" />
-
-                <ImageView
-                    android:id="@+id/widget_image_view_day_2"
-                    android:layout_width="72dp"
-                    android:layout_height="72dp"
-                    android:scaleType="fitCenter"
-                    android:layout_gravity="center" />
-
-            </LinearLayout>
-
-
-            <!--<LinearLayout
-                android:id="@+id/widget_check_internet"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:background="@color/transparent"
                 android:layout_weight="1"
                 android:orientation="vertical">
 
+                <!-- Descripción del clima -->
                 <TextView
-                    android:id="@+id/widget_text_view_day_3"
-                    style="@style/Widget.TextView.TextViewNormal"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/widget_text_view_condition"
+                    style="@style/Widget.TextView.TextViewSubHeader"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textStyle="bold"
-                    android:layout_gravity="center"
+                    android:ellipsize="end"
+                    android:maxLines="2"
                     android:textAlignment="center" />
 
-                <ImageView
-                    android:id="@+id/widget_image_view_day_3"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_gravity="center" />
+                <!-- Pronóstico de días -->
+                <LinearLayout
+                    android:id="@+id/widget_recycler_view_days"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@color/transparent"
+                    android:baselineAligned="false"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
 
-            </LinearLayout>-->
+                    <!-- Día 1 -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_margin="2dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:padding="8dp">
+
+                        <TextView
+                            android:id="@+id/widget_text_view_day_1"
+                            style="@style/Widget.TextView.TextViewSubHeader"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:paddingBottom="4dp"
+                            android:textAlignment="center"
+                            android:textStyle="bold" />
+
+                        <ImageView
+                            android:id="@+id/widget_image_view_day_1"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:layout_gravity="center"
+                            android:contentDescription="@string/location_name"
+                            android:scaleType="fitCenter" />
+
+                    </LinearLayout>
+
+                    <!-- Día 2 -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_margin="2dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:padding="8dp">
+
+                        <TextView
+                            android:id="@+id/widget_text_view_day_2"
+                            style="@style/Widget.TextView.TextViewSubHeader"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:paddingBottom="4dp"
+                            android:textAlignment="center"
+                            android:textStyle="bold" />
+
+                        <ImageView
+                            android:id="@+id/widget_image_view_day_2"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:layout_gravity="center"
+                            android:contentDescription="@string/location_name"
+                            android:scaleType="fitCenter" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingTop="@dimen/margin_10"
+            android:weightSum="4">
+
+            <!-- Humedad -->
+            <TextView
+                android:id="@+id/widget_text_view_humidity"
+                style="@style/Widget.TextView.TextViewNormal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawableStart="@drawable/ic_humidity"
+                android:drawablePadding="4dp"
+                android:padding="4dp"
+                android:textAlignment="center" />
+
+            <!-- Índice UV -->
+            <TextView
+                android:id="@+id/widget_text_view_uv"
+                style="@style/Widget.TextView.TextViewNormal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawableStart="@drawable/ic_uv_index"
+                android:drawablePadding="4dp"
+                android:padding="4dp"
+                android:textAlignment="center" />
+
+            <!-- Viento -->
+            <TextView
+                android:id="@+id/widget_text_view_wind"
+                style="@style/Widget.TextView.TextViewNormal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawableStart="@drawable/ic_wind"
+                android:drawablePadding="4dp"
+                android:padding="4dp"
+                android:textAlignment="center" />
+
+
+            <!-- Dirección del viento -->
+            <TextView
+                android:id="@+id/widget_text_view_wind_dir"
+                style="@style/Widget.TextView.TextViewNormal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawableStart="@drawable/ic_direction"
+                android:drawablePadding="4dp"
+                android:padding="4dp"
+                android:textAlignment="center" />
+
         </LinearLayout>
     </LinearLayout>
-
-
 </LinearLayout>

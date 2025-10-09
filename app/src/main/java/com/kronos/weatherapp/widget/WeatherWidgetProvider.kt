@@ -102,7 +102,7 @@ class WeatherWidgetProvider @Inject constructor() : AppWidgetProvider() {
             }
 
             R.layout.weather_widget_large -> {
-                getWeather(remoteViews, context)
+                getWeatherLarge(remoteViews, context)
                 remoteViews.setOnClickPendingIntent(R.id.widget_layout_large, configPendingIntent)
             }
         }
@@ -244,12 +244,200 @@ class WeatherWidgetProvider @Inject constructor() : AppWidgetProvider() {
                     remoteViews.setTextViewText(
                         R.id.widget_text_view_time,
                         Date().of(response.data!!.location.localtime, true)!!
-                            .formatDate("hh:mm aa dd-MM")
+                            .formatDate("hh:mm aa dd-MMM")
                     )
 
                     remoteViews.setTextViewText(
                         R.id.widget_text_view_location,
                         response.data!!.location.name
+                    )
+
+                    remoteViews.setTextViewText(
+                        R.id.widget_text_view_temp,
+                        String.format(
+                            context.getString(
+                                R.string.temp_celsius_widget
+                            ),
+                            response.data!!.current.tempC.toString()
+                        )
+                    )
+                }
+            } catch (e: Exception) {
+                logger.write(
+                    this::class.java.name,
+                    LoggerType.ERROR,
+                    "Widget on update error ${e.message.toString()}"
+                )
+            }
+        }
+    }
+
+    private fun getWeatherLarge(remoteViews: RemoteViews, context: Context) {
+        logger.write(this::class.java.name, LoggerType.INFO, "Get weather widget")
+
+        runBlocking(Dispatchers.IO) {
+            try {
+                var currentCity = customUserCustomLocationLocalRepository.getSelectedLocation()
+                if (currentCity == null)
+                    currentCity = customUserCustomLocationLocalRepository.getCurrentLocation()
+
+                val response: Response<Forecast>
+                if (currentCity != null) {
+                    if (currentCity.isCurrent) {
+                        response = weatherRemoteRepository.getWeatherDataForecast(
+                            currentCity.lat!!,
+                            currentCity.lon!!,
+                            PreferencesUtil.getPreference(
+                                context,
+                                context.getString(R.string.default_lang_key),
+                                context.getString(R.string.default_language_value)
+                            )!!,
+                            context.resources.getString(R.string.api_key),
+                            PreferencesUtil.getPreference(
+                                context,
+                                context.getString(R.string.default_days_key),
+                                context.resources.getString(R.string.default_days_values)
+                            )!!.toInt()
+                        )
+                    } else {
+                        response = weatherRemoteRepository.getWeatherDataForecast(
+                            currentCity.cityName,
+                            PreferencesUtil.getPreference(
+                                context,
+                                context.getString(R.string.default_lang_key),
+                                context.getString(R.string.default_language_value)
+                            )!!,
+                            context.resources.getString(R.string.api_key),
+                            PreferencesUtil.getPreference(
+                                context,
+                                context.getString(R.string.default_days_key),
+                                context.resources.getString(R.string.default_days_values)
+                            )!!.toInt()
+                        )
+                    }
+                } else {
+                    response = weatherRemoteRepository.getWeatherDataForecast(
+                        PreferencesUtil.getPreference(
+                            context,
+                            context.getString(R.string.default_city_key),
+                            context.getString(R.string.default_city_value)
+                        )!!,
+                        PreferencesUtil.getPreference(
+                            context,
+                            context.getString(R.string.default_lang_key),
+                            context.getString(R.string.default_language_value)
+                        )!!,
+                        context.resources.getString(R.string.api_key),
+                        PreferencesUtil.getPreference(
+                            context,
+                            context.getString(R.string.default_days_key),
+                            context.resources.getString(R.string.default_days_values)
+                        )!!.toInt()
+                    )
+                }
+
+                if (response.data != null) {
+                    val list = arrayListOf<DailyForecast>()
+                    list.addAll(response.data!!.forecast.forecastDay.filter {
+                        !Date().of(it.date)!!.isToday()
+                    })
+
+                    if (list.size >= 2) {
+                        for (i in 1..list.size) {
+                            if (i == 1) {
+                                remoteViews.setTextViewText(
+                                    R.id.widget_text_view_day_1,
+                                    getDay(context, list[0])
+                                )
+                                loadBitmapFromUrl(
+                                    urlProvider.getImageUrl(
+                                        list[0].day.condition.icon,
+                                        PreferencesUtil.getPreference(
+                                            context,
+                                            context.getString(R.string.default_image_quality_key),
+                                            context.getString(R.string.default_image_quality_value)
+                                        )!!
+                                    ),
+                                    context, callback = {
+                                        remoteViews.setImageViewBitmap(
+                                            R.id.widget_image_view_day_1,
+                                            it
+                                        )
+                                    })
+
+                            } else if (i == 2) {
+                                remoteViews.setTextViewText(
+                                    R.id.widget_text_view_day_2,
+                                    getDay(context, list[i - 1])
+                                )
+
+                                loadBitmapFromUrl(
+                                    urlProvider.getImageUrl(
+                                        list[i - 1].day.condition.icon,
+                                        PreferencesUtil.getPreference(
+                                            context,
+                                            context.getString(R.string.default_image_quality_key),
+                                            context.getString(R.string.default_image_quality_value)
+                                        )!!
+                                    ),
+                                    context, callback = {
+                                        remoteViews.setImageViewBitmap(
+                                            R.id.widget_image_view_day_2,
+                                            it
+                                        )
+                                    })
+
+                            } else {
+                                break
+                            }
+                        }
+                    }
+
+                    loadBitmapFromUrl(urlProvider.getImageUrl(
+                        response.data!!.current.condition.icon,
+                        PreferencesUtil.getPreference(
+                            context,
+                            context.getString(R.string.default_image_quality_key),
+                            context.getString(R.string.default_image_quality_value)
+                        )!!
+                    ), context, callback = {
+                        remoteViews.setImageViewBitmap(R.id.widget_image_view_current, it)
+                    })
+
+                    remoteViews.setTextViewText(
+                        R.id.widget_text_view_time,
+                        Date().of(response.data!!.location.localtime, true)!!
+                            .formatDate("hh:mm aa dd-MMM")
+                    )
+
+                    remoteViews.setTextViewText(
+                        R.id.widget_text_view_location,
+                        response.data!!.location.name
+                    )
+
+                    remoteViews.setTextViewText(
+                        R.id.widget_text_view_condition,
+                        response.data!!.current.condition.description
+                    )
+
+                    remoteViews.setTextViewText(
+                        R.id.widget_text_view_humidity,
+                        response.data!!.current.humidity.toString()
+                    )
+
+                    remoteViews.setTextViewText(
+                        R.id.widget_text_view_wind,
+                        String.format(context.getString(R.string.speed_km),response.data!!.current.windSpeedKph.toString())
+                    )
+
+                    remoteViews.setTextViewText(
+                        R.id.widget_text_view_wind_dir,
+                        response.data!!.current.windDir
+                    )
+
+                    remoteViews.setTextViewText(
+                        R.id.widget_text_view_uv,
+                        response.data!!.current.uv.toString()
                     )
 
                     remoteViews.setTextViewText(
@@ -433,7 +621,7 @@ class WeatherWidgetProvider @Inject constructor() : AppWidgetProvider() {
             }
 
             R.layout.weather_widget_large -> {
-                getWeather(remoteViews, context)
+                getWeatherLarge(remoteViews, context)
                 remoteViews.setOnClickPendingIntent(R.id.widget_layout_large, configPendingIntent)
             }
         }

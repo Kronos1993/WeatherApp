@@ -22,6 +22,7 @@
     <string name="speed_miles">%s M/H</string>
     <string name="loading_dialog_text">Cargando</string>
     <string name="wind">Viento</string>
+    <string name="wind_direction">Dirección del viento</string>
     <string name="humidity">Humedad</string>
     <string name="uv_index">Índice UV</string>
     <string name="rain">Luvia</string>

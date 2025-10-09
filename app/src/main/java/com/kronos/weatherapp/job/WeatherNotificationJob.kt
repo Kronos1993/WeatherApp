@@ -21,10 +21,13 @@ import com.kronos.weatherapp.R
 import com.kronos.weatherapp.TAG
 import com.kronos.weatherapp.widget.WeatherWidgetProvider
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
 import java.net.URL
-import java.util.*
+import java.util.Date
 import javax.inject.Inject
 
 const val notificationJobId = 1
@@ -33,6 +36,8 @@ const val notificationJobId = 1
 class WeatherNotificationJob : JobService() {
 
     private var jobCancelled = false
+
+    private val jobScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
     @Inject
     lateinit var weatherRemoteRepository: WeatherRemoteRepository
@@ -50,16 +55,30 @@ class WeatherNotificationJob : JobService() {
         Log.d(TAG, "onStartJob")
         Log.d(TAG, "Current job started: ${params.jobId}")
         Log.d(TAG, "Current Job Params: ${params.jobId}")
-        logger.write(this::class.java.name, LoggerType.INFO, "Current job started: ${params.jobId} on ${Date().formatDate("dd-MM-yyyy")}")
-        logger.write(this::class.java.name, LoggerType.INFO, "Current Job Params: ${params.jobId}")
-        doWork(params)
+        jobScope.launch {
+            logger.write(
+                this::class.java.name,
+                LoggerType.INFO,
+                "Current job started: ${params.jobId} on ${Date().formatDate("dd-MM-yyyy")}"
+            )
+            logger.write(this::class.java.name, LoggerType.INFO, "Current Job Params: ${params.jobId}")
+            jobCancelled = false
+            doWork(params)
+        }
         return true
     }
 
     override fun onStopJob(params: JobParameters): Boolean {
         Log.d(TAG, "onStopJob")
         Log.d(TAG, "Current job stopped: ${params.jobId}")
-        logger.write(this::class.java.name, LoggerType.INFO, "Current job stopped: ${params.jobId} on ${Date().formatDate("dd-MM-yyyy")}")
+        jobCancelled = true
+        jobScope.launch {
+            logger.write(
+                this::class.java.name,
+                LoggerType.INFO,
+                "Current job stopped: ${params.jobId} on ${Date().formatDate("dd-MM-yyyy")}"
+            )
+        }
         return true
     }
 
@@ -71,14 +90,28 @@ class WeatherNotificationJob : JobService() {
             LoggerType.INFO,
             "Current Do Work Params: ${params.jobId} on ${Date().formatDate("dd-MM-yyyy")}"
         )
-        if (params.jobId == notificationJobId) {
-            refreshWeather(params)
+        try {
+            if (params.jobId == notificationJobId && !jobCancelled) {
+                refreshWeather(params)
+            }
+            jobFinished(params, false)
+        } catch (e: Exception) {
+            jobFinished(params, true)
         }
     }
 
     private fun refreshWeather(params: JobParameters) {
-        runBlocking(Dispatchers.IO) {
-            setLanguageForApp(baseContext,PreferencesUtil.getPreference(applicationContext,applicationContext.getString(R.string.default_lang_key),applicationContext.getString(R.string.default_language_value))!!)
+        if (jobCancelled) return
+
+        jobScope.launch(Dispatchers.IO) {
+            setLanguageForApp(
+                baseContext,
+                PreferencesUtil.getPreference(
+                    applicationContext,
+                    applicationContext.getString(R.string.default_lang_key),
+                    applicationContext.getString(R.string.default_language_value)
+                )!!
+            )
             logger.write(
                 this::class.java.name,
                 LoggerType.INFO,
@@ -89,34 +122,63 @@ class WeatherNotificationJob : JobService() {
                 currentCity = userCustomLocationLocalRepository.getCurrentLocation()
 
             val response: Response<Forecast>
-            if (currentCity!=null){
-                if (currentCity.isCurrent){
+            if (currentCity != null) {
+                if (currentCity.isCurrent) {
                     response = weatherRemoteRepository.getWeatherDataForecast(
                         currentCity.lat!!,
                         currentCity.lon!!,
-                        PreferencesUtil.getPreference(applicationContext,applicationContext.getString(R.string.default_lang_key),applicationContext.getString(R.string.default_language_value))!!,
+                        PreferencesUtil.getPreference(
+                            applicationContext,
+                            applicationContext.getString(R.string.default_lang_key),
+                            applicationContext.getString(R.string.default_language_value)
+                        )!!,
                         applicationContext.resources.getString(R.string.api_key),
-                        PreferencesUtil.getPreference(applicationContext,application.getString(R.string.default_days_key),applicationContext.resources.getString(R.string.default_days_values))!!.toInt()
+                        PreferencesUtil.getPreference(
+                            applicationContext,
+                            application.getString(R.string.default_days_key),
+                            applicationContext.resources.getString(R.string.default_days_values)
+                        )!!.toInt()
                     )
-                }else{
+                } else {
                     response = weatherRemoteRepository.getWeatherDataForecast(
                         currentCity.cityName,
-                        PreferencesUtil.getPreference(applicationContext,applicationContext.getString(R.string.default_lang_key),applicationContext.getString(R.string.default_language_value))!!,
+                        PreferencesUtil.getPreference(
+                            applicationContext,
+                            applicationContext.getString(R.string.default_lang_key),
+                            applicationContext.getString(R.string.default_language_value)
+                        )!!,
                         applicationContext.resources.getString(R.string.api_key),
-                        PreferencesUtil.getPreference(applicationContext,application.getString(R.string.default_days_key),applicationContext.resources.getString(R.string.default_days_values))!!.toInt()
+                        PreferencesUtil.getPreference(
+                            applicationContext,
+                            application.getString(R.string.default_days_key),
+                            applicationContext.resources.getString(R.string.default_days_values)
+                        )!!.toInt()
                     )
                 }
-            }else{
+            } else {
                 response = weatherRemoteRepository.getWeatherDataForecast(
-                    PreferencesUtil.getPreference(applicationContext,application.getString(R.string.default_city_key),applicationContext.getString(R.string.default_city_value))!!,
-                    PreferencesUtil.getPreference(applicationContext,applicationContext.getString(R.string.default_lang_key),applicationContext.getString(R.string.default_language_value))!!,
+                    PreferencesUtil.getPreference(
+                        applicationContext,
+                        application.getString(R.string.default_city_key),
+                        applicationContext.getString(R.string.default_city_value)
+                    )!!,
+                    PreferencesUtil.getPreference(
+                        applicationContext,
+                        applicationContext.getString(R.string.default_lang_key),
+                        applicationContext.getString(R.string.default_language_value)
+                    )!!,
                     applicationContext.resources.getString(R.string.api_key),
-                    PreferencesUtil.getPreference(applicationContext,application.getString(R.string.default_days_key),applicationContext.resources.getString(R.string.default_days_values))!!.toInt()
+                    PreferencesUtil.getPreference(
+                        applicationContext,
+                        application.getString(R.string.default_days_key),
+                        applicationContext.resources.getString(R.string.default_days_values)
+                    )!!.toInt()
                 )
             }
             if (response.data != null) {
                 notification.createNotification(
-                    applicationContext.getString(R.string.notification_title).format(response.data!!.current.tempC,response.data!!.location.region),
+                    applicationContext.getString(R.string.notification_title)
+                        .format(response.data!!.current.tempC, response.data!!.location.region),
                     applicationContext.getString(R.string.notification_short_details)
                         .format(
                             response.data!!.current.condition.description,
@@ -134,13 +196,20 @@ class WeatherNotificationJob : JobService() {
                     NotificationType.WEATHER_STATUS,
                     R.drawable.ic_weather_app_icon,
                     applicationContext,
-                    BitmapFactory.decodeStream(URL("https:${response.data!!.current.condition.icon}").openConnection().getInputStream())
+                    BitmapFactory.decodeStream(
+                        URL("https:${response.data!!.current.condition.icon}").openConnection()
+                            .getInputStream()
+                    )
                 )
             }
             updateWidget(applicationContext, WeatherWidgetProvider::class.java)
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        jobScope.cancel()
+    }
 }
 
 
